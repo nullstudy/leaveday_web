@@ -26,10 +26,24 @@
 import AppLogo from '~/components/AppLogo.vue'
 
 export default {
+  async asyncData(){
+    let { data } = await axios.get(process.env.BACKEND_URL + '/'); 
+    console.log('data',data)
+  },
   components: {
     AppLogo
   }
 }
+
+// axios.get(process.env.BACKEND_URL + '/main')
+//             .then(response => {
+//                 commit('SET_MAIN', response.data.data)
+//             }).catch(err => {
+//                 console.error(err);
+//             })
+
+
+
 </script>
 
 <style>
