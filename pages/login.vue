@@ -21,9 +21,9 @@ export default {
     },
     data () {      
         return {
-        FACEBOOK_AUTHURL: process.env.BACKEND_URL+'/auth/facebook',
-        GOOGLE_AUTHURL: process.env.BACKEND_URL+'/auth/google',
-        KAKAO_AUTHURL: process.env.BACKEND_URL+'/auth/kakao'
+            FACEBOOK_AUTHURL: process.env.BACKEND_URL+'/auth/facebook',
+            GOOGLE_AUTHURL: process.env.BACKEND_URL+'/auth/google',
+            KAKAO_AUTHURL: process.env.BACKEND_URL+'/auth/kakao'
         }
     } 
 }
