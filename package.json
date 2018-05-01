@@ -5,6 +5,7 @@
   "author": "pjh",
   "private": true,
   "scripts": {
+    "server": "node server",
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
@@ -20,6 +21,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "http": "0.0.0",
     "nuxt": "^1.0.0"
   },
   "devDependencies": {

@@ -24,7 +24,7 @@
 
 <script>
 import AppLogo from '~/components/AppLogo.vue'
-
+import axios from 'axios';
 export default {
   async asyncData(){
     let { data } = await axios.get(process.env.BACKEND_URL + '/'); 
