@@ -12,7 +12,7 @@ module.exports = {
     ]
   },
   env: {
-    BACKEND_URL: 'https://13.209.37.149'
+    BACKEND_URL: 'https://www.leaveday.cf:3001'
   },
   
   loading: { color: '#3B8070' },
