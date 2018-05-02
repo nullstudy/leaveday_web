@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import AppLogo from '~/components/AppLogo.vue'
-// import axios from 'axios';
+
+import axios from 'axios';
 
 export default {     
     async asyncData(req) {
