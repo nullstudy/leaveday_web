@@ -10,7 +10,6 @@
             <a variant="primary" :href="KAKAO_AUTHURL">kakao Login</a>     
         </section>
      </div>
-     
 </template>
 <script>
 import axios from 'axios'
