@@ -13,7 +13,6 @@ module.exports = {
   },
   env: {
     BACKEND_URL: 'https://www.leaveday.cf'
-    // BACKEND_URL: 'https://13.209.37.149:3001'
   },
   plugins: [{
     src: '~plugins/bootstrap-vue'

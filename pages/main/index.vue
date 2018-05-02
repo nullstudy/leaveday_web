@@ -1,24 +1,24 @@
 <template>
-  <div class='wrap'>
-      <div  id='header_nav'>
-        <div>
-            <ul>
-                <li>메인</li>
-                <li>leaveday</li>
-                <li>login</li>
-            </ul>
-            
+    <div class='wrap'>
+        <div  id='header_nav'>
+            <div>
+                <ul>
+                    <li>메인</li>
+                    <li>leaveday</li>
+                    <li>login</li>
+                </ul>
+                
+            </div>
         </div>
-      </div>
 
-      <div class='content'>
-          content
-      </div>
+        <div class='content'>
+            content
+        </div>
 
-      <div class='footer'>
-          footer
-      </div>
-  </div>
+        <div class='footer'>
+            footer
+        </div>
+    </div>
 </template>
 
 <script>
