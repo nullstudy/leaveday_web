@@ -15,13 +15,16 @@ module.exports = {
     BACKEND_URL: 'https://www.leaveday.cf'
     // BACKEND_URL: 'https://13.209.37.149:3001'
   },
-  
+  plugins: [{
+    src: '~plugins/bootstrap-vue'
+  }],
   loading: { color: '#3B8070' },
   
   build: {
     /*
     ** Run ESLint on save
     */
+   
     extend (config, { isDev, isClient }) {
       if (isDev && isClient) {
         config.module.rules.push({
@@ -31,6 +34,7 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-    }
+    },
+    modules: ['bootstrap-vue/nuxt', ['bootstrap-vue/nuxt', { css: false }]]
   }
 }
