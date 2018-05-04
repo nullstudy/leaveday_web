@@ -32,9 +32,6 @@ export default {
         ...mapMutations({
             setUser: 'SET_USER',
             setAuth: 'SET_AUTH'
-        }),
-        ...mapActions({
-         
         })
     }
 }
