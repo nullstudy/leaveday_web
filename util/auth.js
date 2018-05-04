@@ -10,6 +10,7 @@ export const getUserFromCookie = (req,store) => {
     if (!req.headers.cookie) return
     
     const jwtCookie = req.headers.cookie.split(';').find(c => c.trim().startsWith('userToken='))
+    console.log('jwtCookie',jwtCookie)
     if (!jwtCookie) return null;
     let info = jwtDecode(jwtCookie)
     var userInfo = {};
