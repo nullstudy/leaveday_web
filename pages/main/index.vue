@@ -7,17 +7,16 @@
                     <li>leaveday</li>
                     <li>login</li>
                 </ul>
-                
             </div>
         </div>
 
-        <div class='content'>
+        <!-- <div class='content'>
             content
         </div>
 
         <div class='footer'>
             footer
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -28,8 +27,7 @@ import axios from 'axios';
 export default {     
     async asyncData(req) {
         let { data } = await axios.get(process.env.BACKEND_URL + '/test2'); 
-        console.log('data',data)
-                                                                                       
+        console.log('data',data)                                                                  
     },
     mounted() {
         
@@ -51,11 +49,12 @@ export default {
         height: 50px;
         overflow:hidden;
         background-color:#2d1152;
+        /* line-height: 50px; */
         line-height: 50px;
     }
 
     #header_nav li{
-        font-size:1.5em;
+        font-size:0.9em;
         color:#ffffff;
         margin-right:20px;
         list-style:none;

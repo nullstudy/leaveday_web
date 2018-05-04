@@ -13,17 +13,17 @@ module.exports = {
   },
   env: {
     BACKEND_URL: 'https://www.leaveday.cf'
+    // BACKEND_URL: 'http://localhost:3001'
   },
-  plugins: [{
-    src: '~plugins/bootstrap-vue'
-  }],
+  plugins: [
+    { src: '~plugins/bootstrap-vue' },
+    { src: '~plugins/vue-material' }
+  ],
   loading: { color: '#3B8070' },
-  
+  router: {
+    middleware: ['check-auth']
+  },
   build: {
-    /*
-    ** Run ESLint on save
-    */
-   
     extend (config, { isDev, isClient }) {
       if (isDev && isClient) {
         config.module.rules.push({
