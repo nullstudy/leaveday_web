@@ -1,7 +1,7 @@
 <template>
   <div>
-    <toolbar :isAuthenticated="isAuthenticated"/>
-    <nuxt/>
+      <toolbar :isAuthenticated="isAuthenticated"/>
+      <nuxt/>
   </div>
 </template>
 
@@ -10,14 +10,8 @@
   import { mapGetters,mapMutations } from 'vuex'
   export default {
     computed: mapGetters({
-      isAuthenticated:'isAuthenticated'
+      isAuthenticated:'isAuthenticated',      
     }),
-    // methods: {
-    //     ...mapMutations({
-    //         setUser: 'SET_USER',
-    //         setAuth: 'SET_AUTH'
-    //     })
-    // },
     components: {
       Toolbar
     }
