@@ -1,5 +1,4 @@
 module.exports = {
-  
   head: {
     title: 'leaveday_frontend',
     meta: [
@@ -9,31 +8,27 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    script: [
+      { src: '//developers.kakao.com/sdk/js/kakao.min.js' }
     ]
   },
   env: {
-    BACKEND_URL: 'https://www.leaveday.cf'
-    // BACKEND_URL: 'http://localhost:3001'
+    // BACKEND_URL: 'https://www.leaveday.cf'
+    BACKEND_URL: 'http://localhost:3001'
   },
   plugins: [
-    { src: '~plugins/bootstrap-vue' },
-    { src: '~plugins/vue-material' }
-  ],
+    { src: '~plugins/bootstrap-vue'},
+    { src: '~plugins/vue-material'},
+    { src: '~plugins/vuejs-datepicker'},
+    { src: '~plugins/fullcalendar' ,ssr: false }
+  ],  
   loading: { color: '#3B8070' },
   router: {
     middleware: ['check-auth']
   },
   build: {
-    extend (config, { isDev, isClient }) {
-      if (isDev && isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
-      }
-    },
-    modules: ['bootstrap-vue/nuxt', ['bootstrap-vue/nuxt', { css: false }]]
+    modules: ['bootstrap-vue/nuxt', ['bootstrap-vue/nuxt', { css: false }]],
+    vendor: ['bootstrap-vue','vue-fullcalendar']
   }
 }

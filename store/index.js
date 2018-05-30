@@ -1,7 +1,8 @@
 export const state = () => ({
     token : null,
     authenticated: null,
-    userInfo :null
+    userInfo :false,
+    isleave : false
 })
 
 export const getters = {
@@ -13,6 +14,9 @@ export const getters = {
     },
     token(state) {
         return state.token
+    },
+    isLeave(state) {
+        return state.isleave
     }
 
 }
@@ -26,5 +30,8 @@ export const mutations = {
     },    
     SET_USER(state,payload) {
         state.userInfo = payload.userInfo
+    },
+    SET_ISLEAVE(state,payload) {
+        state.isleave = payload.isleave
     }
 }

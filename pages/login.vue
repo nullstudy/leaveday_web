@@ -1,6 +1,5 @@
 <template>
     <section class="container">
-
       <div class='loginButton'>
         <b-button  id='google' variant="primary" :href="GOOGLE_AUTHURL">google Login</b-button>
       </div>
@@ -13,9 +12,6 @@
 import axios from 'axios'
 
 export default {
-    asyncData(){
-        // console.log(process.env.BACKEND_URL)
-    },
     data () {      
         return {
             GOOGLE_AUTHURL: process.env.BACKEND_URL+'/auth/google',
