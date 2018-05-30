@@ -8,6 +8,9 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    script: [
+      { src: '//developers.kakao.com/sdk/js/kakao.min.js' }
     ]
   },
   env: {
@@ -25,17 +28,6 @@ module.exports = {
     middleware: ['check-auth']
   },
   build: {
-    // extend (config, { isDev, isClient }) {
-    //   if (isDev && isClient) {
-    //     config.module.rules.push({
-    //       enforce: 'pre',
-    //       test: /\.(js|vue)$/,
-    //       loader: 'eslint-loader',
-    //       exclude: /(node_modules)/
-    //     })
-    //   }
-    // },
-    
     modules: ['bootstrap-vue/nuxt', ['bootstrap-vue/nuxt', { css: false }]],
     vendor: ['bootstrap-vue','vue-fullcalendar']
   }
