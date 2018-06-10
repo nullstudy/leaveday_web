@@ -18,13 +18,13 @@ export const getUserFromCookie = (req,store) => {
     userInfo.name = info.ObjectId.name;
     userInfo.email = info.ObjectId.email;
     userInfo.leaveCount = info.ObjectId.leaveCount;
-
+    userInfo.image = info.ObjectId.image;
     !!userInfo.leaveCount ?  isLeaveDate() : isNotLeaveDate()
+
     function isLeaveDate(){
         store.commit('SET_ISLEAVE', { isleave : true });
         userInfo.startDT = info.ObjectId.startDT;
         userInfo.endDT = info.ObjectId.endDT;
-        userInfo.image = info.ObjectId.image;
         userInfo.leaveCount = info.ObjectId.leaveCount;
         return
     }
@@ -32,7 +32,6 @@ export const getUserFromCookie = (req,store) => {
         store.commit('SET_ISLEAVE', { isleave : false });
         userInfo.startDT = false;
         userInfo.endDT = false;
-        userInfo.image = info.ObjectId.image;
         userInfo.leaveCount = false;
         return
     }
