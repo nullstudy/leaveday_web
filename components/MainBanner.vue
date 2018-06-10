@@ -15,10 +15,15 @@
           <path d="M895.1,155.77c-4.75-4.23-9.12-8.83-12.22-14.39-2.7-4.84-1.2-7.9,4.17-8.9a50.18,50.18,0,0,1,6.62-.35c9.64-.45,17.79-8.48,17.81-17.56,0-5.54-1.87-8.91-7.86-13.23-9.22-6.67-18.66-13.06-27.8-19.85-24.6-18.28-51.37-33.58-74.17-54.36-6.29-5.75-13.64-10.31-22.19-12.34-10.94-2.6-18.56,5.28-15.64,16.07,1.78,6.56,5.35,12.14,9.28,17.5,11.75,16,26.42,29.4,40.38,43.4,9.9,9.94,8.64,15.22-4.91,19.35-6.94,2.11-14,3.72-21,5.79-3.14.94-6.8,2-7.17,6-.35,3.81,2.3,6.4,5.12,8.56a26.13,26.13,0,0,0,4.45,2.7c5.57,2.74,11.55,4.21,17.57,5.57,15.15,3.43,30,7.21,42.42,17.62,7.24,6.09,14.33,12.34,21.37,18.65H920C911.49,169.55,903.11,162.9,895.1,155.77Z" transform="translate(-0.95 5.75)" style="fill: #75d8d0"/>
         </svg>
         <h1>{{ title }}</h1>
-        <div class='mian_profile'>
+        <div class='mian_profile' v-if="this.userInfo">
             <img  id='profile_image' style="cursor:pointer" v-bind:src="image" alt="프로필 사진">
             <p class='main_profile_el' > 이름 : {{ userInfo.name }}</p>
         </div>  
+        <div class='c_progress' v-if="this.userInfo" >
+            <b-progress  class='progress' :value="leavePercent()" :max="max" show-progress variant="success"></b-progress>
+            <span>입사일<br>{{ dateFormat(this.startDT) }}</span>
+            <span>퇴사일<br>{{ dateFormat(this.endDT) }}</span>
+        </div>
       </div>
     </div>
 </template>
@@ -28,8 +33,10 @@
 
 export default {   
     data() {
-        // console.log('userInfo',this.userInfo)
         return {
+            max : 100,
+            startDT:new Date(this.userInfo.startDT),
+            endDT:new Date(this.userInfo.endDT),
             image : this.userInfo.image,
             name : this.userInfo.name,
             email : this.userInfo.email
@@ -45,6 +52,24 @@ export default {
             default: 'MyLog'
         },
         userInfo : this.userInfo
+    },
+    methods : {
+        dateFormat(date){
+            var month = date.getMonth()+1;
+            month = month >= 10 ? month : '0' + month;  // month 두자리로 저장
+            var day = date.getDate();
+            day = day >= 10 ? day : '0' + day;  //day 두자리로 저장
+            var year = date.getFullYear();
+	        return  year + '.' + month + '.' + day;
+        },
+        leavePercent() {
+            let startDT = new Date(this.startDT.getFullYear(), this.startDT.getMonth() , this.startDT.getDate());
+            let endDT = new Date(this.endDT.getFullYear(), this.endDT.getMonth() , this.endDT.getDate());
+            let diff = Math.abs(endDT.getTime() - startDT.getTime());
+            let total = Math.ceil(diff / (1000 * 3600 * 24))+1;
+            return ((total - this.userInfo.leaveCount )/ total ) * 100
+        }
+
     }
 }
 </script>
@@ -54,7 +79,6 @@ h1 {
   color: white;
   position: relative;
   z-index: 100;
-  /* font-size: 60px; */
   font-size: 1.5rem;
   padding: 8px 80px;
 }
@@ -91,5 +115,35 @@ h1 {
     line-height: 50px;
     font-size: 0.8rem;
     float: right;
+}
+
+
+
+
+.c_progress{
+    float: right;
+    width:70%;
+}
+.progress{
+    position: relative;
+    margin : 0 auto;
+    line-height: 80px;
+    /* border: 1px solid red; */
+    width: 100%;
+    z-index: 102;
+}
+span:nth-child(2) {
+    position: absolute;
+    font-size: 0.8rem;
+    /* right: 2%; */
+    z-index: 100;
+    
+}
+span:nth-child(3) {
+    position: absolute;
+    font-size: 0.8rem;
+    right:0%;
+    z-index: 100;
+    text-align: right;
 }
 </style>

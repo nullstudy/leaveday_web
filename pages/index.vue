@@ -1,12 +1,9 @@
 <template>
     <div>
       <leave-insert v-if="token && !isLeave"  v-b-modal.modal1 :userInfo="userInfo" />
-      
       <div class='contain'>
         <main-banner :userInfo="userInfo" />
       </div>
-
-
       <!-- <main-progress v-if="userInfo" /> -->
       <!-- <calendar v-if="userInfo" /> -->
     </div>
@@ -18,14 +15,12 @@ import axios from 'axios';
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import Calendar from '../components/Calendar'
 import LeaveInsert from "../components/LeaveInsert.vue"
-import MainProgress from "../components/MainProgress.vue"
 import MainBanner from '../components/MainBanner'
 
 export default {   
     data(){
-      
       return {
-        
+      
       }
     },
     computed: {
@@ -36,7 +31,7 @@ export default {
       })
     },  
     components: {
-      Calendar,LeaveInsert,MainProgress,MainBanner
+      Calendar,LeaveInsert,MainBanner
     }
 }
 </script>

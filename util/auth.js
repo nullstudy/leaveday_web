@@ -16,16 +16,26 @@ export const getUserFromCookie = (req,store) => {
     var userInfo = {};
     userInfo._id = info.ObjectId._id;
     userInfo.name = info.ObjectId.name;
-    userInfo.email = info.ObjectId.email;
-    userInfo.leaveCount = info.ObjectId.leaveCount;
+    userInfo.email = info.ObjectId.email;    
     userInfo.image = info.ObjectId.image;
+    userInfo.leaveCount = info.ObjectId.leaveCount;
+
     !!userInfo.leaveCount ?  isLeaveDate() : isNotLeaveDate()
 
     function isLeaveDate(){
+        
         store.commit('SET_ISLEAVE', { isleave : true });
         userInfo.startDT = info.ObjectId.startDT;
         userInfo.endDT = info.ObjectId.endDT;
-        userInfo.leaveCount = info.ObjectId.leaveCount;
+        
+        let today = new Date();
+        let endday = new Date(info.ObjectId.endDT)
+        let currentDT = new Date(today.getFullYear(), today.getMonth() , today.getDate());
+        
+        let endDT = new Date(endday.getFullYear(), endday.getMonth() , endday.getDate());
+        let diff = Math.abs(endDT.getTime() - currentDT.getTime());
+        diff = Math.ceil(diff / (1000 * 3600 * 24));
+        userInfo.leaveCount = diff+1;
         return
     }
     function isNotLeaveDate(){

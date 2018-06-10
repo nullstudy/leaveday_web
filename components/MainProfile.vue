@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class='mian_profile'>
-            <img  id='profile_image' style="cursor:pointer" @click="imageUpload()"  class='main_profile_el' v-bind:src="image" alt="프로필 사진">
+            <img  id='profile_image' style="cursor:pointer" class='main_profile_el' v-bind:src="image" alt="프로필 사진">
             <p class='main_profile_el' > 이름 : {{ this.userInfo.name }}</p>
             <p class='main_profile_el' > 이메일 : {{ this.userInfo.email }}</p>
         </div>
@@ -28,9 +28,7 @@ export default {
       })
     },
     methods : {
-        imageUpload() {
-            alert('gg')
-        }
+     
     }
 }
 
