@@ -18,11 +18,6 @@
                     남은 일수 <b-col cols="4"><p> {{ output }} 일</p></b-col>
                 </b-row>
 
-
-
-
-
-
                 <!-- <b-row class="mb-1" v-if="this.isleave" >    
                     입사 일 : <b-col cols="5">{{ this.startDT }} </b-col>
                 </b-row>
