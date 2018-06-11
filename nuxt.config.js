@@ -11,6 +11,7 @@ module.exports = {
     ],
     script: [
       { src: '//developers.kakao.com/sdk/js/kakao.min.js' }
+    
     ]
   },
   env: {

@@ -45,7 +45,8 @@ export default {
     props: {
         bkcolor: {
             type: String,
-            default: '#3b60ed'
+            // default: '#3b60ed'
+            default: 'black'
         },
         title: {
             type: String,
@@ -85,6 +86,7 @@ h1 {
 
 .bk {
   position: absolute;
+  opacity: 0.8;
   top: 0;
   left: 0;
 }
