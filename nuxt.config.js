@@ -10,15 +10,16 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ],
     script: [
-      { src: '//developers.kakao.com/sdk/js/kakao.min.js' }
+    
     ]
   },
   env: {
     // BACKEND_URL: 'https://www.leaveday.cf'
     BACKEND_URL: 'http://localhost:3001'
   },
+  
   plugins: [
-    { src: '~plugins/bootstrap-vue'},
+    { src: '~plugins/bootstrap-vue' },
     { src: '~plugins/vue-material'},
     { src: '~plugins/vuejs-datepicker'},
     { src: '~plugins/fullcalendar' ,ssr: false }
@@ -29,6 +30,6 @@ module.exports = {
   },
   build: {
     modules: ['bootstrap-vue/nuxt', ['bootstrap-vue/nuxt', { css: false }]],
-    vendor: ['bootstrap-vue','vue-fullcalendar']
+    vendor : ['bootstrap-vue','vue-fullcalendar']
   }
 }
