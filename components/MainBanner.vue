@@ -132,20 +132,20 @@ h1 {
     line-height: 80px;
     /* border: 1px solid red; */
     width: 100%;
-    z-index: 102;
+    z-index: 1;
 }
 span:nth-child(2) {
     position: absolute;
     font-size: 0.8rem;
     /* right: 2%; */
-    z-index: 100;
+    z-index: 1;
     
 }
 span:nth-child(3) {
     position: absolute;
     font-size: 0.8rem;
     right:0%;
-    z-index: 100;
+    z-index: 1;
     text-align: right;
 }
 </style>

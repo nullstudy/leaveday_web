@@ -1,22 +1,21 @@
 <template>
   <b-navbar toggleable="md" type="dark" variant="info" class='navbar1'>
-    <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-    <!-- <b-navbar-toggle target="nav_collapse" toggleable></b-navbar-toggle> -->
-    <b-navbar-brand href="/">LeaveDay</b-navbar-brand>
+    <b-navbar-toggle target="nav_collapse" toggleable></b-navbar-toggle>
+    <b-navbar-brand href="/" v-bind:style="[decoration,colorOption2]">LeaveDay</b-navbar-brand>
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
-        <b-nav-item href="/todoList">TodoList</b-nav-item>
-        <b-nav-item href="/jobDiary">JobDiary</b-nav-item>
+        <b-nav-item href="/todoList" v-bind:style="[decoration,colorOption2]">TodoList</b-nav-item>
+        <b-nav-item href="/jobDiary" v-bind:style="[decoration,colorOption2]">JobDiary</b-nav-item>
       </b-navbar-nav>
       <!-- 로그인 -->
       <b-navbar-nav v-if='isAuthenticated' class="ml-auto">
-        <b-nav-item-dropdown right>
+        <b-nav-item-dropdown right class='nav_u_drop'>
           <template slot="button-content">
             <em>User</em>
           </template>
-          <b-dropdown-item href="#">프로필</b-dropdown-item>
-          <b-dropdown-item v-b-modal.modal1 >리스트</b-dropdown-item>
-          <b-dropdown-item href="#" @click="onLogout" >로그아웃</b-dropdown-item>
+            <b-dropdown-item href="#" v-bind:style="[decoration,colorOption1]">프로필</b-dropdown-item>
+            <b-dropdown-item v-b-modal.modal1  v-bind:style="[decoration,colorOption1]">리스트</b-dropdown-item>
+            <b-dropdown-item href="#" @click="onLogout" v-bind:style="[decoration,colorOption1]">로그아웃</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
       <!-- 비로그인 -->
@@ -41,7 +40,15 @@
     },
     data()  {
       return {
-        
+        decoration : {
+          'text-decoration' : 'none'
+        },
+        colorOption1 : {
+          'color' : 'black'
+        },
+        colorOption2 : {
+          'color' : 'white'
+        }
       }
     },
     computed: {
@@ -67,6 +74,9 @@
       top: 0;
       width: 100%;
       z-index: 1;
+    }    
+    .nav_u_drop{
+      position: relative;
+      z-index: 200;
     }
-    
 </style>

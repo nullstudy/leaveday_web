@@ -1,7 +1,11 @@
 <template>
     <div>
         <div class="container">
-            <h2>Todo List</h2>
+            <br><hr>
+            <h2>MyLog 생성</h2>
+            <hr>
+            시작일 <md-datepicker v-model="startDT"/>
+            종료일 <md-datepicker v-model="endDT"/>
             <div class="input-group" style="margin-bottom:10px;">
                 <input type="text" class="form-control" 
                     placeholder="제목(대분류)" 
@@ -23,22 +27,27 @@
                         style="font-size: 12px; line-height: 1;">
                         <b-navbar-nav class="ml-auto">
                             <b-nav-item-dropdown>
-                            <template slot="button-content">
-                                <em>더보기</em>
-                            </template>
-                            <b-dropdown-item  href="#" @click="deleteTodo()">삭제</b-dropdown-item >
-                            <b-dropdown-item  href="#" @click="active = true">수정</b-dropdown-item >
+                                <template slot="button-content">
+                                    <em>더보기</em>
+                                </template>
+                                <b-dropdown-item  href="#" @click="deleteTodo()">삭제</b-dropdown-item >
+                                <b-dropdown-item  href="#" @click="active = true">수정</b-dropdown-item >
                             </b-nav-item-dropdown>
                         </b-navbar-nav>
                     </div>
                 </li>
 
-                <li class="list-group-item" v-for="(todo, index) in details" >
-                {{ todo.name }}
+                <li class="list-group-item" v-for="(detail, index) in details" >
+                {{ detail.todo }}
                     <button type="button" class="close" aria-label="Close" @click="deleteDetail(index)">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </li>
+
+                <div class='todo_create_btn'>
+                    <md-button class="md-raised md-primary"  @click='todoInsert'>생성</md-button>
+                    <md-button class="md-raised md-primary" >취소</md-button>
+                </div>
             </ul>
         </div>
         <no-ssr>
@@ -54,22 +63,21 @@
 </template>
 
 <script>
-
+import axios from 'axios';
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
     name: 'TodoPage',
     data () {
         return {
             todoTitle : null,
-            todos: [
-                
-            ],
             details : [
 
             ],
             istodos : false,
             name : null,
             active: false,
-            value: null
+            startDT : new Date(),
+            endDT : new Date()
         }
     },
     methods:{
@@ -89,13 +97,31 @@ export default {
         },
         detailTodo(name) {
             if(name != null){
-				this.details.push({name:name});
+				this.details.push({ todo : name ,status:false});
                 this.name = null;
 			}
         },
-        test(){
-            alert('gggg')
+        async todoInsert(){
+            let todoData = {
+                title : this.todoTitle,
+                startDT : this.startDT,
+                endDT : this.endDT,
+                detail : this.details
+            }
+            console.log(todoData)
+            axios.defaults.headers.common.Authorization ='Bearer '+ this.token;
+            await axios.post(process.env.BACKEND_URL + '/todoCreate', todoData )
+            .then(response => {
+                return this.$router.push('/todoList');
+            }).catch(err => {
+                return console.error(err);
+            })
         }
+    },
+    computed: {
+      ...mapGetters({
+        token : 'token'
+      })
     }
 }
 </script>
@@ -110,4 +136,10 @@ export default {
         font-size: 1.5rem;
         font-weight:bold;
     }
+    .todo_create_btn {
+        margin : 0 auto;
+    }
+    /* .todo_create_btn md-button {
+        width: 300px;
+    } */
 </style>
