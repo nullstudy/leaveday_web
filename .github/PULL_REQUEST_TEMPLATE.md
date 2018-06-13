@@ -1,5 +1,5 @@
 ## 이슈
-- close #JIRA_ISSUE_NUMBER
+- close #ISSUE_NUMBER
 
 ## 변경 내역 (필수)
 -
