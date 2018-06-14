@@ -50,7 +50,17 @@ import { setCookie , getUserFromCookie } from '~/util/auth'
 
 
 export default {     
-    props: ['userInfo'],
+    props: { 
+        userInfo : { 
+            type : Object,
+            require : true,
+            default : function() {
+                return {
+                    
+                }
+            } 
+        }
+    },
     data() {
         let createDT; let startDT; let endDT; let leaveCount;
         return {

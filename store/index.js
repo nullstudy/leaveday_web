@@ -1,8 +1,10 @@
+import axios from 'axios';
 export const state = () => ({
     token : null,
     authenticated: null,
     userInfo :false,
-    isleave : false
+    isleave : false,
+    todoList : null
 })
 
 export const getters = {
@@ -17,6 +19,9 @@ export const getters = {
     },
     isLeave(state) {
         return state.isleave
+    },
+    todoList(state) {
+        return state.todoList
     }
 
 }
@@ -33,5 +38,19 @@ export const mutations = {
     },
     SET_ISLEAVE(state,payload) {
         state.isleave = payload.isleave
+    },
+    SET_TODO(state,payload) {
+        state.todoList = payload.todoList
+    }
+}
+
+export const actions = {
+    getTodoList({ commit },user_id) {
+        axios.get(process.env.BACKEND_URL + '/todoList',{ params : {  _id : user_id }})
+            .then(response => {
+                commit('SET_TODO', { todoList : response.data.data })
+            }).catch(err => {
+                console.error(err);
+            })
     }
 }

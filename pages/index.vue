@@ -1,7 +1,7 @@
 <template>
     <div>
       <leave-insert v-if="token && !isLeave"  v-b-modal.modal1 :userInfo="userInfo" />
-      <div class='contain'>
+      <div class='main-content-banner'>
         <main-banner :userInfo="userInfo" />
       </div>
       <!-- <main-progress v-if="userInfo" /> -->
@@ -37,12 +37,11 @@ export default {
 </script>
 
 <style>
-.contain {
+.main-content-banner {
   margin: 0 auto;
-  width: 100%;
+  width: 80%;
   height: 100%;
-  height: 500px;
   position: relative;
-  top: 50px;
+  top: 40px;
 }
 </style>

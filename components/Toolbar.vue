@@ -1,7 +1,7 @@
 <template>
   <b-navbar toggleable="md" type="dark" variant="info" class='navbar1'>
     <b-navbar-toggle target="nav_collapse" toggleable></b-navbar-toggle>
-    <b-navbar-brand href="/" v-bind:style="[decoration,colorOption2]">LeaveDay</b-navbar-brand>
+    <b-navbar-brand href="/" v-bind:style="[decoration,colorOption2,textOption]">LeaveDay</b-navbar-brand>
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
         <b-nav-item href="/todoList" v-bind:style="[decoration,colorOption2]">TodoList</b-nav-item>
@@ -34,7 +34,7 @@
 
   
   export default  {
-    props: ['isAuthenticated'],
+    props: { 'isAuthenticated' : Boolean } ,
     components : {
       Leavecreate
     },
@@ -48,6 +48,9 @@
         },
         colorOption2 : {
           'color' : 'white'
+        },
+        textOption : {
+          'line-height' : '40px'
         }
       }
     },
@@ -73,7 +76,7 @@
       position: fixed;
       top: 0;
       width: 100%;
-      z-index: 1;
+      z-index: 100;
     }    
     .nav_u_drop{
       position: relative;

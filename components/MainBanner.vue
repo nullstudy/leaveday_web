@@ -16,7 +16,7 @@
         </svg>
         <h1>{{ title }}</h1>
         <div class='mian_profile' v-if="this.userInfo">
-            <img  id='profile_image' style="cursor:pointer" v-bind:src="image" alt="프로필 사진">
+            <img  id='profile_image' style="cursor:pointer" v-bind:src="userInfo.image" alt="프로필 사진">
             <p class='main_profile_el' > 이름 : {{ userInfo.name }}</p>
         </div>  
         <div class='c_progress' v-if="this.userInfo" >
@@ -36,23 +36,28 @@ export default {
         return {
             max : 100,
             startDT:new Date(this.userInfo.startDT),
-            endDT:new Date(this.userInfo.endDT),
-            image : this.userInfo.image,
-            name : this.userInfo.name,
-            email : this.userInfo.email
+            endDT:new Date(this.userInfo.endDT)
         }
     },
-    props: {
+    props: { 
         bkcolor: {
             type: String,
+            default: 'black',
             // default: '#3b60ed'
-            default: 'black'
         },
         title: {
             type: String,
             default: 'MyLog'
         },
-        userInfo : this.userInfo
+        userInfo : { 
+            type : [Object , Boolean],
+            require : true,
+            default : function() { // props 값이 들어오지 않았을때 default 값으로 설정할수있다( 이방법은 객체일때). 
+                return {
+                    name :' 아무개'
+                }
+            } 
+        }
     },
     methods : {
         dateFormat(date){
@@ -118,9 +123,6 @@ h1 {
     font-size: 0.8rem;
     float: right;
 }
-
-
-
 
 .c_progress{
     float: right;

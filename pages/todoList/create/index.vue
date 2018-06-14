@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div class='wrap-todo-create'>
         <div class="container">
             <br><hr>
-            <h2>MyLog 생성</h2>
+            <h1>MyLog 생성</h1>
             <hr>
             시작일 <md-datepicker v-model="startDT"/>
             종료일 <md-datepicker v-model="endDT"/>
@@ -48,8 +48,10 @@
                     <md-button class="md-raised md-primary"  @click='todoInsert'>생성</md-button>
                     <md-button class="md-raised md-primary" >취소</md-button>
                 </div>
+          
             </ul>
         </div>
+      
         <no-ssr>
             <md-dialog-prompt        
             :md-active.sync="active"
@@ -127,11 +129,12 @@ export default {
 </script>
 
 <style scoped>
-    .container{
+    .wrap-todo-create {
         position: relative;
-        top: 60px;
-        height: 1000px;
+        top: 48px;
+        background: white;   
     }
+
     #todo-title{
         font-size: 1.5rem;
         font-weight:bold;
@@ -139,7 +142,4 @@ export default {
     .todo_create_btn {
         margin : 0 auto;
     }
-    /* .todo_create_btn md-button {
-        width: 300px;
-    } */
 </style>

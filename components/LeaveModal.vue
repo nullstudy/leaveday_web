@@ -33,7 +33,17 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { setCookie } from '~/util/auth'
 
 export default {     
-    props: ['userInfo'],
+    props: { 
+        userInfo : { 
+            type : Object,
+            require : true,
+            default : function() {
+                return {
+                    
+                }
+            } 
+        }
+    },
     data() {
         let createDT; let startDT; let endDT; let leaveCount;
         this.userInfo.startDT ? startDT = this.dateFormat(this.userInfo.startDT) : startDT = new Date()
