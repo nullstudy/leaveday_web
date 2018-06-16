@@ -7,7 +7,12 @@
         <span class="todoBtn label label-primary"
           v-if="selectedTab === 'todo'"
           v-on:click="finishBtnClick(index)">
-          <span class="glyphicon glyphicon-ok"></span>
+          <!-- <button type="button" class="close" aria-label="Close"> -->
+            <button type="checkbox" style="vertical-align: middle;" aria-label="Order" >
+            
+              <span aria-hidden="true">&times;</span>
+          </button>
+          <!-- <span class="glyphicon glyphicon-ok"></span> -->
         </span>
         <span class="todoBtn label label-danger"
           v-if="selectedTab === 'finish'"

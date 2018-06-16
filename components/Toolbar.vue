@@ -1,11 +1,12 @@
 <template>
   <b-navbar toggleable="md" type="dark" variant="info" class='navbar1'>
     <b-navbar-toggle target="nav_collapse" toggleable></b-navbar-toggle>
-    <b-navbar-brand href="/" v-bind:style="[decoration,colorOption2,textOption]">LeaveDay</b-navbar-brand>
+    <b-navbar-brand href="/" v-bind:style="[decoration,colorOption2]">LeaveDay</b-navbar-brand>
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
         <b-nav-item href="/todoList" v-bind:style="[decoration,colorOption2]">TodoList</b-nav-item>
         <b-nav-item href="/jobDiary" v-bind:style="[decoration,colorOption2]">JobDiary</b-nav-item>
+        <b-nav-item href="/todoSample" v-bind:style="[decoration,colorOption2]">TodoSample</b-nav-item>
       </b-navbar-nav>
       <!-- 로그인 -->
       <b-navbar-nav v-if='isAuthenticated' class="ml-auto">
@@ -48,9 +49,6 @@
         },
         colorOption2 : {
           'color' : 'white'
-        },
-        textOption : {
-          'line-height' : '40px'
         }
       }
     },
@@ -78,8 +76,11 @@
       width: 100%;
       z-index: 100;
     }    
+    
     .nav_u_drop{
       position: relative;
       z-index: 200;
+      
     }
+    
 </style>

@@ -7,8 +7,8 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'Nuxt.js project' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: "stylesheet", href:'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'}
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      // { rel: "stylesheet", href:'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'}
     ],
     script: [
     
@@ -18,7 +18,6 @@ module.exports = {
     // BACKEND_URL: 'https://www.leaveday.cf'
     BACKEND_URL: 'http://localhost:3001'
   },
-  
   plugins: [
     { src: '~plugins/bootstrap-vue' },
     { src: '~plugins/vue-material'},

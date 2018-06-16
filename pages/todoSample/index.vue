@@ -1,9 +1,10 @@
 <template>
+  
   <div class='wrap-todo'>
+    
     <header>
       <h2 calss="container">Todo</h2>
     </header>
- 
     <div calss="container">
       <add-form v-bind:value="query" v-on:@submit="onInputTodo"></add-form>
       <!-- FormComponent.vue에서 inputValue에 넣어준 value를 v-bind가 App.vue의 query와 바인딩해줌 -->
@@ -16,7 +17,7 @@
         v-on:@finish="onClickFinish"
         v-on:@reset="onClickReset"></list>
     </div>
- 
+    
   </div>
 </template>
  
@@ -27,7 +28,6 @@ import FormComponent from '~/components/todoSample/FormComponent.vue'
 import TabComponent from '~/components/todoSample/TabComponent.vue'
 //ListComponent 불러옴
 import ListComponent from '~/components/todoSample/ListComponent.vue'
- 
 //Model 불러옴
 import TodoModel from './TodoModel.js'
  
@@ -74,9 +74,10 @@ export default {
     }
   }
 }
+  
 </script>
  
-<style>
+<style>  
 body, ul {
   margin: 0;
   padding: 0;

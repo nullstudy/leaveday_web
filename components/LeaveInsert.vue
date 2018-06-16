@@ -53,15 +53,17 @@ export default {
     props: { 
         userInfo : { 
             type : Object,
-            require : true,
-            default : function() {
-                return {
+            // require : true
+            // ,
+            // default : function() {
+            //     return {
                     
-                }
-            } 
+            //     }
+            // } 
         }
     },
     data() {
+        console.log('userInfo',this.userInfo)
         let createDT; let startDT; let endDT; let leaveCount;
         return {
             createDT : new Date(), 

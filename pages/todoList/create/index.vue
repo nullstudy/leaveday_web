@@ -110,7 +110,6 @@ export default {
                 endDT : this.endDT,
                 detail : this.details
             }
-            console.log(todoData)
             axios.defaults.headers.common.Authorization ='Bearer '+ this.token;
             await axios.post(process.env.BACKEND_URL + '/todoCreate', todoData )
             .then(response => {

@@ -1,5 +1,5 @@
 <template>
-    <no-ssr>
+    <no-ssr class='main-calendar'>
         <full-calendar :events="demoEvents" ></full-calendar>
     </no-ssr>
 </template>
@@ -70,5 +70,9 @@ export default {
     .class1:onclick {
         color: red !important;
         background-color: red !important;
+    }
+    .main-calendar{
+        position: relative;
+        top:30px;
     }
 </style>

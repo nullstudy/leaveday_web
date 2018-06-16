@@ -7,7 +7,9 @@
         <span class="todoBtn label label-primary"
           v-if="selectedTab === 'todo'"
           v-on:click="finishBtnClick(index)">
-          <span class="glyphicon glyphicon-ok"></span>
+          <button type="button" class="close" aria-label="Close" >
+              <span aria-hidden="true">&times;</span>
+          </button>
         </span>
         <span class="todoBtn label label-danger"
           v-if="selectedTab === 'finish'"

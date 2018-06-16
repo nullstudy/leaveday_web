@@ -1,7 +1,6 @@
 <template>
     <div class='test'>
         <div>
-            <div class='title'> <h3>진행중인 todoList</h3>  </div>
             <div>
                 <b-form-select v-model="selected" :options="options" class="mb-3" />
                 <div>Selected: <strong>{{ selected }}</strong></div>
@@ -10,7 +9,7 @@
         
         <div class='pro'>
             <div class='todo'>
-                영단어 외우기 (25%)
+                단어 외우기 (25%)
             </div>
             <b-progress :value="25" variant="success" :striped="striped" class="mb-2"></b-progress>
             <div class='todo'>
@@ -26,9 +25,7 @@
             </div>
             <b-progress :value="65" variant="success" :striped="striped" class="mb-2"></b-progress>
         </div>
-        <b-btn class='write'>
-            글쓰기
-        </b-btn>
+        
     </div>
 </template>
 
@@ -54,8 +51,6 @@ export default {
 
 <style>
   body {
-      /* text-decoration: none;
-      -moz-text-decoration-line: none; */
       position: relative;
       top: 53px;
   }
@@ -69,9 +64,6 @@ export default {
   .pro {      
       float: left;
       /* width: 700px; */
-  }
-  .title{
-      margin : 0 auto;
   }
   .todo {
       float: left;
