@@ -2,21 +2,36 @@
     <div class='todo-wrap'>
       <div>
         <b-form-select v-model="selected" :options="options" class="mb-3" />
-        <!-- <div>Selected: <strong>{{ selected }}</strong></div> -->
       </div>
       
-      <!-- <div>
-        정보{{ todoFormat }}
-      </div> -->
-      <div calss="container">
-        <tab v-bind:tabs="tabs" v-bind:selected-tab="selectedTab" v-on:@change="onClickTab"></tab>
+      <div calss="todo-container">
+        <div v-for="(item,index) in todoData">
+          <div v-show="false">{{ activeOption }}</div>
+          <li v-if="selected == item.status" class="list-group-item" @click="detailAtive(index)" >{{ item.title }}
+            <button type="button" class="close" aria-label="Close" @click="deleteDetail(index)">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </li>
+          
+          <div v-if="selected == item.status && todoActive[index].active">
+            <tab v-bind:tabs="tabs" v-bind:selected-tab="selectedTab" v-on:@change="onClickTab"></tab>
+            <list :selected-tab="selectedTab" :data="item.detail" :i="index"
+            v-on:@finish="onClickFinish"
+            v-on:@reset="onClickReset"></list>  
+            <!-- <li v-for="detail in item.detail">  
+              {{ detail.todo }}
+            </li> -->
+          </div>
+        </div>
+
+         <!-- <tab v-bind:tabs="tabs" v-bind:selected-tab="selectedTab" v-on:@change="onClickTab"></tab> -->
+          <!-- <list v-bind:selected-tab="selectedTab" v-bind:data="item.details"
+          v-on:@finish="onClickFinish"
+          v-on:@reset="onClickReset"></list> -->
+
+        <!-- </div> -->
      </div>
  
-      <div>
-        <list v-bind:selected-tab="selectedTab" v-bind:data="todoList"
-          v-on:@finish="onClickFinish"
-          v-on:@reset="onClickReset"></list>
-      </div>
       <div>
         <button @click='todoCreate'>todo생성</button> 
       </div>
@@ -41,24 +56,22 @@ export default {
   },
   created() { //vue 인스턴스가 생성된 후에 실행됨
     this.selectedTab = this.tabs[0] //todo 탭 선택
-    this.search() //todo list 출력
+    // this.search() //todo list 출력
   },
   data() {
     return {
       active: false,
       value: null,
-      query: '',
       tabs: ['todo', 'finish'],
       selectedTab: '',
       todoList: [],
-      todoFormat2 : null,
-      selected: null,
+      selected: '진행 중',
+      todoActive: [],
       options: [
-        { value: null, text: '진행 중' },
-        { value: 'a', text: '진행 전' },
-        { value: 'b', text: '완료' },
-        { value: {'C': '3PO'}, text: '실패' },
-        // { value: 'd', text: 'This one is disabled', disabled: true }
+        { value: 1, text: '진행 중' },
+        { value: 2, text: '진행 전' },
+        { value: 3, text: '완료' },
+        { value: 4, text: '실패' }
       ]
     }
   },
@@ -66,13 +79,13 @@ export default {
     ...mapGetters({
       todoData: 'todoList'
     }),
-    todoFormat: function () {
-      // `this` 는 vm 인스턴스를 가리킵니다.
-      // console.log(this.todoData)
-      
-      console.log(this.todoFormat2)
-      return this.todoFormat2 = this.todoData
-    }
+    activeOption : function(item) {
+      for(var data in this.todoData){
+        this.todoActive.push({ active : false }) 
+        this.todoList.push(item.todoData[data].detail)
+      }
+      return   
+    } 
   },
   methods : {
     ...mapActions({
@@ -81,8 +94,14 @@ export default {
     todoCreate() {
       this.$router.push('/todoList/create')
     },
+    detailAtive(index) {
+      this.todoActive[index].active ? this.todoActive[index].active = false : this.todoActive[index].active = true ;
+    },
+
+
     search() { //list 검색
       TodoModel.list(this.selectedTab).then(data => {
+        console.log('search',data)
         this.todoList = data
       })
     },
@@ -90,19 +109,18 @@ export default {
       this.selectedTab = tab
       this.search()
     },
-    onClickFinish(item) { //todo 완료
-      TodoModel.finish(item)
+    onClickFinish(item,i) { //todo 완료
+      TodoModel.finish(item,i)
       this.search()
     },
-    onClickReset(item) { //완료된 todo 리셋
-      TodoModel.reset(item)
+    onClickReset(item,i) { //완료된 todo 리셋
+      TodoModel.reset(item,i)
       this.search()
     },
-    onInputTodo(query) { //todo 입력
-      TodoModel.add(query)
-      this.selectedTab = this.tabs[0]
-      this.search()
-    }
+
+
+
+    
   }
 }
 </script>

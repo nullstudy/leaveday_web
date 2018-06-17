@@ -2,18 +2,21 @@
   <div>
     <ul class="list">
       <li v-for="(item, index) in data">
+
         <span class="glyphicon glyphicon-asterisk"></span>
-        {{item.todo}}
+        {{ i }} 번째 {{item.todo}}
+
         <span class="todoBtn label label-primary"
-          v-if="selectedTab === 'todo'"
-          v-on:click="finishBtnClick(index)">
+          v-if="selectedTab === 'todo'" 
+          v-on:click="finishBtnClick(index,i)">
           <button type="button" class="close" aria-label="Close" >
               <span aria-hidden="true">&times;</span>
           </button>
         </span>
+
         <span class="todoBtn label label-danger"
           v-if="selectedTab === 'finish'"
-          v-on:click="resetBtnClick(index)">reset</span>
+          v-on:click="resetBtnClick(index,i)">reset</span>
       </li>
     </ul>
   </div>
@@ -21,7 +24,7 @@
  
 <script>
 export default {
-  props: ['data', 'selectedTab'],
+  props: ['data','i','selectedTab'],
   methods: {
     finishBtnClick(item) {
       this.$emit('@finish', item)
@@ -29,6 +32,9 @@ export default {
     resetBtnClick(item) {
       this.$emit('@reset', item)
     }
-  }
+  },
+ data(){
+   return {}
+ }
 }
 </script>

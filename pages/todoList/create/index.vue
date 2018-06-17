@@ -1,11 +1,11 @@
 <template>
     <div class='wrap-todo-create'>
-        <div class="container">
+        <div class="container-todo">
             <br><hr>
             <h1>MyLog 생성</h1>
             <hr>
-            시작일 <md-datepicker v-model="startDT"/>
-            종료일 <md-datepicker v-model="endDT"/>
+             <p>시작 일</p><md-datepicker v-model="startDT"/>
+             <p>종료 일</p> <md-datepicker v-model="endDT"/>
             <div class="input-group" style="margin-bottom:10px;">
                 <input type="text" class="form-control" 
                     placeholder="제목(대분류)" 
@@ -131,9 +131,16 @@ export default {
     .wrap-todo-create {
         position: relative;
         top: 48px;
-        background: white;   
+        background: gray;   
     }
-
+    .container-todo {
+        width:80%;
+        margin: 0 auto;
+        background: white;
+    }
+    h1,p {
+        padding-left: 10px;
+    }
     #todo-title{
         font-size: 1.5rem;
         font-weight:bold;
