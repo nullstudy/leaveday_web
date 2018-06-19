@@ -31,8 +31,7 @@
   import { mapGetters } from 'vuex'
   import { unsetToken } from '~/util/auth'
   import Leavecreate from "./../components/LeaveModal.vue"
-
-  
+  import BootstrapVue from '~/plugins/bootstrap-vue'
   export default  {
     props: ['isAuthenticated'],
     components : {
@@ -69,6 +68,8 @@
 </script>
 
 <style>
+    @import 'bootstrap/dist/css/bootstrap.css';
+    @import 'bootstrap-vue/dist/bootstrap-vue.css';
     .navbar1 {
       position: fixed;
       top: 0;
