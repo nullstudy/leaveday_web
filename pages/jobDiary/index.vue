@@ -35,19 +35,37 @@
         
         <div class="pagination">
             <a href="#">&laquo;</a>
-            <a href="#">1</a>
-            <a class="active" href="#">2</a>
-            <a href="/">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#">6</a>
-            <a href="#">&raquo;</a>
+            <div v-for='( test,index ) in pageData' >
+                <a href="#"  
+                    v-bind:style="pageData[index].active ? {
+                        'background-color' : 'dodgerblue',
+                        'color': 'white'
+                    } : {} " 
+                    @click='classActive(index)' 
+                 >{{ index+1 }}</a>
+            </div>
+            <a href="#">&raquo;</a> 
         </div>
     </div>
 </template>
 
 <script>
-    
+    export default {
+        data() {
+            return {
+                pageData : [ { index : 0, active : true } ,{index : 1 ,active : false} , {index : 2 ,active : false}],
+                currentPage : 0,
+                isActive : false
+            }
+        },
+        methods:{
+            classActive(index){
+                this.pageData[this.currentPage].active = false;
+                this.currentPage = index;
+                this.pageData[index].active = true;
+            }
+        }
+    }
 </script>
 
 <style>
@@ -74,10 +92,10 @@
     }
 
     /* Style the active/current link */
-    .pagination a.active {
+    /* .pagination a.active {
         background-color: dodgerblue;
         color: white;
-    }
+    } */
 
     /* Add a grey background color on mouse-over */
     .pagination a:hover:not(.active) {background-color: #ddd;}
