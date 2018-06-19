@@ -3,14 +3,14 @@
     <li v-for="tab in tabs" v-bind:class="{active: tab === selectedTab}"
       v-on:click="onClickTabs(tab)">
       <!-- v-bind:class => 선택한 탭에 active class를 지정 -->
-      {{tab}}
+      {{tab}} 
     </li>
   </ul>
 </template>
  
 <script>
 export default {
-  props: ['tabs', 'selectedTab'], //부모(App.vue)로부터 받아옴 => tabs(todo, finish), selectedTab : 현재 선택한 탭
+  props: ['tabs', 'selectedTab','i'], //부모(App.vue)로부터 받아옴 => tabs(todo, finish), selectedTab : 현재 선택한 탭
   methods: {
     onClickTabs(tab) {
       //$emit => 부모(App.vue)에게 @change 이름으로 이벤트 전달
@@ -20,3 +20,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.tabs{
+  width:350px;
+}
+</style>

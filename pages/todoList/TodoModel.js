@@ -6,11 +6,10 @@ export default {
     //   {todo: '할 일 3', state: true},
     //   {todo: '할 일 4', state: false}
     // ],
-    list(tab) {
+    list(tab,i) {
       return new Promise(res => {
-        
-        if(tab === 'todo') res(this.data.filter(item => item.status === true))
-        if(tab === 'finish') res(this.data.filter(item => item.status === false))
+        if(tab === 'todo') res(this.todoList.filter(item => item.status === true))
+        if(tab === 'finish') res(this.todoList.filter(item => item.status === false))
       })
     }, 
     finish(index,i) {

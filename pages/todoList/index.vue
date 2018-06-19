@@ -14,7 +14,7 @@
           </li>
           
           <div v-if="selected == item.status && todoActive[index].active">
-            <tab v-bind:tabs="tabs" v-bind:selected-tab="selectedTab" v-on:@change="onClickTab"></tab>
+            <tab :tabs="tabs" :selected-tab="selectedTab" :i="index" v-on:@change="onClickTab"></tab>
             <list :selected-tab="selectedTab" :data="item.detail" :i="index"
             v-on:@finish="onClickFinish"
             v-on:@reset="onClickReset"></list>  
@@ -44,7 +44,7 @@
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import TabComponent from '~/components/todo/TabComponent.vue' //TabComponent 불러옴
 import ListComponent from '~/components/todo/ListComponent.vue' //ListComponent 불러옴
-import TodoModel from './TodoModel.js' //Model 불러옴
+// import TodoModel from './TodoModel.js' //Model 불러옴
 export default {
   components: {
     'tab': TabComponent,
@@ -65,8 +65,8 @@ export default {
       tabs: ['todo', 'finish'],
       selectedTab: '',
       todoList: [],
-      selected: '진행 중',
       todoActive: [],
+      selected: '진행 중',
       options: [
         { value: 1, text: '진행 중' },
         { value: 2, text: '진행 전' },
@@ -98,26 +98,44 @@ export default {
       this.todoActive[index].active ? this.todoActive[index].active = false : this.todoActive[index].active = true ;
     },
 
-
-    search() { //list 검색
-      TodoModel.list(this.selectedTab).then(data => {
+    search(i) { //list 검색
+      let data = this.todoList
+      this.list(this.selectedTab,i).then((data) => {
         console.log('search',data)
-        this.todoList = data
+        // this.todoList = data
       })
     },
-    onClickTab(tab) { //tab 선택
+    onClickTab(tab,i) { //tab 선택
       this.selectedTab = tab
-      this.search()
+      console.log('tab',this.selectedTab)
+      this.search(i)
     },
     onClickFinish(item,i) { //todo 완료
-      TodoModel.finish(item,i)
-      this.search()
+      // this.finish(item,i)
+      // this.search(i)
     },
     onClickReset(item,i) { //완료된 todo 리셋
-      TodoModel.reset(item,i)
-      this.search()
+      // this.reset(item,i)
+      // this.search(i)
     },
 
+    list(tab,i) {
+      // return new Promise(res => {
+      //   if(tab === 'todo') res(this.todoList[i].filter(item => item.status === true))
+      //   if(tab === 'finish') res(this.todoList[i].filter(item => item.status === false))
+      // })
+    }, 
+    finish(index,i) {
+      // this.todoList[i].detail.filter(item => item.status === true)[index].status = false
+    },
+   
+    reset(index,i) {
+      // this.todoList[i].detail.filter(item => item.status === false)[index].status = true
+    },
+   
+    remove(todo,i) {
+      // this.todoList[i].detail = this.todoList[i].filter(item => item.todo !== todo)
+    }
 
 
     

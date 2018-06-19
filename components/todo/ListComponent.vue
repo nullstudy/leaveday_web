@@ -3,20 +3,22 @@
     <ul class="list">
       <li v-for="(item, index) in data">
 
-        <span class="glyphicon glyphicon-asterisk"></span>
-        {{ i }} 번째 {{item.todo}}
-
+        <!-- <span class="glyphicon glyphicon-asterisk"></span>
+        {{ i }} 번째 {{item.todo}} -->
+        
         <span class="todoBtn label label-primary"
-          v-if="selectedTab === 'todo'" 
-          v-on:click="finishBtnClick(index,i)">
+          v-if="selectedTab === 'todo' && item.status == false" 
+          v-on:click="finishBtnClick(item,index)">
+          {{ i }} 번째 {{item.todo}}
           <button type="button" class="close" aria-label="Close" >
               <span aria-hidden="true">&times;</span>
           </button>
         </span>
 
         <span class="todoBtn label label-danger"
-          v-if="selectedTab === 'finish'"
-          v-on:click="resetBtnClick(index,i)">reset</span>
+          v-if="selectedTab === 'finish'&& item.status == true"
+          v-on:click="resetBtnClick(item,index)">
+          {{ i }} 번째 {{item.todo}} reset</span>
       </li>
     </ul>
   </div>
