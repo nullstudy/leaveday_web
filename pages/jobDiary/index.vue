@@ -38,8 +38,16 @@
 </template>
 
 <script>
+    import axios from 'axios';
+    import { mapGetters, mapMutations, mapActions } from 'vuex';
     import JobPage from '~/components/jobDiary/Pagination';
     export default {
+        created(){
+            // let token  = req.app.store.getters.token;
+            axios.defaults.headers.common.Authorization ='Bearer '+ this.token
+            let { data } =  axios.get( process.env.BACKEND_URL +'/jobDiary')
+            console.log('data',{ data });
+        }, 
         components : {
             JobPage
         },
@@ -53,8 +61,12 @@
             onClickIndex(pageNumber) {
                 this.currentPage = pageNumber;
             }
+        },
+        computed: {
+            ...mapGetters({
+                token : 'token'
+            })
         }
-        
     }
 </script>
 
