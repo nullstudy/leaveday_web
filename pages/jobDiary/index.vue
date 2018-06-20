@@ -22,13 +22,13 @@
             </thead>
 
             <tbody>
-                <tr v-for='(index , test ) in 25' :key='test'>
-                    <td>{{ index }}</td>
-                    <td><a href="/jobdiary" style='color:black; text-decoration: none;'>내 말을 끝까지</a></td>
-                    <td>박주혁</td>
-                    <td>2018.06.19</td>
-                    <td style='text-align:center right:10'>화남</td>
-                    <td style='text-align:center right:10'>{{ Math.floor(Math.random() * 5000 )}}</td>
+                <tr v-for='(  item,  index ) in diary' :key='item'>
+                    <td>{{ index+1 }}</td>
+                    <td><a href="/jobdiary" style='color:black; text-decoration: none;'>{{ item.title }}</a></td>
+                    <td>{{ userInfo.name }}</td>
+                    <td>{{ item.date }}</td>
+                    <td style='text-align:center right:10'>{{ item.state}}</td>
+                    <td style='text-align:center right:10'>{{ item.views }}</td>
                 </tr>
             </tbody>
         </table>
@@ -45,8 +45,14 @@
         created(){
             // let token  = req.app.store.getters.token;
             axios.defaults.headers.common.Authorization ='Bearer '+ this.token
-            let { data } =  axios.get( process.env.BACKEND_URL +'/jobDiary')
-            console.log('data',{ data });
+            axios.get( process.env.BACKEND_URL +'/jobDiary').then( 
+                res => {
+                    this.$store.commit('SET_DIARY',{ jobDiary : res.data.data })
+                }
+            ).catch(err => {
+                console.log(err)
+            })
+            
         }, 
         components : {
             JobPage
@@ -64,7 +70,9 @@
         },
         computed: {
             ...mapGetters({
-                token : 'token'
+                token : 'token',
+                diary : 'jobDiary',
+                userInfo : 'userInfo'
             })
         }
     }
