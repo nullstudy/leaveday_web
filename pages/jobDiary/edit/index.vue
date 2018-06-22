@@ -7,7 +7,7 @@
         <hr>
 
         <div class='class-div'>  
-            <h5> 상태</h5> 
+            <h5>상태</h5> 
 
             <b-form-group> 
                 <b-form-radio-group id="radios1" v-model="formData.state" :options="radioOptions" name="radioOpenions" required>   
@@ -56,10 +56,19 @@
 import axios from 'axios';
 import BootstrapVue from 'bootstrap-vue';
 import { mapGetters, mapMutations, mapActions } from 'vuex';
+
+
 export default {
+    mounted(){
+        
+    },
     data() {
+        let title = this.$store.getters.diaryDetail.title
+        let content = this.$store.getters.diaryDetail.content
+        let state = this.$store.getters.diaryDetail.state.number
+        let leaveCount = this.$store.getters.diaryDetail.leaveCount
+        let _id = this.$store.getters.diaryDetail._id;
         return {
-            selected: null,
             options: [
                 { value: null, text: '선택해주십시오' },
                 0,1,2,3,4,5,6,7,8,9,10
@@ -72,25 +81,27 @@ export default {
                 { text: '빡침', value: 5 }
             ],
             formData : {
-                title : null,
-                content : null,
-                state : null,
-                leaveCount : null
-            }
+                title : title,
+                content : content,
+                state : state,
+                leaveCount : leaveCount
+            },
+            id : _id
         }
     },
     methods: {
         diaryCreate() {
+            
             let diaryData = {
                 title : String(this.formData.title),
                 content : String(this.formData.content),
                 state : Number(this.formData.state),
                 leaveCount : Number(this.formData.leaveCount)
             }
-            let { token } = axios.defaults.headers.common.Authorization ='Bearer '+ this.token
-            axios.post( process.env.BACKEND_URL + '/jobDiary/create', diaryData )
+
+            axios.put( process.env.BACKEND_URL + '/jobDiary/edit/'+this.id, diaryData )
             .then( (res) => {
-                this.$router.push('/jobDiary');
+                this.$router.push('/jobDiary/'+this.id);
             }).catch(error => {
                 console.log('error',error);
             });
@@ -98,7 +109,7 @@ export default {
     },
     computed: {
       ...mapGetters({
-        token : 'token'
+        token : 'token',
       })
     }
     

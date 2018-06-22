@@ -12,7 +12,7 @@
                     <a>{{ userInfo.name }}</a>
                 </li>
                 <li>
-                    <a><span><b>{{ diary.state }}</b></span></a>
+                    <a><span><b>{{ diary.state.state }}</b></span></a>
                 </li>				
                 <li>
                     <a>leaveCount<span><b> {{ diary.leaveCount }}</b></span></a>
@@ -36,8 +36,8 @@
         </div>
 
         <ul class="wt_box gray_color diary-footer">
-            <li class="right"><a href='#' @click="$router.go(-1)">목록</a></li>
-            <li class="right"><a @click='diaryEdit(diary)'>수정</a></li>
+            <li class="right"><a href='/jobDiary' >목록</a></li>
+            <li class="right"><a href="/jobDiary/edit">수정</a></li>
             <li class="right"></li>
             <li class="right"></li>
         </ul>
@@ -65,11 +65,6 @@
                 userInfo : 'userInfo',
                 
             })
-        },
-        methods: {
-            diaryEdit(diary){
-                alert(JSON.parse(diary))
-            }
         }
     }
 </script>

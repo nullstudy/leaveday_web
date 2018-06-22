@@ -59,8 +59,14 @@
     methods: {
       async onLogout (e) {
         unsetToken();
+        // console.log(localStorage.createPersistedState(storage.removeItem('vuex')))
         this.$store.commit('SET_USER',{ userInfo :null })
         this.$store.commit('SET_TOKEN', { token : null })
+        this.$store.commit('SET_DIARYDETAIL', { diaryDetail : {} })
+        
+        
+        this.$router.push('/login');
+        
         // let { data } = await axios.get(process.env.BACKEND_URL + '/logout');
       }
     }

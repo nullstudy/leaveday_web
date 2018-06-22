@@ -27,7 +27,7 @@
                     <td><a  href='#' style='color:black; text-decoration: none;' @click='detailView(item._id,item.title)'>{{ item.title }}</a></td>
                     <td>{{ userInfo.name }}</td>
                     <td>{{ item.date }}</td>
-                    <td style='text-align:center right:10'>{{ item.state}}</td>
+                    <td style='text-align:center right:10'>{{ item.state.state }}</td>
                     <td style='text-align:center right:10'>{{ item.views }}</td>
                 </tr>
             </tbody>
