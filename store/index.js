@@ -5,7 +5,8 @@ export const state = () => ({
     userInfo :false,
     isleave : false,
     todoList : null,
-    jobDiary : null
+    jobDiary : null,
+    diaryDetail : {}
 })
 
 export const getters = {
@@ -26,6 +27,9 @@ export const getters = {
     },
     jobDiary(state) {
         return state.jobDiary
+    },
+    diaryDetail(state) {
+        return  state.diaryDetail
     }
 
 }
@@ -48,6 +52,9 @@ export const mutations = {
     },
     SET_DIARY(state,payload) {
         state.jobDiary = payload.jobDiary
+    },
+    SET_DIARYDETAIL(state,payload) {
+        state.diaryDetail = payload.diaryDetail
     }
 }
 

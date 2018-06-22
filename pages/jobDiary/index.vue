@@ -22,9 +22,9 @@
             </thead>
 
             <tbody>
-                <tr v-for='(  item,  index ) in diary' :key='item'>
-                    <td>{{ index+1 }}</td>
-                    <td><a href="/jobdiary" style='color:black; text-decoration: none;'>{{ item.title }}</a></td>
+                <tr v-for='(  item,  index ) in diary' :key='item._id'>
+                    <td>{{ index+1 +(currentPage)*10 }}</td>
+                    <td><a  href='#' style='color:black; text-decoration: none;' @click='detailView(item._id,item.title)'>{{ item.title }}</a></td>
                     <td>{{ userInfo.name }}</td>
                     <td>{{ item.date }}</td>
                     <td style='text-align:center right:10'>{{ item.state}}</td>
@@ -45,14 +45,13 @@
         created(){
             // let token  = req.app.store.getters.token;
             axios.defaults.headers.common.Authorization ='Bearer '+ this.token
-            axios.get( process.env.BACKEND_URL +'/jobDiary').then( 
+            axios.get( process.env.BACKEND_URL +'/jobDiary?'+this.currentPage+1).then( 
                 res => {
                     this.$store.commit('SET_DIARY',{ jobDiary : res.data.data })
                 }
             ).catch(err => {
                 console.log(err)
             })
-            
         }, 
         components : {
             JobPage
@@ -65,7 +64,20 @@
         },
         methods : {
             onClickIndex(pageNumber) {
-                this.currentPage = pageNumber;
+                this.currentPage = pageNumber+1;
+                axios.defaults.headers.common.Authorization ='Bearer '+ this.token
+                    axios.get( process.env.BACKEND_URL +'/jobDiary',{ params: { page: this.currentPage }}).then( 
+                        res => { 
+                            this.$store.commit('SET_DIARY',{ jobDiary : res.data.data }) 
+                            this.$router.push({ path: '/jobDiary?page='+this.currentPage });
+                        }
+                    ).catch(err => {
+                        console.log(err)
+                    })
+            },
+            detailView(id,title){
+                // this.$router.push({ path: '/jobDiary', query: { data : item }});
+                this.$router.push({ path: '/jobDiary/'+id, params: { _id: id }});
             }
         },
         computed: {
