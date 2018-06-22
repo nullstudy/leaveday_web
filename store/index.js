@@ -6,7 +6,9 @@ export const state = () => ({
     isleave : false,
     todoList : null,
     jobDiary : null,
-    diaryDetail : {}
+    diaryDetail : {},
+    page : null,
+    cpage : false
 })
 
 export const getters = {
@@ -30,6 +32,12 @@ export const getters = {
     },
     diaryDetail(state) {
         return  state.diaryDetail
+    },
+    page(state) {
+        return state.page
+    },
+    cpage(state) {
+        return state.cpage
     }
 
 }
@@ -55,6 +63,12 @@ export const mutations = {
     },
     SET_DIARYDETAIL(state,payload) {
         state.diaryDetail = payload.diaryDetail
+    },
+    SET_PAGE(state,payload) {
+        state.page = payload.page
+    },
+    SET_CPAGE(state,pasyload){
+        state.cpage = pasyload.cpage
     }
 }
 

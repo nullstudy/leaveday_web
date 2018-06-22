@@ -23,7 +23,7 @@
 
             <tbody>
                 <tr v-for='(  item,  index ) in diary' :key='item._id'>
-                    <td>{{ index+1 +(currentPage)*10 }}</td>
+                    <td>{{ index+1 + (cpage)*10 }}</td>
                     <td><a  href='#' style='color:black; text-decoration: none;' @click='detailView(item._id,item.title)'>{{ item.title }}</a></td>
                     <td>{{ userInfo.name }}</td>
                     <td>{{ item.date }}</td>
@@ -33,7 +33,9 @@
             </tbody>
         </table>
         
-        <job-page :page='pageData' v-on:@change="onClickIndex" />
+         
+        <job-page :page='page' v-on:@change="onClickIndex" />
+        
     </div>
 </template>
 
@@ -43,11 +45,15 @@
     import JobPage from '~/components/jobDiary/Pagination';
     export default {
         created(){
-            // let token  = req.app.store.getters.token;
-            axios.defaults.headers.common.Authorization ='Bearer '+ this.token
-            axios.get( process.env.BACKEND_URL +'/jobDiary?'+this.currentPage+1).then( 
+            console.log(this.$router)
+            let fpage;
+            this.$store.getters.cpage ? fpage = this.$store.getters.cpage : fpage = 0;
+            axios.defaults.headers.common.Authorization ='Bearer '+ this.token;
+            axios.get( process.env.BACKEND_URL +'/jobDiary?page='+fpage+1).then( 
                 res => {
-                    this.$store.commit('SET_DIARY',{ jobDiary : res.data.data })
+                    this.$store.commit('SET_CPAGE', { cpage : fpage });
+                    this.$store.commit('SET_DIARY', { jobDiary : res.data.data });
+                    this.$store.commit('SET_PAGE', { page : Math.ceil(res.data.data[0].recordCount/10)  });
                 }
             ).catch(err => {
                 console.log(err)
@@ -58,22 +64,21 @@
         },
         data() {
             return {
-                pageData : [ { number : 0, active : true } ,{ number : 1 ,active : false} , { number : 2 ,active : false}],
-                currentPage : 0
+                // pageData : [ { number : 0, active : true } ,{ number : 1 ,active : false} , { number : 2 ,active : false}],
+                // currentPage : 0,
             }
         },
         methods : {
             onClickIndex(pageNumber) {
-                this.currentPage = pageNumber+1;
-                axios.defaults.headers.common.Authorization ='Bearer '+ this.token
-                    axios.get( process.env.BACKEND_URL +'/jobDiary',{ params: { page: this.currentPage }}).then( 
-                        res => { 
-                            this.$store.commit('SET_DIARY',{ jobDiary : res.data.data }) 
-                            this.$router.push({ path: '/jobDiary?page='+this.currentPage });
-                        }
-                    ).catch(err => {
-                        console.log(err)
-                    })
+                this.$store.commit('SET_CPAGE', { cpage : pageNumber });
+                axios.get( process.env.BACKEND_URL +'/jobDiary',{ params: { page: pageNumber+1 }}).then( 
+                    res => { 
+                        this.$store.commit('SET_DIARY',{ jobDiary : res.data.data }) 
+                        this.$router.push({ path: '/jobDiary?page='+(pageNumber+1) });
+                    }
+                ).catch(err => {
+                    console.log(err)
+                })
             },
             detailView(id,title){
                 // this.$router.push({ path: '/jobDiary', query: { data : item }});
@@ -84,9 +89,12 @@
             ...mapGetters({
                 token : 'token',
                 diary : 'jobDiary',
+                page : 'page',
+                cpage : 'cpage',
                 userInfo : 'userInfo'
             })
         }
+        
     }
 </script>
 
