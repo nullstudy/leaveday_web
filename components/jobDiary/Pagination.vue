@@ -1,10 +1,13 @@
 <template>
     <div class="pagination">
         <a href="#">&laquo;</a>
-        <div v-for='( item,index ) in page' :key='index' >
+        <div v-for='( item,index ) in pageData' :key='index' >
             <a href="#" 
-             @click='classActive(index)' 
-            >{{ index+1 }}</a>
+             v-bind:style="pageData[index].active ? {
+                'background-color' : 'dodgerblue',
+                'color': 'white'
+            } : {} " @click='classActive(index)' 
+            >{{ item.number }}</a>
         </div>
         <a href="#">&raquo;</a> 
     </div>
@@ -14,18 +17,25 @@
 
     export default {
         props : [
-            'page'
+            'page','pageData'
         ],
         data() {
             return {
+                currentPage : 0
             }
         },
         methods:{
             classActive(pageNumber){
-                // this.page[this.currentPage].active = false;
+                console.log(this.$route.query.page)
+                // this.pageData[this.currentPage].active = false;
                 // this.currentPage = pageNumber;
-                // this.page[pageNumber].active = true;
-                this.$emit('@change', pageNumber)
+                // this.pageData[pageNumber].active = true;
+
+                // this.currentPage ? this.currentPage = pageNumber : this.currentPage = 0
+                this.pageData[this.currentPage].active = false;
+                this.currentPage = pageNumber;
+                this.pageData[pageNumber].active = true;
+                this.$emit('@change', pageNumber);
             }
         }
     }

@@ -23,7 +23,7 @@
 
             <tbody>
                 <tr v-for='(  item,  index ) in diary' :key='item._id'>
-                    <td>{{ index+1 + (cpage)*10 }}</td>
+                    <td>{{ index+1 + (currentPage-1)*10 }}</td>
                     <td><a  href='#' style='color:black; text-decoration: none;' @click='detailView(item._id,item.title)'>{{ item.title }}</a></td>
                     <td>{{ userInfo.name }}</td>
                     <td>{{ item.date }}</td>
@@ -34,7 +34,7 @@
         </table>
         
          
-        <job-page :page='page' v-on:@change="onClickIndex" />
+        <job-page :page='page' :pageData='pageData'  v-model='pageData' v-on:@change="onClickIndex" />
         
     </div>
 </template>
@@ -45,15 +45,21 @@
     import JobPage from '~/components/jobDiary/Pagination';
     export default {
         created(){
-            console.log(this.$router)
             let fpage;
-            this.$store.getters.cpage ? fpage = this.$store.getters.cpage : fpage = 0;
+            this.$route.query.page ? fpage = this.$route.query.page : fpage = 1
             axios.defaults.headers.common.Authorization ='Bearer '+ this.token;
-            axios.get( process.env.BACKEND_URL +'/jobDiary?page='+fpage+1).then( 
+            axios.get( process.env.BACKEND_URL +'/jobDiary?page='+fpage).then( 
                 res => {
-                    this.$store.commit('SET_CPAGE', { cpage : fpage });
                     this.$store.commit('SET_DIARY', { jobDiary : res.data.data });
-                    this.$store.commit('SET_PAGE', { page : Math.ceil(res.data.data[0].recordCount/10)  });
+                    this.$store.commit('SET_PAGE', { page : Math.ceil(res.data.data[0].recordCount/10)});
+                    for(var i=0; i<this.$store.getters.page; i++){
+                        if(fpage == i+1 ){
+                            this.pageData.push( {number : i+1 , active: true })
+                        } else {
+                            this.pageData.push( {number : i+1 , active: false })
+                        }
+                    }
+                    console.log('새로고침',this.pageData)
                 }
             ).catch(err => {
                 console.log(err)
@@ -63,25 +69,32 @@
             JobPage
         },
         data() {
+            let currentPage;
+            this.$route.query.page ? currentPage = this.$route.query.page : currentPage = 1;
             return {
-                // pageData : [ { number : 0, active : true } ,{ number : 1 ,active : false} , { number : 2 ,active : false}],
-                // currentPage : 0,
+                pageData : [],
+                currentPage : currentPage
             }
         },
         methods : {
             onClickIndex(pageNumber) {
-                this.$store.commit('SET_CPAGE', { cpage : pageNumber });
+                // console.log('클릭전페이지',this.currentPage)
+                // if(pageNumber !== this.pageData[pageNumber].number){
+                console.log('클릭',this.pageData)
+                this.pageData[this.$route.query.page-1].active =false
+                // }
+                this.currentPage = pageNumber+1;
+                axios.defaults.headers.common.Authorization ='Bearer '+ this.token;
                 axios.get( process.env.BACKEND_URL +'/jobDiary',{ params: { page: pageNumber+1 }}).then( 
                     res => { 
-                        this.$store.commit('SET_DIARY',{ jobDiary : res.data.data }) 
+                        this.$store.commit('SET_DIARY',{ jobDiary : res.data.data });
                         this.$router.push({ path: '/jobDiary?page='+(pageNumber+1) });
                     }
                 ).catch(err => {
-                    console.log(err)
+                    console.log(err);
                 })
             },
             detailView(id,title){
-                // this.$router.push({ path: '/jobDiary', query: { data : item }});
                 this.$router.push({ path: '/jobDiary/'+id, params: { _id: id }});
             }
         },
@@ -90,7 +103,6 @@
                 token : 'token',
                 diary : 'jobDiary',
                 page : 'page',
-                cpage : 'cpage',
                 userInfo : 'userInfo'
             })
         }
