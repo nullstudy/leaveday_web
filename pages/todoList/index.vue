@@ -1,28 +1,28 @@
 <template>
     <div class='todo-wrap'>
+      <div v-show="false">{{ activeOption }}</div>
       <div>
         <b-form-select v-model="selected" :options="options" class="mb-3" />
       </div>
       
-      <div calss="todo-container">
-        <div v-for="(item,index) in todoData">
-          <div v-show="false">{{ activeOption }}</div>
-          <li v-if="selected == item.status" class="list-group-item" @click="detailAtive(index)" >{{ item.title }}
-            <button type="button" class="close" aria-label="Close" @click="deleteDetail(index)">
-                <span aria-hidden="true">&times;</span>
-            </button>
-          </li>
-          
-          <div v-if="selected == item.status && todoActive[index].active">
-            <tab :tabs="tabs" :selected-tab="selectedTab" :i="index" v-on:@change="onClickTab"></tab>
-            <list :selected-tab="selectedTab" :data="item.detail" :i="index"
-            v-on:@finish="onClickFinish"
-            v-on:@reset="onClickReset"></list>  
-            <!-- <li v-for="detail in item.detail">  
-              {{ detail.todo }}
-            </li> -->
-          </div>
+    
+      <div v-for="(item,index) in todoData" :key='item.title'>
+        
+        <li v-if="selected == item.status" class="list-group-item" @click="detailAtive(index)" >{{ item.title }}
+          <button type="button" class="close" aria-label="Close" @click="deleteDetail(index)">
+              <span aria-hidden="true">&times;</span>
+          </button>
+        </li>
+        
+        <div v-if="selected == item.status && todoActive[index].active">
+          <!-- <tab :tabs="tabs" :selected-tab="selectedTab" :i="index" v-on:@change="onClickTab"></tab>   -->
+          <!-- <list :selected-tab="selectedTab" :data="item.detail" :i="index"
+          v-on:@finish="onClickFinish"
+          v-on:@reset="onClickReset"></list>   -->
+          <tab :tabs="tabs" :selected-tab="selectedTab" :i="index" v-on:@change="onClickTab"></tab> 
         </div>
+        
+      </div>
 
          <!-- <tab v-bind:tabs="tabs" v-bind:selected-tab="selectedTab" v-on:@change="onClickTab"></tab> -->
           <!-- <list v-bind:selected-tab="selectedTab" v-bind:data="item.details"
@@ -30,11 +30,11 @@
           v-on:@reset="onClickReset"></list> -->
 
         <!-- </div> -->
-     </div>
+     
  
-      <div>
+      <!-- <div>
         <button @click='todoCreate'>todo생성</button> 
-      </div>
+      </div> -->
         
     </div>
 </template>
@@ -66,7 +66,7 @@ export default {
       selectedTab: '',
       todoList: [],
       todoActive: [],
-      selected: '진행 중',
+      selected: 1,
       options: [
         { value: 1, text: '진행 중' },
         { value: 2, text: '진행 전' },
@@ -108,6 +108,7 @@ export default {
     onClickTab(tab,i) { //tab 선택
       this.selectedTab = tab
       console.log('tab',this.selectedTab)
+      console.log('index',i)
       this.search(i)
     },
     onClickFinish(item,i) { //todo 완료
@@ -178,24 +179,7 @@ input[type=text] {
 .content {
   border: 1px solid #ccc;
 }
-ul.tabs {
-  display: flex;
-}
-.tabs li {
-  display: inline-block;
-  width: 50%;
-  padding: 15px;
-  text-align: center;
-  box-sizing: border-box;
-  border-bottom: 1px solid #ccc;
-  background-color: #eee;
-  color: #999;
-}
-.tabs li.active {
-  /* background-color: #2ac1bc; */
-  background-color: #045FB4;
-  color: #fff;
-}
+
 .list li {
   box-sizing: border-box;
   display: block;

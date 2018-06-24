@@ -1,8 +1,7 @@
 <template>
   <div>
     <ul class="list">
-      <li v-for="(item, index) in data">
-
+      <li v-for="(item, index) in data" :key='index'>
         <!-- <span class="glyphicon glyphicon-asterisk"></span>
         {{ i }} 번째 {{item.todo}} -->
         
