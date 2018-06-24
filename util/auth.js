@@ -4,6 +4,7 @@ import Cookie from 'js-cookie'
 export const unsetToken = () => {
     if (process.SERVER_BUILD) return
     Cookie.remove('userToken')
+    return  
 }
 
 export const getUserFromCookie = (req,store) => {

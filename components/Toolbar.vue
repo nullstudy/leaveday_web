@@ -31,8 +31,7 @@
   import { mapGetters } from 'vuex'
   import { unsetToken } from '~/util/auth'
   import Leavecreate from "./../components/LeaveModal.vue"
-
-  
+  import BootstrapVue from '~/plugins/bootstrap-vue'
   export default  {
     props: ['isAuthenticated'],
     components : {
@@ -60,8 +59,14 @@
     methods: {
       async onLogout (e) {
         unsetToken();
+        // console.log(localStorage.createPersistedState(storage.removeItem('vuex')))
         this.$store.commit('SET_USER',{ userInfo :null })
         this.$store.commit('SET_TOKEN', { token : null })
+        this.$store.commit('SET_DIARYDETAIL', { diaryDetail : {} })
+        
+        
+        this.$router.push('/login');
+        
         // let { data } = await axios.get(process.env.BACKEND_URL + '/logout');
       }
     }
@@ -69,6 +74,8 @@
 </script>
 
 <style>
+    @import 'bootstrap/dist/css/bootstrap.css';
+    @import 'bootstrap-vue/dist/bootstrap-vue.css';
     .navbar1 {
       position: fixed;
       top: 0;

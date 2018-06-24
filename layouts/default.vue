@@ -20,8 +20,7 @@
   }
 </script>
 
-<style>
-  
+<style >  
   body {
     height: 100%;
     background-color : #D1D5DA;
