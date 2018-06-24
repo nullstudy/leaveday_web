@@ -5,7 +5,7 @@
         </div>
 
         <div class="bo_fx">
-            <div id="bo_list_total"><span>Total 198,801건</span>1 페이지</div>
+            <div id="bo_list_total"><span>Total  {{ total }}건</span> {{ currentPage }} 페이지</div>
             <li style="float:right; list-style:none;" class='bo_li'><a href="/jobDiary/create" class="btn_b01" >글 작성</a></li> 
         </div>
 
@@ -50,16 +50,16 @@
             axios.defaults.headers.common.Authorization ='Bearer '+ this.token;
             axios.get( process.env.BACKEND_URL +'/jobDiary?page='+fpage).then( 
                 res => {
+                    this.total = res.data.data[0].recordCount;
                     this.$store.commit('SET_DIARY', { jobDiary : res.data.data });
                     this.$store.commit('SET_PAGE', { page : Math.ceil(res.data.data[0].recordCount/10)});
                     for(var i=0; i<this.$store.getters.page; i++){
-                        if(fpage == i+1 ){
+                        if(fpage == i+1 ) {
                             this.pageData.push( {number : i+1 , active: true })
                         } else {
                             this.pageData.push( {number : i+1 , active: false })
                         }
                     }
-                    console.log('새로고침',this.pageData)
                 }
             ).catch(err => {
                 console.log(err)
@@ -73,16 +73,16 @@
             this.$route.query.page ? currentPage = this.$route.query.page : currentPage = 1;
             return {
                 pageData : [],
-                currentPage : currentPage
+                currentPage : currentPage,
+                total : null
             }
         },
         methods : {
             onClickIndex(pageNumber) {
-                // console.log('클릭전페이지',this.currentPage)
-                // if(pageNumber !== this.pageData[pageNumber].number){
-                console.log('클릭',this.pageData)
-                this.pageData[this.$route.query.page-1].active =false
-                // }
+                // if(this.$route.query.page)
+                if(this.$route.query.page !== undefined){
+                    this.pageData[this.$route.query.page-1].active =false
+                }
                 this.currentPage = pageNumber+1;
                 axios.defaults.headers.common.Authorization ='Bearer '+ this.token;
                 axios.get( process.env.BACKEND_URL +'/jobDiary',{ params: { page: pageNumber+1 }}).then( 

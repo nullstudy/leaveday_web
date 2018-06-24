@@ -1,6 +1,6 @@
 <template>
     <div class="pagination">
-        <a href="#">&laquo;</a>
+        <a href="#" @click='classActive(0)' >&laquo;</a>
         <div v-for='( item,index ) in pageData' :key='index' >
             <a href="#" 
              v-bind:style="pageData[index].active ? {
@@ -9,7 +9,7 @@
             } : {} " @click='classActive(index)' 
             >{{ item.number }}</a>
         </div>
-        <a href="#">&raquo;</a> 
+        <a href="#" @click='classActive(page-1)' >&raquo;</a> 
     </div>
 </template>
 
@@ -26,12 +26,6 @@
         },
         methods:{
             classActive(pageNumber){
-                console.log(this.$route.query.page)
-                // this.pageData[this.currentPage].active = false;
-                // this.currentPage = pageNumber;
-                // this.pageData[pageNumber].active = true;
-
-                // this.currentPage ? this.currentPage = pageNumber : this.currentPage = 0
                 this.pageData[this.currentPage].active = false;
                 this.currentPage = pageNumber;
                 this.pageData[pageNumber].active = true;
@@ -55,11 +49,6 @@
         padding: 8px 16px;
         text-decoration: none;
         transition: background-color .3s;
-    }
-
-    .pagination a.active {
-        background-color: dodgerblue;
-        color:white;
     }
 
     .pagination a:hover:not(.active) {background-color: #ddd;}
