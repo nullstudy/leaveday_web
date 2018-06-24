@@ -1,7 +1,7 @@
 <template>
     <form v-on:submit.prevent="diaryCreate" method="POST" class='wrap-form' role="form" enctype="multipart/form-data" >
         <div class="breadcrumb" style="" ><span class="left">
-            <a href="/jobdiary" class='content-title' style="color:black; text-decoration: none;"><h2 style="color:black;" >Job Diary 작성</h2></a></span>
+            <a href="/jobdiary" class='content-title' style="color:black; text-decoration: none;"><h2 style="color:black;" >Job Diary 수정</h2></a></span>
         </div>
 
         <hr>
