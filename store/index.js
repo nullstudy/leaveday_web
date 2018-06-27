@@ -50,7 +50,6 @@ export const actions = {
         axios.get(process.env.BACKEND_URL + '/todoList',{ params : {  _id : user_id }})
             .then(response => {
                 commit('SET_TODO', { todoList : response.data.data });
-                return response.data.data 
             }).catch(err => {
                 console.error(err);
             })

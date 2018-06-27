@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul class="list">
-      <li v-for="(item, index) in data">
+      <li v-for="(item, index) in data" :key='item.todo'>
         <span class="glyphicon glyphicon-asterisk"></span>
         {{item.todo}}
         <span class="todoBtn label label-primary"

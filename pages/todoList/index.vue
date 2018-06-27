@@ -1,6 +1,7 @@
 <template>
     <div class='todo-wrap'>
-      <div v-show="false">{{ activeOption }}</div>
+      <!-- <div v-if="test" v-show='false'> {{ activeOption }}</div> -->
+      <div v-show='false'> {{ activeOption }}</div>
 
       <div>
         <b-form-select v-model="selected" :options="options" class="mb-3" />
@@ -55,7 +56,7 @@ export default {
   },
   data() { 
     return {
-      test: null,
+      test: true,
       active: false,
       value: null,
       tabs: ['todo', 'finish'],
@@ -77,9 +78,12 @@ export default {
   },
   watch : {
     selected : function() { 
+      console.log(this.selected)
       this.selectedTab = this.tabs[0] //todo 탭 선택
+      console.log(this.showTodo.length)
       this.value =[];
       this.showTodo = [];      
+
       for(var item in this.totalTodo){
         if(this.totalTodo[item].status == this.selected){
           this.todoActive[item].active = false 
@@ -88,6 +92,7 @@ export default {
           this.todoActive[item].active = false
         }  
       }
+      console.log(this.showTodo)
     },
     todoActive: {
       handler: function () {
@@ -101,22 +106,27 @@ export default {
       todoData: 'todoList'
     }),
     activeOption : function(item) {
+      this.totalTodo = [];
+      // this.todoActive = [];
+      // this.showTodo = [];
+    
       for(var data in this.todoData){
         this.todoActive.push({ active : false }) 
         this.totalTodo.push(item.todoData[data])
-        // this.todoList.push(item.todoData[data].detail)
       }
-      if(this.selected === 1){
-        for(var item in this.totalTodo){
-        if(this.totalTodo[item].status == this.selected){
-          this.todoActive[item].active = false 
-          this.showTodo.push(this.totalTodo[item])
-        } else {
-          this.todoActive[item].active = false
-        }  
+
+      if(this.selected === 1){  
+        
+          this.showTodo = [];
+          for(var item in this.totalTodo){
+            if(this.totalTodo[item].status == this.selected){
+              this.todoActive[item].active = false 
+              this.showTodo.push(this.totalTodo[item])
+            } else {
+              this.todoActive[item].active = false
+            }  
+        }
       }
-      }
-      return   
     } 
   },
   methods : {
