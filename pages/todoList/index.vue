@@ -51,17 +51,7 @@ export default {
     var user_id = this.$store.getters.userInfo._id;
     this.getTodoList(this.$store.getters.userInfo._id);
     this.selectedTab = this.tabs[0]; //todo 탭 선택
-
-    for(var item in this.totalTodo){
-      if(this.totalTodo[item].status == this.selected){
-        this.todoActive[item].active ? this.todoActive[item].active = false : this.todoActive[item].active = true ;
-        this.showTodo.push(this.totalTodo[item])
-      } else {
-        this.todoActive[item].active = false
-      }  
-    }
-
-
+    
   },
   data() { 
     return {
@@ -111,12 +101,20 @@ export default {
       todoData: 'todoList'
     }),
     activeOption : function(item) {
-      console.log('computed')
       for(var data in this.todoData){
         this.todoActive.push({ active : false }) 
         this.totalTodo.push(item.todoData[data])
-        console.log('totalTodo 타니?')
         // this.todoList.push(item.todoData[data].detail)
+      }
+      if(this.selected === 1){
+        for(var item in this.totalTodo){
+        if(this.totalTodo[item].status == this.selected){
+          this.todoActive[item].active = false 
+          this.showTodo.push(this.totalTodo[item])
+        } else {
+          this.todoActive[item].active = false
+        }  
+      }
       }
       return   
     } 
