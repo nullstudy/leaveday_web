@@ -70,9 +70,10 @@ export default {
       totalTodo : [],
       showTodo:[],
       detailTodo :[],
-
+      // showTodoIndex : false,
       todoList: [],
       todoActive: [],
+
       selected: 1,
       options: [
         { value: 1, text: '진행 중' },
@@ -86,15 +87,24 @@ export default {
     selected : function() { 
       this.value =[];
       this.showTodo = [];
+      // this.showTodoIndex ? this.showTodoIndex = false : this.showTodoIndex = true;
+      
       for(var item in this.totalTodo)
         if(this.totalTodo[item].status == this.selected){
+          this.todoActive[item].active ? this.todoActive[item].active = false : this.todoActive[item].active = true ;
           this.showTodo.push(this.totalTodo[item])
         } else {
           this.todoActive[item].active = false
         }  
     },
-    todoActive : function() {
-      this.detailTodo = [];
+    showTodoIndex : function() {
+      // this.detailTodo = [];
+    },
+    
+    todoActive: {
+      handler: function () {
+      },
+      deep: true
     }
   },
   
@@ -119,7 +129,6 @@ export default {
       this.$router.push('/todoList/create')
     },
     detailAtive(index) {
-      
       this.todoActive[index].active ? this.todoActive[index].active = false : this.todoActive[index].active = true ;
       this.detailTodo =[];
       for(var i in this.showTodo){
@@ -127,7 +136,7 @@ export default {
           for(var todo in this.showTodo[index].detail){
             this.detailTodo.push({
               '_id' : this.showTodo[index].detail[todo]._id, 
-              'status' : this.showTodo[index].detail[todo].status , 
+              'status' : this.showTodo[index].detail[todo].status, 
               'todo' : this.showTodo[index].detail[todo].todo
             })
           }
@@ -135,6 +144,8 @@ export default {
           this.todoActive[i].active = false
         }
       }
+      this.search(index)
+      return 
     },
     search(i) { //list 검색
       this.value = this.list(this.selectedTab,i)
