@@ -180,10 +180,12 @@ export default {
 </script>
 
 <style>
+  /* @import 'bootstrap/dist/css/bootstrap.css'; */
+  @import 'bootstrap-vue/dist/bootstrap-vue.css';
 .todo-wrap{
+  position: relative;
   margin: 0 auto;
   width: 80%;
-  position: relative;
   top:100px;
 }
 

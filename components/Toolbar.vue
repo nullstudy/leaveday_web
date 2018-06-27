@@ -6,7 +6,6 @@
       <b-navbar-nav>
         <b-nav-item href="/todoList" v-bind:style="[decoration,colorOption2]">TodoList</b-nav-item>
         <b-nav-item href="/jobDiary" v-bind:style="[decoration,colorOption2]">JobDiary</b-nav-item>
-        <b-nav-item href="/todoSample" v-bind:style="[decoration,colorOption2]">TodoSample</b-nav-item>
       </b-navbar-nav>
       <!-- 로그인 -->
       <b-navbar-nav v-if='isAuthenticated' class="ml-auto">
@@ -32,10 +31,9 @@
   import { mapGetters } from 'vuex'
   import { unsetToken } from '~/util/auth'
   import Leavecreate from "./../components/LeaveModal.vue"
-
-  
+  import BootstrapVue from '~/plugins/bootstrap-vue'
   export default  {
-    props: { 'isAuthenticated' : Boolean } ,
+    props: ['isAuthenticated'],
     components : {
       Leavecreate
     },
@@ -61,8 +59,14 @@
     methods: {
       async onLogout (e) {
         unsetToken();
+        // console.log(localStorage.createPersistedState(storage.removeItem('vuex')))
         this.$store.commit('SET_USER',{ userInfo :null })
         this.$store.commit('SET_TOKEN', { token : null })
+        this.$store.commit('SET_DIARYDETAIL', { diaryDetail : {} })
+        
+        
+        this.$router.push('/login');
+        
         // let { data } = await axios.get(process.env.BACKEND_URL + '/logout');
       }
     }
@@ -70,17 +74,16 @@
 </script>
 
 <style>
+    @import 'bootstrap/dist/css/bootstrap.css';
+    @import 'bootstrap-vue/dist/bootstrap-vue.css';
     .navbar1 {
       position: fixed;
       top: 0;
       width: 100%;
-      z-index: 100;
+      z-index: 1;
     }    
-    
     .nav_u_drop{
       position: relative;
       z-index: 200;
-      
     }
-    
 </style>
