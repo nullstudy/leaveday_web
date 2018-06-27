@@ -40,7 +40,7 @@ export const mutations = {
         state.isleave = payload.isleave
     },
     SET_TODO(state,payload) {
-        state.todoList = payload.todoList
+        state.todoList = payload.todoList 
     }
 }
 

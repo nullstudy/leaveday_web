@@ -1,28 +1,33 @@
 <template>
     <div class='todo-wrap'>
       <div v-show="false">{{ activeOption }}</div>
+
       <div>
         <b-form-select v-model="selected" :options="options" class="mb-3" />
       </div>
-      
     
-      <div v-for="(item,index) in todoData" :key='item.title'>
-        
+
+      <div v-for="(item,index) in showTodo" :key='item.title'>
         <li v-if="selected == item.status" class="list-group-item" @click="detailAtive(index)" >{{ item.title }}
           <button type="button" class="close" aria-label="Close" @click="deleteDetail(index)">
               <span aria-hidden="true">&times;</span>
           </button>
         </li>
-        
-        <div v-if="selected == item.status && todoActive[index].active">
-          <!-- <tab :tabs="tabs" :selected-tab="selectedTab" :i="index" v-on:@change="onClickTab"></tab>   -->
-          <!-- <list :selected-tab="selectedTab" :data="item.detail" :i="index"
-          v-on:@finish="onClickFinish"
-          v-on:@reset="onClickReset"></list>   -->
-          <tab :tabs="tabs" :selected-tab="selectedTab" :i="index" v-on:@change="onClickTab"></tab> 
+
+        <div v-if="todoActive[index].active">
+          <tab :tabs="tabs" :selected-tab="selectedTab" :i="index" v-on:@change="onClickTab"></tab>   
+          <list :selected-tab="selectedTab" :data="value" :i="index"
+            v-on:@finish="onClickFinish"
+            v-on:@reset="onClickReset"
+          ></list>  
         </div>
-        
+      
+
+
       </div>
+  
+        
+      <!-- </div> -->
 
          <!-- <tab v-bind:tabs="tabs" v-bind:selected-tab="selectedTab" v-on:@change="onClickTab"></tab> -->
           <!-- <list v-bind:selected-tab="selectedTab" v-bind:data="item.details"
@@ -50,11 +55,9 @@ export default {
     'tab': TabComponent,
     'list': ListComponent
   },
-  mounted() {
+  created() { //vue 인스턴스가 생성된 후에 실행됨
     var user_id = this.$store.getters.userInfo._id;
     this.getTodoList(this.$store.getters.userInfo._id);
-  },
-  created() { //vue 인스턴스가 생성된 후에 실행됨
     this.selectedTab = this.tabs[0] //todo 탭 선택
     // this.search() //todo list 출력
   },
@@ -64,6 +67,10 @@ export default {
       value: null,
       tabs: ['todo', 'finish'],
       selectedTab: '',
+      totalTodo : [],
+      showTodo:[],
+      detailTodo :[],
+
       todoList: [],
       todoActive: [],
       selected: 1,
@@ -75,6 +82,22 @@ export default {
       ]
     }
   },
+  watch : {
+    selected : function() { 
+      this.value =[];
+      this.showTodo = [];
+      for(var item in this.totalTodo)
+        if(this.totalTodo[item].status == this.selected){
+          this.showTodo.push(this.totalTodo[item])
+        } else {
+          this.todoActive[item].active = false
+        }  
+    },
+    todoActive : function() {
+      this.detailTodo = [];
+    }
+  },
+  
   computed: {
     ...mapGetters({
       todoData: 'todoList'
@@ -82,7 +105,8 @@ export default {
     activeOption : function(item) {
       for(var data in this.todoData){
         this.todoActive.push({ active : false }) 
-        this.todoList.push(item.todoData[data].detail)
+        this.totalTodo.push(item.todoData[data])
+        // this.todoList.push(item.todoData[data].detail)
       }
       return   
     } 
@@ -95,20 +119,36 @@ export default {
       this.$router.push('/todoList/create')
     },
     detailAtive(index) {
+      
       this.todoActive[index].active ? this.todoActive[index].active = false : this.todoActive[index].active = true ;
+      this.detailTodo =[];
+      for(var i in this.showTodo){
+        if( i == index){
+          for(var todo in this.showTodo[index].detail){
+            this.detailTodo.push({
+              '_id' : this.showTodo[index].detail[todo]._id, 
+              'status' : this.showTodo[index].detail[todo].status , 
+              'todo' : this.showTodo[index].detail[todo].todo
+            })
+          }
+        } else {
+          this.todoActive[i].active = false
+        }
+      }
     },
-
     search(i) { //list 검색
-      let data = this.todoList
-      this.list(this.selectedTab,i).then((data) => {
-        console.log('search',data)
-        // this.todoList = data
-      })
+      this.value = this.list(this.selectedTab,i)
+      console.log('value',this.value)
+    },
+    list(tab,i) {
+      if(tab === 'todo') 
+        return this.detailTodo.filter( item => item.status === false)
+        
+      if(tab === 'finish') 
+        return this.detailTodo.filter( item => item.status === true)
     },
     onClickTab(tab,i) { //tab 선택
       this.selectedTab = tab
-      console.log('tab',this.selectedTab)
-      console.log('index',i)
       this.search(i)
     },
     onClickFinish(item,i) { //todo 완료
@@ -118,13 +158,6 @@ export default {
     onClickReset(item,i) { //완료된 todo 리셋
       // this.reset(item,i)
       // this.search(i)
-    },
-
-    list(tab,i) {
-      // return new Promise(res => {
-      //   if(tab === 'todo') res(this.todoList[i].filter(item => item.status === true))
-      //   if(tab === 'finish') res(this.todoList[i].filter(item => item.status === false))
-      // })
     }, 
     finish(index,i) {
       // this.todoList[i].detail.filter(item => item.status === true)[index].status = false
@@ -136,10 +169,7 @@ export default {
    
     remove(todo,i) {
       // this.todoList[i].detail = this.todoList[i].filter(item => item.todo !== todo)
-    }
-
-
-    
+    }    
   }
 }
 </script>
