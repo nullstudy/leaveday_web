@@ -58,6 +58,7 @@ import BootstrapVue from 'bootstrap-vue';
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 export default {
     data() {
+        console.log('슬렉연동테스트')
         return {
             selected: null,
             options: [
