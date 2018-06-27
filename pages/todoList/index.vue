@@ -70,8 +70,7 @@ export default {
       totalTodo : [],
       showTodo:[],
       detailTodo :[],
-      // showTodoIndex : false,
-      todoList: [],
+
       todoActive: [],
 
       selected: 1,
@@ -85,10 +84,9 @@ export default {
   },
   watch : {
     selected : function() { 
+      this.selectedTab = this.tabs[0] //todo 탭 선택
       this.value =[];
-      this.showTodo = [];
-      // this.showTodoIndex ? this.showTodoIndex = false : this.showTodoIndex = true;
-      
+      this.showTodo = [];      
       for(var item in this.totalTodo)
         if(this.totalTodo[item].status == this.selected){
           this.todoActive[item].active ? this.todoActive[item].active = false : this.todoActive[item].active = true ;
@@ -97,10 +95,6 @@ export default {
           this.todoActive[item].active = false
         }  
     },
-    showTodoIndex : function() {
-      // this.detailTodo = [];
-    },
-    
     todoActive: {
       handler: function () {
       },
