@@ -1,6 +1,5 @@
 <template>
     <div class='todo-wrap'>
-      <!-- <div v-if="test" v-show='false'> {{ activeOption }}</div> -->
       <div v-show='false'> {{ activeOption }}</div>
 
       <div>
@@ -38,7 +37,6 @@
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import TabComponent from '~/components/todo/TabComponent.vue' //TabComponent 불러옴
 import ListComponent from '~/components/todo/ListComponent.vue' //ListComponent 불러옴
-//import TodoModel from './TodoModel.js' //Model 불러옴
 export default {
   components: {
     'tab': TabComponent,
@@ -52,21 +50,16 @@ export default {
     var user_id = this.$store.getters.userInfo._id;
     this.getTodoList(this.$store.getters.userInfo._id);
     this.selectedTab = this.tabs[0]; //todo 탭 선택
-    
   },
   data() { 
     return {
-      test: true,
-      active: false,
       value: null,
       tabs: ['todo', 'finish'],
       selectedTab: '',
       totalTodo : [],
       showTodo:[],
       detailTodo :[],
-
       todoActive: [],
-
       selected: 1,
       options: [
         { value: 1, text: '진행 중' },
@@ -78,9 +71,7 @@ export default {
   },
   watch : {
     selected : function() { 
-      console.log(this.selected)
       this.selectedTab = this.tabs[0] //todo 탭 선택
-      console.log(this.showTodo.length)
       this.value =[];
       this.showTodo = [];      
 
@@ -92,7 +83,7 @@ export default {
           this.todoActive[item].active = false
         }  
       }
-      console.log(this.showTodo)
+    
     },
     todoActive: {
       handler: function () {
@@ -107,16 +98,12 @@ export default {
     }),
     activeOption : function(item) {
       this.totalTodo = [];
-      // this.todoActive = [];
-      // this.showTodo = [];
-    
       for(var data in this.todoData){
         this.todoActive.push({ active : false }) 
         this.totalTodo.push(item.todoData[data])
       }
 
       if(this.selected === 1){  
-        
           this.showTodo = [];
           for(var item in this.totalTodo){
             if(this.totalTodo[item].status == this.selected){
@@ -193,12 +180,12 @@ export default {
 </script>
 
 <style>
-  .todo-wrap{
-    margin: 0 auto;
-    width: 80%;
-    position: relative;
-    top:100px;
-  }
+.todo-wrap{
+  margin: 0 auto;
+  width: 80%;
+  position: relative;
+  top:100px;
+}
 
 ul {
   list-style: none;
@@ -287,8 +274,4 @@ form {
   float: right;
   margin: 2px;
 }
-
-
-
-
 </style>
