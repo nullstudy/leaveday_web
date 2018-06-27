@@ -46,9 +46,11 @@ export const mutations = {
 
 export const actions = {
     getTodoList({ commit },user_id) {
+        // axios.get(process.env.BACKEND_URL + '/todoList',{ params : {  _id : user_id}} )
         axios.get(process.env.BACKEND_URL + '/todoList',{ params : {  _id : user_id }})
             .then(response => {
-                commit('SET_TODO', { todoList : response.data.data })
+                commit('SET_TODO', { todoList : response.data.data });
+                return response.data.data 
             }).catch(err => {
                 console.error(err);
             })

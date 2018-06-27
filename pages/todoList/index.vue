@@ -21,23 +21,11 @@
             v-on:@reset="onClickReset"
           ></list>  
         </div>
-      
-
-
-      </div>
   
-        
-      <!-- </div> -->
-
-         <!-- <tab v-bind:tabs="tabs" v-bind:selected-tab="selectedTab" v-on:@change="onClickTab"></tab> -->
-          <!-- <list v-bind:selected-tab="selectedTab" v-bind:data="item.details"
-          v-on:@finish="onClickFinish"
-          v-on:@reset="onClickReset"></list> -->
-
-        <!-- </div> -->
-     
- 
-      <!-- <div>
+      </div>
+      <hr>
+      <!-- <br>
+      <div>
         <button @click='todoCreate'>todo생성</button> 
       </div> -->
         
@@ -49,20 +37,35 @@
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import TabComponent from '~/components/todo/TabComponent.vue' //TabComponent 불러옴
 import ListComponent from '~/components/todo/ListComponent.vue' //ListComponent 불러옴
-// import TodoModel from './TodoModel.js' //Model 불러옴
+//import TodoModel from './TodoModel.js' //Model 불러옴
 export default {
   components: {
     'tab': TabComponent,
     'list': ListComponent
   },
+  async asyncData ({store}) {    
+    // await store.dispatch('getTodoList', store.getters.userInfo._id )
+    // console.log(store.getters.todoList)
+  },
   created() { //vue 인스턴스가 생성된 후에 실행됨
     var user_id = this.$store.getters.userInfo._id;
     this.getTodoList(this.$store.getters.userInfo._id);
-    this.selectedTab = this.tabs[0] //todo 탭 선택
-    // this.search() //todo list 출력
+    this.selectedTab = this.tabs[0]; //todo 탭 선택
+
+    for(var item in this.totalTodo){
+      if(this.totalTodo[item].status == this.selected){
+        this.todoActive[item].active ? this.todoActive[item].active = false : this.todoActive[item].active = true ;
+        this.showTodo.push(this.totalTodo[item])
+      } else {
+        this.todoActive[item].active = false
+      }  
+    }
+
+
   },
-  data() {
+  data() { 
     return {
+      test: null,
       active: false,
       value: null,
       tabs: ['todo', 'finish'],
@@ -87,13 +90,14 @@ export default {
       this.selectedTab = this.tabs[0] //todo 탭 선택
       this.value =[];
       this.showTodo = [];      
-      for(var item in this.totalTodo)
+      for(var item in this.totalTodo){
         if(this.totalTodo[item].status == this.selected){
-          this.todoActive[item].active ? this.todoActive[item].active = false : this.todoActive[item].active = true ;
+          this.todoActive[item].active = false 
           this.showTodo.push(this.totalTodo[item])
         } else {
           this.todoActive[item].active = false
         }  
+      }
     },
     todoActive: {
       handler: function () {
@@ -107,9 +111,11 @@ export default {
       todoData: 'todoList'
     }),
     activeOption : function(item) {
+      console.log('computed')
       for(var data in this.todoData){
         this.todoActive.push({ active : false }) 
         this.totalTodo.push(item.todoData[data])
+        console.log('totalTodo 타니?')
         // this.todoList.push(item.todoData[data].detail)
       }
       return   
@@ -123,7 +129,7 @@ export default {
       this.$router.push('/todoList/create')
     },
     detailAtive(index) {
-      this.todoActive[index].active ? this.todoActive[index].active = false : this.todoActive[index].active = true ;
+      this.todoActive[index].active ? this.todoActive[index].active = false : this.todoActive[index].active = true;
       this.detailTodo =[];
       for(var i in this.showTodo){
         if( i == index){
@@ -138,12 +144,11 @@ export default {
           this.todoActive[i].active = false
         }
       }
-      this.search(index)
+      this.search(index);
       return 
     },
     search(i) { //list 검색
-      this.value = this.list(this.selectedTab,i)
-      console.log('value',this.value)
+      this.value = this.list(this.selectedTab,i);
     },
     list(tab,i) {
       if(tab === 'todo') 
