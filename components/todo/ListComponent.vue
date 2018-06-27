@@ -26,13 +26,11 @@
 export default {
   props: ['data','i','selectedTab'],
   methods: {
-    finishBtnClick(item) {
-      console.log('끝',item._id)
-      this.$emit('@finish', item)
+    finishBtnClick(item,i) {
+      this.$emit('@finish', { _id : item._id, index : i })
     },
-    resetBtnClick(item) {
-      console.log('레셋',item._id)
-      this.$emit('@reset', item)
+    resetBtnClick(item,i) {
+      this.$emit('@reset', { _id : item._id, index : i })
     }
   },
  data(){

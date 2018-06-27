@@ -25,6 +25,7 @@ ul.tabs {
 }
 
 .tabs li {
+  
   display: inline-block;
   width: 50%;
   padding: 15px;
@@ -33,6 +34,13 @@ ul.tabs {
   border-bottom: 1px solid #ccc;
   background-color: #eee;
   color: #999;
+
+  
+  
+  /* right:5.5%; */
+  
+
+
 }
 
 .tabs li.active {

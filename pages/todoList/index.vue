@@ -14,8 +14,8 @@
           </button>
         </li>
 
-        <div v-if="todoActive[index].active">
-          <tab :tabs="tabs" :selected-tab="selectedTab" :i="index" v-on:@change="onClickTab"></tab>   
+        <div class='content-tab' v-if="todoActive[index].active">
+          <tab  :tabs="tabs" :selected-tab="selectedTab" :i="index" v-on:@change="onClickTab"></tab>   
           <list :selected-tab="selectedTab" :data="value" :i="index"
             v-on:@finish="onClickFinish"
             v-on:@reset="onClickReset"
@@ -56,7 +56,8 @@ export default {
       value: null,
       tabs: ['todo', 'finish'],
       selectedTab: '',
-      totalTodo : [],
+      todoList : [],
+      totalTodo : null,
       showTodo:[],
       detailTodo :[],
       todoActive: [],
@@ -89,6 +90,11 @@ export default {
       handler: function () {
       },
       deep: true
+    },
+    detailTodo: {
+      handler: function () {
+      },
+      deep: true
     }
   },
   
@@ -102,7 +108,7 @@ export default {
         this.todoActive.push({ active : false }) 
         this.totalTodo.push(item.todoData[data])
       }
-
+      this.todoList = this.totalTodo;
       if(this.selected === 1){  
           this.showTodo = [];
           for(var item in this.totalTodo){
@@ -157,19 +163,31 @@ export default {
       this.search(i)
     },
     onClickFinish(item,i) { //todo 완료
-      // this.finish(item,i)
+      this.finish(item,i)
       // this.search(i)
     },
     onClickReset(item,i) { //완료된 todo 리셋
-      // this.reset(item,i)
+      this.reset(item,i)
       // this.search(i)
     }, 
-    finish(index,i) {
-      // this.todoList[i].detail.filter(item => item.status === true)[index].status = false
+    finish(data) {
+      // console.log(this.showTodo.map)
+      
+      let activeIndex  = this.todoActive.map(function(e) { return e.active }).indexOf(true);
+      let pos = this.detailTodo.map(function(e) { return e._id; }).indexOf(data._id);
+      // this.totalTodo[activeIndex].detailTodo[pos].status = true
+      // this.totalTodo[activeIndex].detail[pos].status = true
+      // this.todoList[activeIndex].detail[pos].status = true
+      this.detailTodo[pos].status = true
+      this.search(pos);
+      
     },
    
-    reset(index,i) {
-      // this.todoList[i].detail.filter(item => item.status === false)[index].status = true
+    reset(data) {
+      let pos = this.detailTodo.map(function(e) { return e._id; }).indexOf(data._id);
+      this.detailTodo[pos].status = false
+      this.search(pos);
+      
     },
    
     remove(todo,i) {
@@ -180,7 +198,7 @@ export default {
 </script>
 
 <style>
-  /* @import 'bootstrap/dist/css/bootstrap.css'; */
+  @import 'bootstrap/dist/css/bootstrap.css';
   @import 'bootstrap-vue/dist/bootstrap-vue.css';
 .todo-wrap{
   position: relative;
@@ -195,8 +213,9 @@ ul {
 img {
   width: 100%;
 }
-.container {
-  margin: 0 15px 0 15px;
+.content-tab{
+    position: relative;
+    
 }
 header {
   border-bottom: 1px #ccc solid;
