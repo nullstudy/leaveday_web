@@ -126,7 +126,8 @@ export default {
   methods : {
     ...mapActions({
       getTodoList: 'getTodoList',
-      setHeader: 'setHeaderAuth'
+      setHeader: 'setHeaderAuth',
+      putTodo: 'putDetailTodo'
     }),
     todoCreate() {
       this.$router.push('/todoList/create')
@@ -173,28 +174,40 @@ export default {
       // this.search(i)
     }, 
     finish(data) {
-      // console.log(this.showTodo.map)
-      
       let activeIndex  = this.todoActive.map(function(e) { return e.active }).indexOf(true);
       let pos = this.detailTodo.map(function(e) { return e._id; }).indexOf(data._id);
-      // this.totalTodo[activeIndex].detailTodo[pos].status = true
-      // this.totalTodo[activeIndex].detail[pos].status = true
-      // this.todoList[activeIndex].detail[pos].status = true
-      
       this.detailTodo[pos].status = true
       this.search(pos);
-      this.setHeader(this.token)
 
-      
+      let updateData = {
+        _id : this.showTodo[activeIndex]._id,
+        detail_id : this.showTodo[activeIndex].detail[pos]._id,
+        todo : this.showTodo[activeIndex].detail[pos].todo,
+        status : true
+      }
+      this.setHeader(this.token);
+      this.putTodo(updateData);
     },
    
     reset(data) {
+      let activeIndex  = this.todoActive.map(function(e) { return e.active }).indexOf(true);
       let pos = this.detailTodo.map(function(e) { return e._id; }).indexOf(data._id);
-      this.detailTodo[pos].status = false
+      this.detailTodo[pos].status = false;
       this.search(pos);
-      
+
+      let updateData = {
+        _id : this.showTodo[activeIndex]._id,
+        detail_id : this.showTodo[activeIndex].detail[pos]._id,
+        todo : this.showTodo[activeIndex].detail[pos].todo,
+        status : false
+      }
+      this.setHeader(this.token);
+      this.putTodo(updateData);
     },
    
+
+
+
     remove(todo,i) {
       // this.todoList[i].detail = this.todoList[i].filter(item => item.todo !== todo)
     }    
