@@ -66,15 +66,15 @@
 
 <script>
 import axios from 'axios';
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex';
+import VueMaterial from 'vue-material';
+
 export default {
     name: 'TodoPage',
     data () {
         return {
             todoTitle : null,
-            details : [
-
-            ],
+            details : [],
             istodos : false,
             name : null,
             active: false,
@@ -83,6 +83,9 @@ export default {
         }
     },
     methods:{
+        ...mapActions({
+            setHeader: 'setHeaderAuth'
+        }),
         deleteTodo(){
             this.todoTitle = null;
             this.details = [];
@@ -110,7 +113,7 @@ export default {
                 endDT : this.endDT,
                 detail : this.details
             }
-            axios.defaults.headers.common.Authorization ='Bearer '+ this.token;
+            await this.setHeader(this.token)
             await axios.post(process.env.BACKEND_URL + '/todoCreate', todoData )
             .then(response => {
                 return this.$router.push('/todoList');
@@ -128,10 +131,16 @@ export default {
 </script>
 
 <style scoped>
+    /* @import 'bootstrap/dist/css/bootstrap.css'; */
+    /* @import 'bootstrap-vue/dist/bootstrap-vue.css'; */
+    @import 'vue-material/dist/theme/default.css';
+    @import 'vue-material/dist/vue-material.min.css';
+    
+    
     .wrap-todo-create {
         position: relative;
         top: 48px;
-        background: gray;   
+        /* background: gray;    */
     }
     .container-todo {
         width:80%;

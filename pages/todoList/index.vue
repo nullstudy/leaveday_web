@@ -100,7 +100,8 @@ export default {
   
   computed: {
     ...mapGetters({
-      todoData: 'todoList'
+      todoData: 'todoList',
+      token : 'token'
     }),
     activeOption : function(item) {
       this.totalTodo = [];
@@ -124,7 +125,8 @@ export default {
   },
   methods : {
     ...mapActions({
-      getTodoList: 'getTodoList'
+      getTodoList: 'getTodoList',
+      setHeader: 'setHeaderAuth'
     }),
     todoCreate() {
       this.$router.push('/todoList/create')
@@ -178,8 +180,11 @@ export default {
       // this.totalTodo[activeIndex].detailTodo[pos].status = true
       // this.totalTodo[activeIndex].detail[pos].status = true
       // this.todoList[activeIndex].detail[pos].status = true
+      
       this.detailTodo[pos].status = true
       this.search(pos);
+      this.setHeader(this.token)
+
       
     },
    
