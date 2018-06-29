@@ -1,12 +1,9 @@
 <template>
     <div class='todo-wrap'>
-      <div v-show='false'> {{ activeOption }}</div>
-
       <div>
         <b-form-select v-model="selected" :options="options" class="mb-3" />
       </div>
     
-
       <div v-for="(item,index) in showTodo" :key='item.title'>
         <li v-if="selected == item.status" class="list-group-item" @click="detailAtive(index)" >{{ item.title }}
           <button type="button" class="close" aria-label="Close" @click="deleteDetail(index)">
@@ -14,27 +11,21 @@
           </button>
         </li>
 
-        <div class='content-tab' v-if="todoActive[index].active">
+        <div class='content-tab' v-if="showTodo[index].active">
           <tab  :tabs="tabs" :selected-tab="selectedTab" :i="index" v-on:@change="onClickTab"></tab>   
-          <list :selected-tab="selectedTab" :data="value" :i="index"
-            v-on:@finish="onClickFinish"
-            v-on:@reset="onClickReset"
-          ></list>  
+          <list :selected-tab="selectedTab" :data="showTodo[index].detail" :i="index" v-on:@finish="onClickFinish" v-on:@reset="onClickReset">
+          <!-- <list :selected-tab="selectedTab" :data="value" :i="index" v-on:@finish="onClickFinish" v-on:@reset="onClickReset">   -->
+          </list>  
         </div>
   
       </div>
       <hr>
-      <!-- <br>
-      <div>
-        <button @click='todoCreate'>todo생성</button> 
-      </div> -->
-        
     </div>
 </template>
 
 <script>
 
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions ,mapState } from 'vuex'
 import TabComponent from '~/components/todo/TabComponent.vue' //TabComponent 불러옴
 import ListComponent from '~/components/todo/ListComponent.vue' //ListComponent 불러옴
 export default {
@@ -51,17 +42,14 @@ export default {
     this.getTodoList(this.$store.getters.userInfo._id);
     this.selectedTab = this.tabs[0]; //todo 탭 선택
   },
+  mounted(){
+  },
   data() { 
     return {
-      value: null,
       tabs: ['todo', 'finish'],
       selectedTab: '',
-      todoList : [],
-      totalTodo : null,
-      showTodo:[],
-      detailTodo :[],
-      todoActive: [],
       selected: 1,
+      value: null,
       options: [
         { value: 1, text: '진행 중' },
         { value: 2, text: '진행 전' },
@@ -73,116 +61,63 @@ export default {
   watch : {
     selected : function() { 
       this.selectedTab = this.tabs[0] //todo 탭 선택
-      this.value =[];
-      this.showTodo = [];      
-
-      for(var item in this.totalTodo){
-        if(this.totalTodo[item].status == this.selected){
-          this.todoActive[item].active = false 
-          this.showTodo.push(this.totalTodo[item])
-        } else {
-          this.todoActive[item].active = false
-        }  
-      }
-    
-    },
-    todoActive: {
-      handler: function () {
-      },
-      deep: true
-    },
-    detailTodo: {
-      handler: function () {
-      },
-      deep: true
+      this.$store.commit('todo/SET_SELECT',{ select : this.selected });
+      this.$store.commit('todo/SET_SHOWTODO');
     }
   },
-  
+
   computed: {
     ...mapGetters({
-      todoData: 'todoList',
+      showTodo: 'todo/showTodoList',
       token : 'token'
-    }),
-    activeOption : function(item) {
-      this.totalTodo = [];
-      for(var data in this.todoData){
-        this.todoActive.push({ active : false }) 
-        this.totalTodo.push(item.todoData[data])
-      }
-      this.todoList = this.totalTodo;
-      if(this.selected === 1){  
-          this.showTodo = [];
-          for(var item in this.totalTodo){
-            if(this.totalTodo[item].status == this.selected){
-              this.todoActive[item].active = false 
-              this.showTodo.push(this.totalTodo[item])
-            } else {
-              this.todoActive[item].active = false
-            }  
-        }
-      }
-    } 
+    })
   },
   methods : {
     ...mapActions({
-      getTodoList: 'getTodoList',
       setHeader: 'setHeaderAuth',
-      putTodo: 'putDetailTodo'
+      getTodoList: 'todo/getTodoList',
+      putTodo: 'todo/putDetailTodo'
     }),
     todoCreate() {
       this.$router.push('/todoList/create')
     },
     detailAtive(index) {
-      this.todoActive[index].active ? this.todoActive[index].active = false : this.todoActive[index].active = true;
-      this.detailTodo =[];
-      for(var i in this.showTodo){
-        if( i == index){
-          for(var todo in this.showTodo[index].detail){
-            this.detailTodo.push({
-              '_id' : this.showTodo[index].detail[todo]._id, 
-              'status' : this.showTodo[index].detail[todo].status, 
-              'todo' : this.showTodo[index].detail[todo].todo
-            })
-          }
-        } else {
-          this.todoActive[i].active = false
-        }
-      }
-      this.search(index);
-      return 
+      let activeIndex  = this.showTodo[index].active  
+      let id  = this.showTodo[index]._id
+      this.$store.commit('todo/SET_CHANGETODO', { active : activeIndex, id : id }); 
+      // this.search(index);
     },
+
     search(i) { //list 검색
-      this.value = this.list(this.selectedTab,i);
+      // this.list(this.selectedTab,i);
+      // this.value = showTodo[i].detail
+      // this.value = this.list(this.selectedTab,i);
     },
     list(tab,i) {
-      if(tab === 'todo') 
-        return this.detailTodo.filter( item => item.status === false)
+      // if(tab === 'todo') 
+      //   return this.showTodo[i].detail.filter( item => item.status === false)
         
-      if(tab === 'finish') 
-        return this.detailTodo.filter( item => item.status === true)
+      // if(tab === 'finish') 
+      //   return this.showTodo[i].detail.filter( item => item.status === true)
     },
-    onClickTab(tab,i) { //tab 선택
-      this.selectedTab = tab
-      this.search(i)
+    onClickTab(data) { //tab 선택
+      this.selectedTab = data.tab
+      // this.search(data.index)
     },
-    onClickFinish(item,i) { //todo 완료
-      this.finish(item,i)
-      // this.search(i)
+
+    onClickFinish(item) { //todo 완료
+      this.finish(item)
     },
-    onClickReset(item,i) { //완료된 todo 리셋
-      this.reset(item,i)
-      // this.search(i)
+    onClickReset(item) { //완료된 todo 리셋
+      this.reset(item)
     }, 
     finish(data) {
-      let activeIndex  = this.todoActive.map(function(e) { return e.active }).indexOf(true);
-      let pos = this.detailTodo.map(function(e) { return e._id; }).indexOf(data._id);
-      this.detailTodo[pos].status = true
-      this.search(pos);
-
+      // this.search(data.index);
+      this.$store.commit('todo/SET_CHANGTOTALTODO', {  status : true , index : data.index , _id : data._id }); 
+      // this.search(data.index) 
       let updateData = {
-        _id : this.showTodo[activeIndex]._id,
-        detail_id : this.showTodo[activeIndex].detail[pos]._id,
-        todo : this.showTodo[activeIndex].detail[pos].todo,
+        detail_id : data._id,
+        todo : data.todo,
         status : true
       }
       this.setHeader(this.token);
@@ -190,24 +125,18 @@ export default {
     },
    
     reset(data) {
-      let activeIndex  = this.todoActive.map(function(e) { return e.active }).indexOf(true);
-      let pos = this.detailTodo.map(function(e) { return e._id; }).indexOf(data._id);
-      this.detailTodo[pos].status = false;
-      this.search(pos);
-
+      // this.search(data.index);
+      this.$store.commit('todo/SET_CHANGTOTALTODO', { status : false , index : data.index , _id : data._id});
+      // this.search(data.index)  
+      // this.$store.commit('todo/SET_SHOWTODO'); 
       let updateData = {
-        _id : this.showTodo[activeIndex]._id,
-        detail_id : this.showTodo[activeIndex].detail[pos]._id,
-        todo : this.showTodo[activeIndex].detail[pos].todo,
+        detail_id : data._id,
+        todo : data.todo,
         status : false
       }
       this.setHeader(this.token);
       this.putTodo(updateData);
     },
-   
-
-
-
     remove(todo,i) {
       // this.todoList[i].detail = this.todoList[i].filter(item => item.todo !== todo)
     }    

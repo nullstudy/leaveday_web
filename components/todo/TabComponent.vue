@@ -12,7 +12,11 @@ export default {
   props: ['tabs', 'selectedTab','i'], 
   methods: {
     onClickTabs(tab,i) {
-      this.$emit('@change', tab,i);
+      var data  = {
+        tab : tab,
+        index : i
+      }
+      this.$emit('@change', data);
     }
   }
 }
@@ -34,13 +38,6 @@ ul.tabs {
   border-bottom: 1px solid #ccc;
   background-color: #eee;
   color: #999;
-
-  
-  
-  /* right:5.5%; */
-  
-
-
 }
 
 .tabs li.active {

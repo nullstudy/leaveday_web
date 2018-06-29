@@ -3,8 +3,7 @@ export const state = () => ({
     token : null,
     authenticated: null,
     userInfo :false,
-    isleave : false,
-    todoList : null
+    isleave : false
 })
 
 export const getters = {
@@ -19,11 +18,7 @@ export const getters = {
     },
     isLeave(state) {
         return state.isleave
-    },
-    todoList(state) {
-        return state.todoList
     }
-
 }
 
 export const mutations = {
@@ -47,21 +42,5 @@ export const mutations = {
 export const actions = {
     setHeaderAuth({ commit }, token){
         axios.defaults.headers.common.Authorization ='Bearer '+ token;
-    },
-    getTodoList({ commit }, user_id) {
-        axios.get(process.env.BACKEND_URL + '/todoList',{ params : {  _id : user_id }})
-            .then(response => {
-                commit('SET_TODO', { todoList : response.data.data });
-            }).catch(err => {
-                console.error(err);
-            })
-    },
-    putDetailTodo({ commit }, data){
-        axios.put(process.env.BACKEND_URL + '/todoUpdate', data )
-        .then(response => {
-            // commit('SET_TODO', { todoList : response.data.data });
-        }).catch(err => {
-            console.error(err);
-        })
     }
 }
