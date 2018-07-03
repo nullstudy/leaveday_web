@@ -6,15 +6,16 @@
     
       <div v-for="(item,index) in showTodo" :key='item.title'>
         <li v-if="selected == item.status" class="list-group-item" @click="detailAtive(index)" >{{ item.title }}
-          <button type="button" class="close" aria-label="Close" @click="deleteDetail(index)">
+          <button type="button" class="close" aria-label="Close">
+          <!-- <button type="button" class="close" aria-label="Close" @click="deleteDetail(index)"> -->
               <span aria-hidden="true">&times;</span>
           </button>
         </li>
 
         <div class='content-tab' v-if="showTodo[index].active">
-          <tab  :tabs="tabs" :selected-tab="selectedTab" :i="index" v-on:@change="onClickTab"></tab>   
-          <list :selected-tab="selectedTab" :data="showTodo[index].detail" :i="index" v-on:@finish="onClickFinish" v-on:@reset="onClickReset">
-          <!-- <list :selected-tab="selectedTab" :data="value" :i="index" v-on:@finish="onClickFinish" v-on:@reset="onClickReset">   -->
+          <tab  :tabs="tabs" :selected-tab="selectedTab" :showIndex="index" v-on:@change="onClickTab"></tab>   
+          <list :selected-tab="selectedTab" :data="showTodo[index].detail" :showIndex="index" v-on:@finish="onClickFinish" v-on:@reset="onClickReset">
+          <!-- <list :selected-tab="selectedTab" :data="showTodo[index].detail" :showIndex="index" v-on:@finish="onClickFinish" v-on:@reset="onClickReset"> -->
           </list>  
         </div>
   
@@ -29,27 +30,21 @@ import { mapGetters, mapMutations, mapActions ,mapState } from 'vuex'
 import TabComponent from '~/components/todo/TabComponent.vue' //TabComponent 불러옴
 import ListComponent from '~/components/todo/ListComponent.vue' //ListComponent 불러옴
 export default {
+  async asyncData (context) {    
+    await context.store.dispatch('todo/getTodoList',context.store.getters.userInfo._id) // todoList, showTodo 불러오기 
+  },
   components: {
     'tab': TabComponent,
     'list': ListComponent
   },
-  async asyncData ({store}) {    
-    // await store.dispatch('getTodoList', store.getters.userInfo._id )
-    // console.log(store.getters.todoList)
-  },
-  created() { //vue 인스턴스가 생성된 후에 실행됨
-    var user_id = this.$store.getters.userInfo._id;
-    this.getTodoList(this.$store.getters.userInfo._id);
+  created() { 
     this.selectedTab = this.tabs[0]; //todo 탭 선택
-  },
-  mounted(){
   },
   data() { 
     return {
       tabs: ['todo', 'finish'],
       selectedTab: '',
       selected: 1,
-      value: null,
       options: [
         { value: 1, text: '진행 중' },
         { value: 2, text: '진행 전' },
@@ -68,8 +63,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      showTodo: 'todo/showTodoList',
-      token : 'token'
+      token : 'token',
+      showTodo: 'todo/showTodoList'
     })
   },
   methods : {
@@ -88,21 +83,22 @@ export default {
       // this.search(index);
     },
 
-    search(i) { //list 검색
+    search(data) { //list 검색
+      this.list(data);
       // this.list(this.selectedTab,i);
       // this.value = showTodo[i].detail
       // this.value = this.list(this.selectedTab,i);
     },
-    list(tab,i) {
-      // if(tab === 'todo') 
-      //   return this.showTodo[i].detail.filter( item => item.status === false)
+    list(data) {
+      if(data.tab === 'todo') 
+        return this.showTodo[data.index].detail.filter( item => item.status === false)
         
-      // if(tab === 'finish') 
-      //   return this.showTodo[i].detail.filter( item => item.status === true)
+      if(data.tab === 'finish') 
+        return this.showTodo[data.index].detail.filter( item => item.status === true)
     },
     onClickTab(data) { //tab 선택
       this.selectedTab = data.tab
-      // this.search(data.index)
+      this.search(data)
     },
 
     onClickFinish(item) { //todo 완료
@@ -112,8 +108,11 @@ export default {
       this.reset(item)
     }, 
     finish(data) {
-      // this.search(data.index);
-      this.$store.commit('todo/SET_CHANGTOTALTODO', {  status : true , index : data.index , _id : data._id }); 
+      // this.search(data.index);this.search(data)
+      this.$store.commit('todo/SET_CHANGTOTALTODO', {  status : true , index : data.index , _id : data._id });
+      this.$store.commit('todo/SET_SHOWTODO'); 
+      // console.log(this.showTodo)
+      // this.search(data)
       // this.search(data.index) 
       let updateData = {
         detail_id : data._id,
