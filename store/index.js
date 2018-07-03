@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 export const state = () => ({
     token : null,
     authenticated: null,
