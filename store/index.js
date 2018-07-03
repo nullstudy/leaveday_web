@@ -1,3 +1,4 @@
+import axios from 'axios';
 export const state = () => ({
     token : null,
     authenticated: null,
@@ -18,7 +19,6 @@ export const getters = {
     isLeave(state) {
         return state.isleave
     }
-
 }
 
 export const mutations = {
@@ -33,5 +33,14 @@ export const mutations = {
     },
     SET_ISLEAVE(state,payload) {
         state.isleave = payload.isleave
+    },
+    SET_TODO(state,payload) {
+        state.todoList = payload.todoList 
+    }
+}
+
+export const actions = {
+    setHeaderAuth({ commit }, token){
+        axios.defaults.headers.common.Authorization ='Bearer '+ token;
     }
 }

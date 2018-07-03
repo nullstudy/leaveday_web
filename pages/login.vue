@@ -1,10 +1,10 @@
 <template>
     <section class="container">
       <div class='loginButton'>
-        <b-button  id='google' variant="primary" :href="GOOGLE_AUTHURL">google Login</b-button>
+        <b-button  id='google' variant="primary" :href="GOOGLE_AUTHURL" style='color : white'>google Login</b-button>
       </div>
       <div class='loginButton' >
-        <b-button id='kakao' variant="primary" :href="KAKAO_AUTHURL">kakao Login</b-button>  
+        <b-button id='kakao' variant="primary" :href="KAKAO_AUTHURL" style='color : white'>kakao Login</b-button>  
       </div>
     </section>
 </template>
@@ -22,6 +22,8 @@ export default {
 </script>
 
 <style>
+
+
 .loginButton {
   margin : 10px;
 }

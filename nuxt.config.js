@@ -8,15 +8,20 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    script: [
+    
     ]
   },
   env: {
     // BACKEND_URL: 'https://www.leaveday.cf'
     BACKEND_URL: 'http://localhost:3001'
   },
+  
   plugins: [
-    { src: '~plugins/bootstrap-vue'},
+    // { src: '~plugins/bootstrap-vue' },
     { src: '~plugins/vue-material'},
+    // { src: '~/plugins/localStorage' },
     { src: '~plugins/vuejs-datepicker'},
     { src: '~plugins/fullcalendar' ,ssr: false }
   ],  
@@ -25,18 +30,7 @@ module.exports = {
     middleware: ['check-auth']
   },
   build: {
-    // extend (config, { isDev, isClient }) {
-    //   if (isDev && isClient) {
-    //     config.module.rules.push({
-    //       enforce: 'pre',
-    //       test: /\.(js|vue)$/,
-    //       loader: 'eslint-loader',
-    //       exclude: /(node_modules)/
-    //     })
-    //   }
-    // },
-    
     modules: ['bootstrap-vue/nuxt', ['bootstrap-vue/nuxt', { css: false }]],
-    vendor: ['bootstrap-vue','vue-fullcalendar']
+    vendor : ['bootstrap-vue','vue-fullcalendar']
   }
 }
