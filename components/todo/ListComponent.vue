@@ -3,12 +3,11 @@
     <ul class="list">
       <li v-for="(item, index) in showData" :key='index'>
         <span class="glyphicon glyphicon-asterisk"></span>
-        
         {{ item.todo }}
 
         <span class="todoBtn label label-primary"
           v-if="selectedTab === 'todo' && item.status == false" 
-          v-on:click="finishBtnClick(item)">
+          v-on:click="finishBtnClick(item,index)">
           <button type="button" class="close" aria-label="Close" >
               <span aria-hidden="true">&times;</span>
           </button>
@@ -24,43 +23,45 @@
 </template>
  
 <script>
+import { mapGetters, mapMutations, mapActions ,mapState } from 'vuex'
 export default {
-  props: ['data','i','selectedTab'],
-  
+  props: ['data','showIndex','selectedTab','test'],
   mounted(){
-    if(this.selectedTab === 'todo'){
-      this.showData = this.data.filter(item => item.status === false)
-    }else{
-      this.showData = this.data.filter(item => item.status === true )
-    }
+    this.todoFilter();
   },
   watch : {
-    selectedTab : function() { 
+    selectedTab : function() {
+      this.todoFilter();
+    },
+    data: {
+      handler: function () {
+        this.todoFilter();
+      },
+      deep: true
+    }
+    
+  },
+  methods: {
+    finishBtnClick(item,index) {
+      item.index = this.showIndex;
+      this.$emit('@finish',item);
+    },
+    resetBtnClick(item) {
+      item.index = this.showIndex;
+      this.$emit('@reset', item);
+    },
+    todoFilter(){
       if(this.selectedTab === 'todo'){
-        this.showData = this.data.filter(item => item.status === false)
+          this.showData = this.data.filter(item => item.status === false)
       }else{
         this.showData = this.data.filter(item => item.status === true )
       }
     }
   },
-  methods: {
-    finishBtnClick(item) {
-      item.index = this.i
-      this.$emit('@finish',item)
-    },
-    resetBtnClick(item) {
-      item.index = this.i
-      this.$emit('@reset', item)
+  data(){
+    return {
+      showData : {...this.data }
     }
-  },
-  computed : {
-    todo : function(index) {
-    }
-  },
- data(){
-   return {
-     showData : ''
-   }
  }
 }
 </script>
