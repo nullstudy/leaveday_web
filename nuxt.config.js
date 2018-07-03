@@ -20,12 +20,8 @@ module.exports = {
   
   plugins: [
     // { src: '~plugins/bootstrap-vue' },
-<<<<<<< HEAD
     // { src: '~plugins/vue-material'},
     { src: '~/plugins/localStorage' },
-    { src: '~plugins/vue-material'},
-=======
->>>>>>> feature/todoList
     // { src: '~/plugins/localStorage' },
     { src: '~plugins/vue-material'},
     { src: '~plugins/vuejs-datepicker'},
