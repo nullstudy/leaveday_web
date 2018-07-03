@@ -1,11 +1,11 @@
 <template>
-    <div>
-        <div class="container">
+    <div class='wrap-todo-create'>
+        <div class="container-todo">
             <br><hr>
-            <h2>MyLog 생성</h2>
+            <h1>MyLog 생성</h1>
             <hr>
-            시작일 <md-datepicker v-model="startDT"/>
-            종료일 <md-datepicker v-model="endDT"/>
+             <p>시작 일</p><md-datepicker v-model="startDT"/>
+             <p>종료 일</p> <md-datepicker v-model="endDT"/>
             <div class="input-group" style="margin-bottom:10px;">
                 <input type="text" class="form-control" 
                     placeholder="제목(대분류)" 
@@ -37,7 +37,7 @@
                     </div>
                 </li>
 
-                <li class="list-group-item" v-for="(detail, index) in details" >
+                <li class="list-group-item" v-for="(detail, index) in details" :key="detail.todo" >
                 {{ detail.todo }}
                     <button type="button" class="close" aria-label="Close" @click="deleteDetail(index)">
                         <span aria-hidden="true">&times;</span>
@@ -48,8 +48,10 @@
                     <md-button class="md-raised md-primary"  @click='todoInsert'>생성</md-button>
                     <md-button class="md-raised md-primary" >취소</md-button>
                 </div>
+          
             </ul>
         </div>
+      
         <no-ssr>
             <md-dialog-prompt        
             :md-active.sync="active"
@@ -64,15 +66,15 @@
 
 <script>
 import axios from 'axios';
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex';
+import VueMaterial from 'vue-material';
+
 export default {
     name: 'TodoPage',
     data () {
         return {
             todoTitle : null,
-            details : [
-
-            ],
+            details : [],
             istodos : false,
             name : null,
             active: false,
@@ -81,6 +83,9 @@ export default {
         }
     },
     methods:{
+        ...mapActions({
+            setHeader: 'setHeaderAuth'
+        }),
         deleteTodo(){
             this.todoTitle = null;
             this.details = [];
@@ -109,6 +114,7 @@ export default {
                 detail : this.details
             }
             axios.defaults.headers.common.Authorization ='Bearer '+ this.token;
+            await this.setHeader(this.token)
             await axios.post(process.env.BACKEND_URL + '/todoCreate', todoData )
             .then(response => {
                 return this.$router.push('/todoList');
@@ -126,10 +132,24 @@ export default {
 </script>
 
 <style scoped>
-    .container{
+    /* @import 'bootstrap/dist/css/bootstrap.css'; */
+    /* @import 'bootstrap-vue/dist/bootstrap-vue.css'; */
+    @import 'vue-material/dist/theme/default.css';
+    @import 'vue-material/dist/vue-material.min.css';
+    
+    
+    .wrap-todo-create {
         position: relative;
-        top: 60px;
-        height: 1000px;
+        top: 48px;
+        /* background: gray;    */
+    }
+    .container-todo {
+        width:80%;
+        margin: 0 auto;
+        background: white;
+    }
+    h1,p {
+        padding-left: 10px;
     }
     #todo-title{
         font-size: 1.5rem;
@@ -138,7 +158,4 @@ export default {
     .todo_create_btn {
         margin : 0 auto;
     }
-    /* .todo_create_btn md-button {
-        width: 300px;
-    } */
 </style>

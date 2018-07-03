@@ -1,6 +1,6 @@
 <template>
     <div class='wrap'>
-        <b-modal id="modal1" 
+        <b-modal id="modal1"
             hide-footer
             title="LeaveDay 등록"
             ref="myModalRef"
@@ -9,7 +9,7 @@
             :body-bg-variant="bodyBgVariant"
             :body-text-variant="bodyTextVariant">
             <b-container fluid>
-                <b-row class="mb-1" v-if="this.isleave" >    
+                <b-row class="mb-1" v-if="this.isleave">
                     입사 일 : <b-col cols="5">{{ this.startDT }} </b-col>
                 </b-row>
                 <b-row class="mb-1" v-if="this.isleave">    
@@ -29,16 +29,26 @@
 <script>
 
 import axios from 'axios';
-import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { setCookie } from '~/util/auth'
+import { mapGetters, mapMutations, mapActions } from 'vuex';
+import { setCookie } from '~/util/auth';
 
 export default {     
-    props: ['userInfo'],
+    props: {
+        userInfo : {
+            type : Object,
+            require : true,
+            default : function() {
+                return {
+
+                }
+            }
+        }
+    },
     data() {
         let createDT; let startDT; let endDT; let leaveCount;
-        this.userInfo.startDT ? startDT = this.dateFormat(this.userInfo.startDT) : startDT = new Date()
-        this.userInfo.endDT ? endDT = this.dateFormat(this.userInfo.endDT) : endDT = new Date()
-        this.userInfo.leaveCount ? leaveCount = this.userInfo.leaveCount : leaveCount = null
+        this.userInfo.startDT ? startDT = this.dateFormat(this.userInfo.startDT) : startDT = new Date();
+        this.userInfo.endDT ? endDT = this.dateFormat(this.userInfo.endDT) : endDT = new Date();
+        this.userInfo.leaveCount ? leaveCount = this.userInfo.leaveCount : leaveCount = null;
         return {
             startDT : startDT,
             endDT : endDT,
