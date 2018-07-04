@@ -75,7 +75,6 @@ export default {
             let total = Math.ceil(diff / (1000 * 3600 * 24))+1;
             return ((total - this.userInfo.leaveCount )/ total ) * 100
         }
-
     }
 }
 </script>

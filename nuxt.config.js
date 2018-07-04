@@ -22,7 +22,6 @@ module.exports = {
     // { src: '~plugins/bootstrap-vue' },
     // { src: '~plugins/vue-material'},
     { src: '~/plugins/localStorage' },
-    // { src: '~/plugins/localStorage' },
     { src: '~plugins/vue-material'},
     { src: '~plugins/vuejs-datepicker'},
     { src: '~plugins/fullcalendar' ,ssr: false }

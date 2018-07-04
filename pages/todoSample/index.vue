@@ -5,6 +5,7 @@
     <header>
       <h2 calss="container">Todo</h2>
     </header>
+
     <div calss="container">
       <add-form v-bind:value="query" v-on:@submit="onInputTodo"></add-form>
       <!-- FormComponent.vue에서 inputValue에 넣어준 value를 v-bind가 App.vue의 query와 바인딩해줌 -->

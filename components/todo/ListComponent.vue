@@ -38,7 +38,6 @@ export default {
       },
       deep: true
     }
-    
   },
   methods: {
     finishBtnClick(item,index) {
@@ -59,8 +58,38 @@ export default {
   },
   data(){
     return {
-      showData : {...this.data }
+      showData : { ...this.data }
     }
  }
 }
 </script>
+
+<style>
+.list li {
+  box-sizing: border-box;
+  display: block;
+  padding: 15px;
+  border-bottom: 1px solid #ccc;
+  position: relative;
+}
+.list li:last-child {
+  border-bottom: none;
+}
+.list li .number{
+  margin-right: 15px;
+  color: #ccc;
+}
+.list li .date{
+  position: absolute;
+  right: 50px;
+  top: 15px;
+  margin-right: 15px;
+  color: #ccc;
+}
+.list li .btn-remove{
+  position: absolute;
+  right: 0px;
+  top: 15px;
+  margin-right: 15px;
+}
+</style>
