@@ -1,7 +1,9 @@
 <template>
+<div>
     <no-ssr class='main-calendar'>
         <full-calendar :events="demoEvents" ></full-calendar>
     </no-ssr>
+</div>
 </template>
 
 <script>
@@ -47,10 +49,6 @@ export default {
 </script>
 
 <style>
-    .m-calendar {
-        width : 1200px;
-        height: 685px;
-    }
     .class1{
         color: black !important;
         background-color: green !important;
@@ -72,6 +70,7 @@ export default {
         background-color: red !important;
     }
     .main-calendar{
+        border: 1px solid red;
         position: relative;
         top:30px;
     }

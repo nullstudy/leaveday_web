@@ -3,7 +3,7 @@
       <section class="intro">
         <div class='todo-title-select'>
           <h1>TodoList
-            <div class='todo-select'><b-form-select v-model="selected" :options="options"/></div></h1>
+            <div class='todo-select-div'><b-form-select class='todo-select'  v-model="selected" :options="options"/></div></h1>
         </div>
       </section>
 
@@ -27,7 +27,11 @@
         
       </div>
 
-
+        <!-- <div class="md-list-item-text">
+          <span>Ali Connors</span>
+          <span>Brunch this weekend?</span>
+          <p>I'll be in your neighborhood doing errands this week. Do you want to meet?</p>
+        </div> -->
 
 
     </div>
@@ -144,7 +148,7 @@ export default {
 <style>
   /* @import 'bootstrap/dist/css/bootstrap.css'; */
   /* @import 'bootstrap-vue/dist/bootstrap-vue.css'; */
-.todo-select{
+.todo-select-div{
   display: inline;
   float: right;
   widtH: 85%;
@@ -242,4 +246,16 @@ form {
   float: right;
   margin: 2px;
 }
+
+@media (min-width: 792px) {
+  .todo-select-div {
+    width:80%
+  }
+}
+@media (max-width: 768px) {
+  .todo-select-div {
+    width:60%;
+  }
+}
+
 </style>

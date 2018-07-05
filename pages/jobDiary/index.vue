@@ -112,13 +112,15 @@
 
 <style>
     @import 'bootstrap/dist/css/bootstrap.css';
+    /* @import 'bootstrap-vue/dist/bootstrap-vue.css'; */
     body {
         background-color: white;
     }
+    
     .breadcrumb{
         margin-top: 2%;
     }
-    
+
     a.btn_b01 {
         display: inline-block;
         padding: 7px;

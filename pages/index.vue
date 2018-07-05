@@ -4,6 +4,7 @@
       <div class='main-content-banner'>
         <main-banner :userInfo="userInfo" />
       </div>
+      
       <calendar v-if="userInfo" />
     </div>
 </template>

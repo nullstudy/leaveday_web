@@ -2,7 +2,7 @@
     <div>
         <table id="calendar"  border="3" align="center" width="800" height="500"  >
             <tr>
-                <td align ="center"> <label onclick="prevClaendar()"></label> </td>
+                <td align ="center"> <label onclick="prevClaendar()"></label>""</td>
                 <td colspan="5" align ="center" id="calendarYM">yyyy년 m월</td>
                 <td align ="center"> <label onclick="nextCalendar()">></label> </td>
             </tr>

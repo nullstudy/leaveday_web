@@ -91,7 +91,6 @@ export default {
     },
     methods: {
         diaryCreate() {
-            
             let diaryData = {
                 title : String(this.formData.title),
                 content : String(this.formData.content),
@@ -112,7 +111,6 @@ export default {
         token : 'token',
       })
     }
-    
 }
 </script>
     

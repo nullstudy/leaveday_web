@@ -15,43 +15,40 @@
 
 <script>
 
-    export default {
-        props : [
-            'page','pageData'
-        ],
-        data() {
-            console.log('webhook Test!!!')
-            return {
-                currentPage : 0
-            }
-        },
-        methods:{
-            classActive(pageNumber){
-                this.pageData[this.currentPage].active = false;
-                this.currentPage = pageNumber;
-                this.pageData[pageNumber].active = true;
-                this.$emit('@change', pageNumber);
-            }
+export default {
+    props : [
+        'page','pageData'
+    ],
+    data() {
+        return {
+            currentPage : 0
+        }
+    },
+    methods:{
+        classActive(pageNumber){
+            this.pageData[this.currentPage].active = false;
+            this.currentPage = pageNumber;
+            this.pageData[pageNumber].active = true;
+            this.$emit('@change', pageNumber);
         }
     }
+}
 </script>
 
-
-
 <style>
-    .pagination {
-        align-items: center; 
-        justify-content: center;
-    }
+.pagination {
+    align-items: center; 
+    justify-content: center;
+}
 
-    .pagination a {
-        color: black;
-        float: left;
-        padding: 8px 16px;
-        text-decoration: none;
-        transition: background-color .3s;
-    }
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
 
-    .pagination a:hover:not(.active) {background-color: #ddd;}
+.pagination a:hover:not(.active) {background-color: #ddd;}
 </style>
 
