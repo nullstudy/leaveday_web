@@ -1,34 +1,27 @@
 <template>
-    <table id="calendar" border="3" align="center">
-        <thead>
-            <tr>
-                <td><label @click="subtractMonth()">{{ arrow }}</label></td>
-                <td align="center" id="tbCalendarYM" colspan="5"><h4>{{ month + ' - ' + year }}</h4></td>
-                <td><label @click="addMonth()">></label></td>
-            </tr>
-            
-            <tr>
-                <td align="center" style="color : red">일</td>
-                <td align="center">월</td>
-                <td align="center">화</td>
-                <td align="center">수</td>
-                <td align="center">목</td>
-                <td align="center">금</td>
-                <td align="center" style="color : skyblue" >토</td>
-            </tr>
- <!-- :class="{'current-day': date == initialDate &amp;&amp; month == initialMonth && year == initialYear}" -->
+     <div class="calendar">
+        <div class="calendar-header">
+            <label class="fa fa-fw fa-chevron-left" @click="subtractMonth">{{arrow}}</label>
+            <h4>{{month + ' - ' + year}}</h4>
+            <label class="fa fa-fw fa-chevron-right" @click="addMonth">></label>
+        </div>
+
+        <div class="weekdays">
+            <li v-for="day in days" :key='day'> {{ day }}</li>
+        </div>
         
+        <br>
 
-        <!-- <tbody> -->
-            <div class='calendar-div' v-for="date in daysInMonth"  :key='date'>
-
-            </div>
-            <!-- <td>{{ date }}</td> -->
-            <!-- <tr v-if='date%7==0'></tr> -->
-        <!-- </tbody> -->
-        </thead>
-    
-    </table>
+        <div class="dates">        
+            <li v-for='item in  rate' >
+                <span v-show='false'>{{ item }}</span>
+            </li>
+            <li v-for="date in daysInMonth"   @click='test(date)'
+                 :class="{'current-day': date == initialDate &amp;&amp; month == initialMonth && year == initialYear}">
+                {{ date }}
+            </li>
+        </div>
+    </div>
 
 </template>
 
@@ -39,6 +32,7 @@ import moment from 'moment'
 export default {
     data(){
         return{
+            rate:4,
             arrow: "<",
             today: moment(new Date),
             dateContext: moment(new Date),
@@ -57,7 +51,6 @@ export default {
         //Previous Code Above
         daysInMonth: function () {
             var t = this;
-            console.log(t.dateContext.daysInMonth())
             return t.dateContext.daysInMonth();
         },
         currentDate: function () {
@@ -101,20 +94,48 @@ export default {
 
 <style>
 @import 'bootstrap/dist/css/bootstrap.css';
+.calendar-header{
+    margin: 20px;
+}
+.calendar li {
+    list-style-type: none;
+    display: inline-block;
+}
 
-td {
-    width: 100px;
-    height: 100px;
+h4 {
+    display: inline;    
+}
+.calendar-header{
     text-align: center;
-    font-size: 20px;
-    font-family: 굴림;
-    border:2px;
-    border-color:#3333FF;
-    border-radius: 8px;
+}
+.weekdays {
+    margin: 0;
+    padding: 10px 0;
+    background-color:#ddd;
 }
 
-.calendar-div{
-    display: inline
+.weekdays li {
+    width: 13.6%;
+    color: #666;
+    text-align: center;
 }
+
+
+.dates {
+    padding: 10px 0;
+    background-color: write;
+    margin: 0;
+}
+
+.dates li {
+    width: 13.6%;
+    height: 50px;
+    text-align: center;
+    margin-bottom: 5px;
+    font-size:12px;
+    color:black;
+}
+
+/* Highlight the "current" day */
 
 </style>

@@ -2,31 +2,30 @@
     <div>
         <p></p>
         <h3 align="center">★Jerry의 달력★</h3>
-        <div class='calendar-div'>
-            <table id="calendar" border="3" align="center" style="border-color:#3333FF ">
-                <thead>
-                    <tr>
-                        <td><label @click="prevCalendar()">{{ arrow }}</label></td>
-                        <td align="center" id="tbCalendarYM" colspan="5">yyyy년 m월</td>
-                        <td><label @click="nextCalendar()">></label></td>
-                    </tr>
-                    
-                    <tr>
-                        <td align="center" style="color : red">일</td>
-                        <td align="center">월</td>
-                        <td align="center">화</td>
-                        <td align="center">수</td>
-                        <td align="center">목</td>
-                        <td align="center">금</td>
-                        <td align="center" style="color : skyblue" >토</td>
-                    </tr>
-                </thead>                 
-            </table>
-        </div>
+        <table id="calendar" border="3" align="center" style="border-color:#3333FF ">
+            <thead>
+                <tr>
+                    <td><label @click="prevCalendar()">{{ arrow }}</label></td>
+                    <td align="center" id="tbCalendarYM" colspan="5">yyyy년 m월</td>
+                    <td><label @click="nextCalendar()">></label></td>
+                </tr>
+                
+                <tr>
+                    <td align="center" style="color : red">일</td>
+                    <td align="center">월</td>
+                    <td align="center">화</td>
+                    <td align="center">수</td>
+                    <td align="center">목</td>
+                    <td align="center">금</td>
+                    <td align="center" style="color : skyblue" >토</td>
+                </tr>
+            </thead>                 
+        </table>
     </div>
 </template>
 
 <script>
+import 'expose-loader?$!expose-loader?jQuery!jquery'
 export default {   
     mounted() {
         this.buildCalendar();
@@ -39,6 +38,9 @@ export default {
         }
     },
     methods: {
+        test(){
+            console.log('ggggg')
+        },
         prevCalendar() {//이전 달
             // 이전 달을 today에 값을 저장하고 달력에 today를 넣어줌
             //today.getFullYear() 현재 년도//today.getMonth() 월  //today.getDate() 일 
@@ -100,7 +102,7 @@ export default {
             for (var i=1; i<=lastDate.getDate(); i++) {
                 // 1일부터 마지막 일까지 돌림
                 cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
-                cell.innerHTML = i;//셀을 1부터 마지막 day까지 HTML 문법에 넣어줌
+                cell.innerHTML = "<div id= tr"+ i +">"+  i + "</div>";//셀을 1부터 마지막 day까지 HTML 문법에 넣어줌
                 cnt = cnt + 1;//열의 갯수를 계속 다음으로 위치하게 해주는 역할
                 if (cnt % 7 == 1) {/*일요일 계산*/
                     //1주일이 7일 이므로 일요일 구하기
@@ -126,14 +128,17 @@ export default {
         }
     }
 }
+
 </script>
 
 <style>
 @import 'bootstrap/dist/css/bootstrap.css';
+
 div {
     position: relative;
 }
-td{
+
+td {
     width: 100px;
     height: 100px;
     text-align: center;
@@ -144,12 +149,9 @@ td{
     border-radius: 8px;
 }
 
-.calendar-div{
+.calendar-div {
     display: inline;
     border: 2px solid #3333ff
 }
-    
-
-
-        
+          
 </style>
