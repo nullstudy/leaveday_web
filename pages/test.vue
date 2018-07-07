@@ -2,7 +2,7 @@
      <div class="calendar">
         <div class="calendar-header">
             <label class="fa fa-fw fa-chevron-left" @click="subtractMonth">{{arrow}}</label>
-            <h4>{{month + ' - ' + year}}</h4>
+            <h4>{{ month + ' - ' + year }}</h4>
             <label class="fa fa-fw fa-chevron-right" @click="addMonth">></label>
         </div>
 
@@ -13,12 +13,18 @@
         <br>
 
         <div class="dates">        
-            <li v-for='item in  rate' >
-                <span v-show='false'>{{ item }}</span>
+            
+            <li v-for='item in  rate'>
+                <span style='color : LightGray' >{{ beforeLastDate - ( rate-item )}}</span>
             </li>
-            <li v-for="date in daysInMonth"   @click='test(date)'
+
+            <li v-for="date in daysInMonth" :key='date'  @click='test(date)'
                  :class="{'current-day': date == initialDate &amp;&amp; month == initialMonth && year == initialYear}">
-                {{ date }}
+                {{ date }} 
+            </li>
+
+            <li v-for='item in  6-lastDate' style='color : LightGray'>
+                <span>{{ item }}</span>
             </li>
         </div>
     </div>
@@ -31,9 +37,20 @@ import moment from 'moment'
 
 export default {
     data(){
+        var dayCheck = new Array(0,1,2,3,4,5,6);
+        var today = new Date()
+        // 현재달 1일 요일 
+        var currentMonth = new Date(today.getFullYear(),today.getMonth(),1).getDay();
+        var todayLabel = dayCheck[currentMonth];
+        var lastDate = new Date(today.getFullYear(),today.getMonth()+1,0).getDay(); //이번달 마지막날
+        var beforeLastDate = new Date(today.getFullYear(),today.getMonth(),0).getDate(); // 저번달 마지막날
+        
         return{
-            rate:4,
+            beforeLastDate : beforeLastDate,
+            rate: todayLabel,
+            lastDate : lastDate,
             arrow: "<",
+            currentMonth : moment().month(),
             today: moment(new Date),
             dateContext: moment(new Date),
             days: ['일', '월', '화', '수', '목', '금', '토'],
@@ -81,10 +98,29 @@ export default {
             alert(date)
         },
         addMonth: function () {
+            
+            var dayCheck = new Array(0,1,2,3,4,5,6);
+            var today = new Date()
+
+            this.currentMonth = this.currentMonth+1;
+            var currentMonth = new Date(today.getFullYear(),this.currentMonth,1).getDay();
+            this.rate = dayCheck[currentMonth];
+            this.lastDate = new Date(today.getFullYear(),this.currentMonth+1,0).getDay() // 이번달 마지막날 
+            this.beforeLastDate = new Date(today.getFullYear(),this.currentMonth,0).getDate(); // 저번달 마지막날
+            
+
             var t = this;
             t.dateContext = moment(t.dateContext).add(1, 'month');
         },
         subtractMonth: function () {
+            var dayCheck = new Array(0,1,2,3,4,5,6);
+            var today = new Date()
+            this.currentMonth = this.currentMonth-1;
+            var currentMonth = new Date(today.getFullYear(),this.currentMonth,1).getDay();
+            this.rate = dayCheck[currentMonth];
+
+            this.lastDate = new Date(today.getFullYear(),this.currentMonth+1,0).getDay() // 이번달 마지막날 
+            this.beforeLastDate = new Date(today.getFullYear(),this.currentMonth,0).getDate(); // 저번달 마지막날
             var t = this;
             t.dateContext = moment(t.dateContext).subtract(1, 'month');
         }
