@@ -33,30 +33,54 @@
 
 <script>
 import moment from 'moment'
-// var moment = require('moment');
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
+    create(){
+        // axios.defaults.headers.common.Authorization ='Bearer '+ this.token;
+        // axios.get( process.env.BACKEND_URL +'/jobDiary').then( 
+        //     res => {
+        //         this.total = res.data.data[0].recordCount;
+        //         this.$store.commit('SET_DIARY', { jobDiary : res.data.data });
+        //         this.$store.commit('SET_PAGE', { page : Math.ceil(res.data.data[0].recordCount/10)});
+        //         for(var i=0; i<this.$store.getters.page; i++){
+        //             if(fpage == i+1 ) {
+        //                 this.pageData.push( {number : i+1 , active: true })
+        //             } else {
+        //                 this.pageData.push( {number : i+1 , active: false })
+        //             }
+        //         }
+        //     }
+        // ).catch(err => {
+        //     console.log(err)
+        // })
+    },
     data(){
         var dayCheck = new Array(0,1,2,3,4,5,6);
-        var today = new Date()
-        // 현재달 1일 요일 
-        var currentMonth = new Date(today.getFullYear(),today.getMonth(),1).getDay();
+        var today = new Date()        
+        var currentMonth = new Date(today.getFullYear(),today.getMonth(),1).getDay(); // 현재달 1일 요일 
         var todayLabel = dayCheck[currentMonth];
         var lastDate = new Date(today.getFullYear(),today.getMonth()+1,0).getDay(); //이번달 마지막날
         var beforeLastDate = new Date(today.getFullYear(),today.getMonth(),0).getDate(); // 저번달 마지막날
-        
+    // beforeLastDate - rate 저번달 ~   다음달 6-lastDate
         return{
-            beforeLastDate : beforeLastDate,
+            beforeLastDate : beforeLastDate, //저번달 마지막 날짜 
             rate: todayLabel,
-            lastDate : lastDate,
+            lastDate : lastDate, // 현재 마지막 날짜
             arrow: "<",
-            currentMonth : moment().month(),
+            currentMonth : moment().month(), //현재달 
             today: moment(new Date),
             dateContext: moment(new Date),
             days: ['일', '월', '화', '수', '목', '금', '토'],
         }
     },
     computed: {
+        ...mapGetters({
+            token : 'token',
+            diary : 'jobDiary',
+            page : 'page',
+            userInfo : 'userInfo'
+        }),
         year: function () {
             var t = this;
             return t.dateContext.format('Y');
@@ -95,34 +119,26 @@ export default {
     },
     methods: {
         test(date){
-            alert(date)
+            alert(date);
         },
         addMonth: function () {
-            
-            var dayCheck = new Array(0,1,2,3,4,5,6);
-            var today = new Date()
-
-            this.currentMonth = this.currentMonth+1;
-            var currentMonth = new Date(today.getFullYear(),this.currentMonth,1).getDay();
-            this.rate = dayCheck[currentMonth];
-            this.lastDate = new Date(today.getFullYear(),this.currentMonth+1,0).getDay() // 이번달 마지막날 
-            this.beforeLastDate = new Date(today.getFullYear(),this.currentMonth,0).getDate(); // 저번달 마지막날
-            
-
+            this.common(1);
             var t = this;
             t.dateContext = moment(t.dateContext).add(1, 'month');
         },
         subtractMonth: function () {
-            var dayCheck = new Array(0,1,2,3,4,5,6);
-            var today = new Date()
-            this.currentMonth = this.currentMonth-1;
-            var currentMonth = new Date(today.getFullYear(),this.currentMonth,1).getDay();
-            this.rate = dayCheck[currentMonth];
-
-            this.lastDate = new Date(today.getFullYear(),this.currentMonth+1,0).getDay() // 이번달 마지막날 
-            this.beforeLastDate = new Date(today.getFullYear(),this.currentMonth,0).getDate(); // 저번달 마지막날
+            this.common(-1);
             var t = this;
             t.dateContext = moment(t.dateContext).subtract(1, 'month');
+        },
+        common(data){
+            var dayCheck = new Array(0,1,2,3,4,5,6);
+            var today = new Date();
+            this.currentMonth = this.currentMonth + data;
+            var currentMonth = new Date(today.getFullYear(),this.currentMonth,1).getDay();
+            this.rate = dayCheck[currentMonth];
+            this.lastDate = new Date(today.getFullYear(),this.currentMonth+1,0).getDay() // 이번달 마지막날 
+            this.beforeLastDate = new Date(today.getFullYear(),this.currentMonth,0).getDate(); // 저번달 마지막날
         }
     }
 }    
