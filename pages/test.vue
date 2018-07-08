@@ -1,32 +1,34 @@
 <template>
      <div class="calendar">
         <div class="calendar-header">
-            <label class="fa fa-fw fa-chevron-left" @click="subtractMonth">{{arrow}}</label>
+            <label class="fa fa-fw fa-chevron-left" @click="subtractMonth"> <strong><<</strong></label>
             <h4>{{ month + ' - ' + year }}</h4>
-            <label class="fa fa-fw fa-chevron-right" @click="addMonth">></label>
+            <label class="fa fa-fw fa-chevron-right" @click="addMonth"><strong>>></strong></label>
         </div>
 
         <div class="weekdays">
-            <li v-for="day in days" :key='day'> {{ day }}</li>
+            <li v-for="day in days" :key='day'>{{ day }}</li>
         </div>
-        
-        <br>
-
+    
         <div class="dates">        
-            
-            <li v-for='item in  rate'>
-                <span style='color : LightGray' >{{ beforeLastDate - ( rate-item )}}</span>
+            <li class='dates-date' v-for='item in  rate'>
+                <span class='dates-li' style='color : LightGray' >{{ beforeLastDate - ( rate-item )}}</span>
             </li>
-
-            <li v-for="date in daysInMonth" :key='date'  @click='test(date)'
+ 
+            <li class='dates-date' v-for="date in daysInMonth" :key='date'  @click="test(year,month,date)"
                  :class="{'current-day': date == initialDate &amp;&amp; month == initialMonth && year == initialYear}">
-                {{ date }} 
+                <!-- <component  :is="currentView" :item="park" v-if="park == new Date(year+month+date)" > </component> -->
+                <component  :is="currentView" :item="park" v-if="park.year == year && park.month == month && park.day == date" > </component>
+                <span class='dates-li'  >{{ date }}</span>
             </li>
+            
 
-            <li v-for='item in  6-lastDate' style='color : LightGray'>
-                <span>{{ item }}</span>
+            <li class='dates-date' v-for='item in  6-lastDate' style='color : LightGray'>
+                <span class='dates-li'>{{ item }}</span>
             </li>
         </div>
+
+        
     </div>
 
 </template>
@@ -34,36 +36,36 @@
 <script>
 import moment from 'moment'
 import { mapGetters, mapMutations, mapActions } from 'vuex';
-
+import MenuBar from '@/components/jobDiary/MenuBar';
+// import RightMenu from '@/components/jobDiary/rightMenu'
+import axios from 'axios';
 export default {
-    create(){
-        // axios.defaults.headers.common.Authorization ='Bearer '+ this.token;
-        // axios.get( process.env.BACKEND_URL +'/jobDiary').then( 
-        //     res => {
-        //         this.total = res.data.data[0].recordCount;
-        //         this.$store.commit('SET_DIARY', { jobDiary : res.data.data });
-        //         this.$store.commit('SET_PAGE', { page : Math.ceil(res.data.data[0].recordCount/10)});
-        //         for(var i=0; i<this.$store.getters.page; i++){
-        //             if(fpage == i+1 ) {
-        //                 this.pageData.push( {number : i+1 , active: true })
-        //             } else {
-        //                 this.pageData.push( {number : i+1 , active: false })
-        //             }
-        //         }
-        //     }
-        // ).catch(err => {
-        //     console.log(err)
-        // })
+    created(){
+        let today = new Date();
+        let findData = { 
+            startDT : new Date(today.getFullYear(),today.getMonth(),-this.rate+1),
+            endDT : new Date(today.getFullYear(),today.getMonth()+1,6-this.lastDate+1) 
+        }
+        this.setHeader(this.token)
+        this.$store.dispatch('diary/getMaindiary',findData)
+    },
+    components : {
+        'menu-bar' : MenuBar
     },
     data(){
-        var dayCheck = new Array(0,1,2,3,4,5,6);
-        var today = new Date()        
-        var currentMonth = new Date(today.getFullYear(),today.getMonth(),1).getDay(); // 현재달 1일 요일 
-        var todayLabel = dayCheck[currentMonth];
-        var lastDate = new Date(today.getFullYear(),today.getMonth()+1,0).getDay(); //이번달 마지막날
-        var beforeLastDate = new Date(today.getFullYear(),today.getMonth(),0).getDate(); // 저번달 마지막날
-    // beforeLastDate - rate 저번달 ~   다음달 6-lastDate
+        let dayCheck = new Array(0,1,2,3,4,5,6);
+        let today = new Date()        
+        let currentMonth = new Date(today.getFullYear(),today.getMonth(),1).getDay(); // 현재달 1일 요일 
+        let todayLabel = dayCheck[currentMonth];
+        let lastDate = new Date(today.getFullYear(),today.getMonth()+1,0).getDay(); //이번달 마지막날
+        let beforeLastDate = new Date(today.getFullYear(),today.getMonth(),0).getDate(); // 저번달 마지막날
         return{
+            park:{
+                year: null,
+                month: null,
+                day: null
+            },
+            currentView: null,
             beforeLastDate : beforeLastDate, //저번달 마지막 날짜 
             rate: todayLabel,
             lastDate : lastDate, // 현재 마지막 날짜
@@ -79,6 +81,7 @@ export default {
             token : 'token',
             diary : 'jobDiary',
             page : 'page',
+            mainDiary : 'diary/mainDiary',
             userInfo : 'userInfo'
         }),
         year: function () {
@@ -118,8 +121,15 @@ export default {
         }
     },
     methods: {
-        test(date){
-            alert(date);
+        ...mapActions({
+            setHeader: 'setHeaderAuth'
+        }),
+        test(y,m,d){
+            this.park.year = y
+            this.park.month = m
+            this.park.day = d
+            console.log(this.park)
+            this.currentView = "menu-bar" 
         },
         addMonth: function () {
             this.common(1);
@@ -146,9 +156,11 @@ export default {
 
 <style>
 @import 'bootstrap/dist/css/bootstrap.css';
+
 .calendar-header{
     margin: 20px;
 }
+
 .calendar li {
     list-style-type: none;
     display: inline-block;
@@ -157,37 +169,54 @@ export default {
 h4 {
     display: inline;    
 }
+
 .calendar-header{
     text-align: center;
 }
+
 .weekdays {
-    margin: 0;
-    padding: 10px 0;
-    background-color:#ddd;
+    display:table; 
+    width:100%; 
+    border-collapse:collapse;
 }
 
 .weekdays li {
+    display:table-cell;
+    box-sizing:border-box;
     width: 13.6%;
-    color: #666;
+    background-color: white;
     text-align: center;
+    font-weight: bold;
+    border: 1px solid #e0e0e0;;
 }
 
-
 .dates {
-    padding: 10px 0;
+    width:100%; 
     background-color: write;
-    margin: 0;
 }
 
 .dates li {
-    width: 13.6%;
-    height: 50px;
-    text-align: center;
-    margin-bottom: 5px;
-    font-size:12px;
+    width: 14.28%;
+    height: 100px;
+    text-align: right;
+    font-size:15px;
+    font-weight: bold;
     color:black;
+    border: 1px solid #e0e0e0;;
+    border-right:0px 
+}
+.dates-date:nth-child(7n) {
+    border-right:1px solid #e0e0e0;;
+    color : rebeccapurple;
+}
+.dates-date:nth-child(7n+1) {
+    color : red;
 }
 
+
+.dates-li{
+    margin-right: 3%;
+}
 /* Highlight the "current" day */
 
 </style>

@@ -46,7 +46,7 @@
     export default {
         created(){
             let fpage;
-            this.$route.query.page ? fpage = this.$route.query.page : fpage = 1
+            this.$route.query.page ? fpage = this.$route.query.page : fpage = 1;
             axios.defaults.headers.common.Authorization ='Bearer '+ this.token;
             axios.get( process.env.BACKEND_URL +'/jobDiary?page='+fpage).then( 
                 res => {
