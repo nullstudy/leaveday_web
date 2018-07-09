@@ -17,7 +17,8 @@
  
             <li class='dates-date' v-for="date in daysInMonth" :key='date'  @click="createDiary(year,month,date)"
                  :class="{'current-day': date == initialDate &amp;&amp; month == initialMonth && year == initialYear}">
-                <component  :is="currentView" :item="park" v-if="park.year == year && park.month == month && park.day == date" > </component>
+
+                <component  :is="currentView" :item="park" v-if="park.year == year && park.month == month && park.day == date && park.full" > </component>
 
                 <span @click='diaryActive(year,month,date)'> {{ showDiary(year,month,date) }}</span>
 
@@ -67,7 +68,7 @@ export default {
                 year: null,
                 month: null,
                 day: null,
-                full : null
+                full: null
             },
             diaryData:null,
             currentView: null, 
@@ -128,10 +129,17 @@ export default {
             setHeader: 'setHeaderAuth'
         }),
         createDiary(y,m,d){
+            let today = new Date();
             this.park.year = y
-            this.park.month = m
-            this.park.day = d
-            this.park.full = this.dateFormat(y,m,d);
+            this.park.month = m;
+            this.park.day = d;
+            let cdata = this.dateFormat(y,m,d);
+            let tdata = this.dateFormat()
+            if(cdata == tdata) { 
+                this.park.full = true;
+            } else {
+                this.park.full = false;
+            }
             this.currentView = "menu-bar" 
         },
         showDiary(y,m,d){
@@ -167,7 +175,8 @@ export default {
             this.beforeLastDate = new Date(today.getFullYear(),this.currentMonth,0).getDate(); // 저번달 마지막날
         },
         dateFormat(y,m,d){
-            let date = new Date (y+m+d)
+            let date 
+            y ?  date = new Date (y+m+d) :  date = new Date()
             var month = date.getMonth()+1;
             month = month >= 10 ? month : '0' + month;  // month 두자리로 저장
             var day = date.getDate();
