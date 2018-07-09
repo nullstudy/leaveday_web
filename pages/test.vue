@@ -18,18 +18,20 @@
             <li v-if="(new Date()).getDate() != date" class='dates-date' v-for="date in daysInMonth" :key='date'   @click="createDiary(year,month,date)"
                  :class="{'current-day': date == initialDate &amp;&amp; month == initialMonth && year == initialYear}">
                 <span @click='diaryActive(year,month,date)'> {{ showDiary(year,month,date) }}</span>
-                <component  :is="currentView" :item="park" v-if="park.year == year && park.month == month && park.day == date && park.full" > </component>
                 <span class='dates-li'>{{ date }}</span>
             </li>
             <li  class='dates-date' v-else-if=" (new Date()).getDate() == date && (new Date()).getMonth() == currentMonth" style="background : yellow"
                 @click="createDiary(year,month,date)" >
-                <span @click='diaryActive(year,month,date)'> {{ showDiary(year,month,date) }}</span>
-                <component  :is="currentView" :item="park" v-if="park.year == year && park.month == month && park.day == date && park.full" > </component>
+                <span @click='diaryActive(year,month,date)' > {{ showDiary(year,month,date) }}</span>
+                <component  
+                    :is="currentView" :item="park"  
+                    v-if="park.year == year && park.month == month && park.day == date && park.full && park.active"
+                ></component>
+                
                 <span class='dates-li'>{{ date }}</span>
             </li>
             <li class='dates-date' v-else @click="createDiary(year,month,date)">
                 <span @click='diaryActive(year,month,date)'> {{ showDiary(year,month,date) }}</span>
-                <component  :is="currentView" :item="park" v-if="park.year == year && park.month == month && park.day == date && park.full" > </component>
                 <span class='dates-li'>{{ date }}</span>
             </li>
 
@@ -78,7 +80,8 @@ export default {
                 year: null,
                 month: null,
                 day: null,
-                full: null
+                full: null,
+                active : true
             },
             diaryData:null,
             currentView: null, 
@@ -154,8 +157,13 @@ export default {
         },
         showDiary(y,m,d){
             let fullDate = this.dateFormat(y,m,d)
+            let today = this.dateFormat()
+            
             for(var item in this.mainDiary){
-                if(fullDate == this.mainDiary[item].date){
+                if(today == this.mainDiary[item].date){       
+                    this.park.active = false;
+                }
+                if(fullDate == this.mainDiary[item].date){       
                     return this.mainDiary[item].title;
                 }
             }
@@ -163,6 +171,7 @@ export default {
         diaryActive(y,m,d){
             let fullDate = this.dateFormat(y,m,d);
             this.diaryData = this.mainDiary.filter(item => item.date == fullDate )
+            // this.diaryData ? this.park.active = true : this.park.active = false;
             this.currentDiary = "main-diary" 
         },
         addMonth: function () {
