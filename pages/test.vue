@@ -15,21 +15,31 @@
                 <span class='dates-li' style='color : LightGray'>{{ beforeLastDate - ( rate-item )}}</span>
             </li>
  
-            <li class='dates-date' v-for="date in daysInMonth" :key='date'  @click="createDiary(year,month,date)"
+            <li v-if="(new Date()).getDate() != date" class='dates-date' v-for="date in daysInMonth" :key='date'   @click="createDiary(year,month,date)"
                  :class="{'current-day': date == initialDate &amp;&amp; month == initialMonth && year == initialYear}">
-
-                <component  :is="currentView" :item="park" v-if="park.year == year && park.month == month && park.day == date && park.full" > </component>
-
                 <span @click='diaryActive(year,month,date)'> {{ showDiary(year,month,date) }}</span>
-
+                <component  :is="currentView" :item="park" v-if="park.year == year && park.month == month && park.day == date && park.full" > </component>
                 <span class='dates-li'>{{ date }}</span>
             </li>
+            <li  class='dates-date' v-else-if=" (new Date()).getDate() == date && (new Date()).getMonth() == currentMonth" style="background : yellow"
+                @click="createDiary(year,month,date)" >
+                <span @click='diaryActive(year,month,date)'> {{ showDiary(year,month,date) }}</span>
+                <component  :is="currentView" :item="park" v-if="park.year == year && park.month == month && park.day == date && park.full" > </component>
+                <span class='dates-li'>{{ date }}</span>
+            </li>
+            <li class='dates-date' v-else @click="createDiary(year,month,date)">
+                <span @click='diaryActive(year,month,date)'> {{ showDiary(year,month,date) }}</span>
+                <component  :is="currentView" :item="park" v-if="park.year == year && park.month == month && park.day == date && park.full" > </component>
+                <span class='dates-li'>{{ date }}</span>
+            </li>
+
 
             <li class='dates-date' v-for='item in  6-lastDate' style='color : LightGray'>
                 <span class='dates-li'>{{ item }}</span>
             </li>
         </div>
         
+
         <component  :is="currentDiary" :diaryInfo='diaryData'> </component>
         
     </div>
@@ -247,6 +257,9 @@ h4 {
     color : red;
 }
 
+.date-date:nth-child(9){
+    background-color: palegoldenrod;
+}
 
 .dates-li{
     margin-right: 3%;
