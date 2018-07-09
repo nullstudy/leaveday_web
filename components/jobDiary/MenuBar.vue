@@ -7,14 +7,12 @@
     export default {
         props:['item'],
         date(){
-            console.log(this.item)
             return {
                 
             }
         },
         methods: {
             createDiary(data){
-                console.log(data)
                 this.$router.push('/jobDiary/create')
             }
         }

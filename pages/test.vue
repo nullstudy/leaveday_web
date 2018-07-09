@@ -12,20 +12,27 @@
     
         <div class="dates">        
             <li class='dates-date' v-for='item in  rate'>
-                <span class='dates-li' style='color : LightGray' >{{ beforeLastDate - ( rate-item )}}</span>
+                <span class='dates-li' style='color : LightGray'>{{ beforeLastDate - ( rate-item )}}</span>
+                <!-- <div>
+                    {{ mainDiary[item-1] }}
+                </div> -->
             </li>
  
-            <li class='dates-date' v-for="date in daysInMonth" :key='date'  @click="test(year,month,date)"
+            <li class='dates-date' v-for="date in daysInMonth" :key='date'  @click="createDiary(year,month,date)"
                  :class="{'current-day': date == initialDate &amp;&amp; month == initialMonth && year == initialYear}">
-                <!-- <component  :is="currentView" :item="park" v-if="park == new Date(year+month+date)" > </component> -->
                 <component  :is="currentView" :item="park" v-if="park.year == year && park.month == month && park.day == date" > </component>
-                <span class='dates-li'  >{{ date }}</span>
+                <span> {{ showDiary(year,month,date) }}</span>
+                <span class='dates-li'>{{ date }}</span>
             </li>
             
 
             <li class='dates-date' v-for='item in  6-lastDate' style='color : LightGray'>
                 <span class='dates-li'>{{ item }}</span>
             </li>
+
+            <!-- <div v-for="item in mainDiary">
+                {{ item  }}
+            </div> -->
         </div>
 
         
@@ -63,13 +70,15 @@ export default {
             park:{
                 year: null,
                 month: null,
-                day: null
+                day: null,
+                full : null
             },
-            currentView: null,
+            currentView: null, 
+            currentDiary: null,
+            
             beforeLastDate : beforeLastDate, //저번달 마지막 날짜 
             rate: todayLabel,
             lastDate : lastDate, // 현재 마지막 날짜
-            arrow: "<",
             currentMonth : moment().month(), //현재달 
             today: moment(new Date),
             dateContext: moment(new Date),
@@ -79,8 +88,6 @@ export default {
     computed: {
         ...mapGetters({
             token : 'token',
-            diary : 'jobDiary',
-            page : 'page',
             mainDiary : 'diary/mainDiary',
             userInfo : 'userInfo'
         }),
@@ -124,12 +131,21 @@ export default {
         ...mapActions({
             setHeader: 'setHeaderAuth'
         }),
-        test(y,m,d){
+        createDiary(y,m,d){
             this.park.year = y
             this.park.month = m
             this.park.day = d
-            console.log(this.park)
+            this.park.full = this.dateFormat(y,m,d);
             this.currentView = "menu-bar" 
+        },
+        showDiary(y,m,d){
+            let fullDate = this.dateFormat(y,m,d)
+            for(var item in this.mainDiary){
+                if(fullDate == this.mainDiary[item].date){
+                    return this.mainDiary[item].title;
+                }
+            }
+            this.currentDiary = "diary-info" 
         },
         addMonth: function () {
             this.common(1);
@@ -149,6 +165,15 @@ export default {
             this.rate = dayCheck[currentMonth];
             this.lastDate = new Date(today.getFullYear(),this.currentMonth+1,0).getDay() // 이번달 마지막날 
             this.beforeLastDate = new Date(today.getFullYear(),this.currentMonth,0).getDate(); // 저번달 마지막날
+        },
+        dateFormat(y,m,d){
+            let date = new Date (y+m+d)
+            var month = date.getMonth()+1;
+            month = month >= 10 ? month : '0' + month;  // month 두자리로 저장
+            var day = date.getDate();
+            day = day >= 10 ? day : '0' + day;  //day 두자리로 저장
+            var year = date.getFullYear();
+            return year + '-' + month + '-' + day;
         }
     }
 }    

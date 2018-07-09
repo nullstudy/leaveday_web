@@ -4,7 +4,7 @@ export const state = () => ({
 })
 
 export const getters = {
-    select(state) {
+    mainDiary(state) {
         return state.mainDiary
     }
 }
@@ -18,10 +18,10 @@ export const mutations = {
 export const actions = {
     async getMaindiary({ commit,store }, data) {
         await axios.get(process.env.BACKEND_URL + '/mainDiary',{ params : data })
-            .then(response => {                
-                commit('SET_MAINDIARY', { mainDiary : response.data.data });
-            }).catch(err => {
-                console.error(err);
-            })
+        .then(response => {                
+            commit('SET_MAINDIARY', { mainDiary : response.data.data });
+        }).catch(err => {
+            console.error(err);
+        })
     }
 }
