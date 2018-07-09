@@ -13,28 +13,23 @@
         <div class="dates">        
             <li class='dates-date' v-for='item in  rate'>
                 <span class='dates-li' style='color : LightGray'>{{ beforeLastDate - ( rate-item )}}</span>
-                <!-- <div>
-                    {{ mainDiary[item-1] }}
-                </div> -->
             </li>
  
             <li class='dates-date' v-for="date in daysInMonth" :key='date'  @click="createDiary(year,month,date)"
                  :class="{'current-day': date == initialDate &amp;&amp; month == initialMonth && year == initialYear}">
                 <component  :is="currentView" :item="park" v-if="park.year == year && park.month == month && park.day == date" > </component>
-                <span> {{ showDiary(year,month,date) }}</span>
+
+                <span @click='diaryActive(year,month,date)'> {{ showDiary(year,month,date) }}</span>
+
                 <span class='dates-li'>{{ date }}</span>
             </li>
-            
 
             <li class='dates-date' v-for='item in  6-lastDate' style='color : LightGray'>
                 <span class='dates-li'>{{ item }}</span>
             </li>
-
-            <!-- <div v-for="item in mainDiary">
-                {{ item  }}
-            </div> -->
         </div>
-
+        
+        <component  :is="currentDiary" :diaryInfo='diaryData'> </component>
         
     </div>
 
@@ -44,7 +39,7 @@
 import moment from 'moment'
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 import MenuBar from '@/components/jobDiary/MenuBar';
-// import RightMenu from '@/components/jobDiary/rightMenu'
+import MainDiary from '@/components/jobDiary/MainDiary'
 import axios from 'axios';
 export default {
     created(){
@@ -57,7 +52,8 @@ export default {
         this.$store.dispatch('diary/getMaindiary',findData)
     },
     components : {
-        'menu-bar' : MenuBar
+        'menu-bar' : MenuBar,
+        'main-diary' : MainDiary
     },
     data(){
         let dayCheck = new Array(0,1,2,3,4,5,6);
@@ -73,9 +69,9 @@ export default {
                 day: null,
                 full : null
             },
+            diaryData:null,
             currentView: null, 
             currentDiary: null,
-            
             beforeLastDate : beforeLastDate, //저번달 마지막 날짜 
             rate: todayLabel,
             lastDate : lastDate, // 현재 마지막 날짜
@@ -145,7 +141,11 @@ export default {
                     return this.mainDiary[item].title;
                 }
             }
-            this.currentDiary = "diary-info" 
+        },
+        diaryActive(y,m,d){
+            let fullDate = this.dateFormat(y,m,d);
+            this.diaryData = this.mainDiary.filter(item => item.date == fullDate )
+            this.currentDiary = "main-diary" 
         },
         addMonth: function () {
             this.common(1);
