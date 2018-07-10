@@ -17,12 +17,14 @@
  
             <li v-if="(new Date()).getDate() != date" class='dates-date' v-for="date in daysInMonth" :key='date'   @click="createDiary(year,month,date)"
                  :class="{'current-day': date == initialDate &amp;&amp; month == initialMonth && year == initialYear}">
-                <span @click='diaryActive(year,month,date)'> {{ showDiary(year,month,date) }}</span>
+                <span class='diary-title' @click='diaryActive(year,month,date)'> {{ showDiary(year,month,date) }}</span>
                 <span class='dates-li'>{{ date }}</span>
             </li>
-            <li  class='dates-date' v-else-if=" (new Date()).getDate() == date && (new Date()).getMonth() == currentMonth" style="background : yellow"
-                @click="createDiary(year,month,date)" >
-                <span @click='diaryActive(year,month,date)' > {{ showDiary(year,month,date) }}</span>
+            <li   class='dates-date' v-else-if=" (new Date()).getDate() == date && (new Date()).getMonth() == currentMonth" style="background : yellow"
+                @click="createDiary(year,month,date)" md-menu-trigger>
+                
+                <span class='diary-title' md-menu-trigger  @click='diaryActive(year,month,date)' > {{ showDiary(year,month,date) }}</span>
+                
                 <component  
                     :is="currentView" :item="park"  
                     v-if="park.year == year && park.month == month && park.day == date && park.full && park.active"
@@ -31,7 +33,7 @@
                 <span class='dates-li'>{{ date }}</span>
             </li>
             <li class='dates-date' v-else @click="createDiary(year,month,date)">
-                <span @click='diaryActive(year,month,date)'> {{ showDiary(year,month,date) }}</span>
+                <span class='diary-title' @click='diaryActive(year,month,date)'> {{ showDiary(year,month,date) }}</span>
                 <span class='dates-li'>{{ date }}</span>
             </li>
 
@@ -41,7 +43,6 @@
             </li>
         </div>
         
-
         <component  :is="currentDiary" :diaryInfo='diaryData'> </component>
         
     </div>
@@ -170,8 +171,7 @@ export default {
         },
         diaryActive(y,m,d){
             let fullDate = this.dateFormat(y,m,d);
-            this.diaryData = this.mainDiary.filter(item => item.date == fullDate )
-            // this.diaryData ? this.park.active = true : this.park.active = false;
+            this.diaryData = this.mainDiary.filter(item => item.date == fullDate )[0]
             this.currentDiary = "main-diary" 
         },
         addMonth: function () {
@@ -192,6 +192,17 @@ export default {
             this.rate = dayCheck[currentMonth];
             this.lastDate = new Date(today.getFullYear(),this.currentMonth+1,0).getDay() // 이번달 마지막날 
             this.beforeLastDate = new Date(today.getFullYear(),this.currentMonth,0).getDate(); // 저번달 마지막날
+
+            let findData = { 
+                startDT : new Date(today.getFullYear(),this.currentMonth,-this.rate+1),
+                endDT : new Date(today.getFullYear(),this.currentMonth+1,6-this.lastDate) 
+            }
+            this.setHeader(this.token)
+            this.$store.dispatch('diary/getMaindiary',findData)
+
+
+
+
         },
         dateFormat(y,m,d){
             let date 
@@ -272,6 +283,11 @@ h4 {
 
 .dates-li{
     margin-right: 3%;
+}
+
+.diary-title {
+    position: relative;
+    top: 40px;
 }
 /* Highlight the "current" day */
 
