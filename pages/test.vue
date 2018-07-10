@@ -165,13 +165,14 @@ export default {
                     this.park.active = false;
                 }
                 if(fullDate == this.mainDiary[item].date){       
-                    return this.mainDiary[item].title;
+                    return this.mainDiary[item].title.substring(0,4);
                 }
             }
         },
         diaryActive(y,m,d){
             let fullDate = this.dateFormat(y,m,d);
             this.diaryData = this.mainDiary.filter(item => item.date == fullDate )[0]
+            this.$store.commit('SET_DIARYDETAIL',{ diaryDetail : this.diaryData })
             this.currentDiary = "main-diary" 
         },
         addMonth: function () {

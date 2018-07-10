@@ -79,7 +79,6 @@
         },
         methods : {
             onClickIndex(pageNumber) {
-                // if(this.$route.query.page)
                 if(this.$route.query.page !== undefined){
                     this.pageData[this.$route.query.page-1].active =false
                 }

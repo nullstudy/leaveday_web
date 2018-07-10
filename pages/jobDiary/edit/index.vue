@@ -59,9 +59,6 @@ import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 
 export default {
-    mounted(){
-        
-    },
     data() {
         let title = this.$store.getters.diaryDetail.title
         let content = this.$store.getters.diaryDetail.content

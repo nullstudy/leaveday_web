@@ -7,6 +7,7 @@
                 <div class="post-detail">Written by {{ this.$store.getters.userInfo.name }}</div>
             </div>
             <p class="post-content">{{ diaryInfo.content }}</p>
+            <a href="/jobDiary/edit">수정</a>
         </section>
         
     </div>
