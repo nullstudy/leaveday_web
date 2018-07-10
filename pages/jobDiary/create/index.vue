@@ -84,7 +84,8 @@ export default {
                 title : String(this.formData.title),
                 content : String(this.formData.content),
                 state : Number(this.formData.state),
-                leaveCount : Number(this.formData.leaveCount)
+                leaveCount : Number(this.formData.leaveCount),
+                date : new Date()
             }
             let { token } = axios.defaults.headers.common.Authorization ='Bearer '+ this.token
             axios.post( process.env.BACKEND_URL + '/jobDiary/create', diaryData )
