@@ -54,6 +54,7 @@
 <script>
 import axios from 'axios';
 import BootstrapVue from 'bootstrap-vue';
+import { setCookie , getUserFromCookie } from '~/util/auth'
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 export default {
     data() {
@@ -88,8 +89,11 @@ export default {
                 date : new Date()
             }
             let { token } = axios.defaults.headers.common.Authorization ='Bearer '+ this.token
+
+
             axios.post( process.env.BACKEND_URL + '/jobDiary/create', diaryData )
             .then( (res) => {
+                setCookie(res.data.data)
                 this.$router.push('/jobDiary');
             }).catch(error => {
                 console.log('error',error);

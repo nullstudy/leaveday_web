@@ -109,7 +109,6 @@ export default {
             axios.defaults.headers.common.Authorization ='Bearer '+ this.token;
             await axios.put(process.env.BACKEND_URL + '/leaveInsert', leaveData )
             .then(response => {
-                
                 setCookie(response.data.data)
             }).catch(err => {
                 return console.error(err);
