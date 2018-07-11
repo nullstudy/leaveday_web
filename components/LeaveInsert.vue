@@ -1,5 +1,6 @@
 <template>
     <div class='wrap'>
+        
         <b-modal id="modal1" 
             hide-footer
             title="LeaveDay 등록"
@@ -7,36 +8,28 @@
             :header-bg-variant="headerBgVariant"
             :header-text-variant="headerTextVariant"
             :body-bg-variant="bodyBgVariant"
-            :body-text-variant="bodyTextVariant">
-            <b-container fluid>
-                <b-row class="mb-1" v-if="!this.isleave">    
-                    입사일<b-col cols="5"><datepicker   v-model="startDT" class='picker'></datepicker></b-col>
-                    퇴사일<b-col cols="4"><datepicker   v-model="endDT" class='picker'></datepicker></b-col>
-                </b-row>
-                <b-row class="mb-1" v-if="this.endDT">    
-                    현재 <b-col cols="5"><p> {{ dateFormat(new Date) }} </p></b-col>
-                    남은 일수 <b-col cols="4"><p> {{ output }} 일</p></b-col>
+            :body-text-variant="bodyTextVariant"
+            >
+            
+            <b-container >
+
+                <b-row class="mb-1" v-if="!this.isleave"> 
+                        <b-col cols="6"><label>입사일<datepicker v-model="startDT" class='picker'></datepicker></label></b-col>
+                        <b-col cols="6"><label>퇴사일<datepicker v-model="endDT" class='picker'></datepicker></label></b-col>        
                 </b-row>
 
-                <!-- <b-row class="mb-1" v-if="this.isleave" >    
-                    입사 일 : <b-col cols="5">{{ this.startDT }} </b-col>
+                <b-row class="mb-1" v-if="this.endDT">    
+                    <!-- <div class='leave-info'> -->
+                        <b-col cols="6"><label> 현재</label>&emsp;&emsp;{{ dateFormat(new Date) }}</b-col>
+                        <b-col cols="6"><p><label>남은 일수</label> {{ output }} 일</p></b-col>
+                    <!-- </div> -->
                 </b-row>
-                <b-row class="mb-1" v-if="this.isleave" >    
-                    시작 일 : <b-col cols="5">{{ createDT }} </b-col>
-                </b-row>
-                <b-row class="mb-1" v-if="this.isleave">    
-                    퇴사 일 : <b-col cols="5">{{ endDT }} </b-col>
-                </b-row>
-                <b-row class="mb-1" v-if="this.isleave">    
-                    남은 일 : <b-col cols="5">{{ leaveCount }} </b-col>
-                </b-row> -->
+
                 <b-row class="mb-1" v-if="!this.isleave">
                     <b-col><b-btn size="sm" variant="outline-danger" block @click="leaveDayInsert">입력</b-btn></b-col>
                     <b-col><b-btn size="sm" variant="outline-danger" block @click="hideModal">닫기</b-btn></b-col>
                 </b-row>
-                <!-- <b-row class="mb-1" v-if="this.isleave">
-                    <b-col><b-btn variant="outline-danger" block @click="hideModal">닫기</b-btn></b-col>
-                </b-row> -->
+                
             </b-container>
         </b-modal>
     </div>
@@ -50,21 +43,14 @@ import { setCookie , getUserFromCookie } from '~/util/auth'
 
 
 export default {     
+
     props: { 
         userInfo : { 
-            type : Object,
-            // require : true
-            // ,
-            // default : function() {
-            //     return {
-                    
-            //     }
-            // } 
+            type: Object,
+            require: true
         }
     },
     data() {
-        console.log('userInfo',this.userInfo)
-        let createDT; let startDT; let endDT; let leaveCount;
         return {
             createDT : new Date(), 
             startDT : new Date(),
@@ -100,7 +86,7 @@ export default {
             }
 
             diff = Math.ceil(diff / (1000 * 3600 * 24));
-            this.leaveCount = diff+1;
+            this.leaveCount = diff;
         }
     },
     methods : {
@@ -142,13 +128,32 @@ export default {
         }
     }
 }
-
-
 </script>
 
 <style>
+@import 'vue-material/dist/theme/default.css';
+/* @import 'vue-material/dist/vue-material.min.css'; */
 .mb-1{
-    /* border: 1px solid black; */
     height: 50px;
 }
+.modal1{
+    width:100%;
+    height:100%;
+}
+div input{
+    width: 80%;
+}
+.leave-info{
+    display: inline;
+}
+.vdp-datepicker * {
+    /* width:200px; */
+    /* height: 100%; */
+}
+.mb-1 input{
+    position: relative;
+    left: 70px;
+    bottom: 26px;
+}
 </style>
+

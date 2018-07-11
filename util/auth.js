@@ -35,8 +35,12 @@ export const getUserFromCookie = (req,store) => {
         
         let endDT = new Date(endday.getFullYear(), endday.getMonth() , endday.getDate());
         let diff = Math.abs(endDT.getTime() - currentDT.getTime());
+        if(endDT.getTime() < currentDT.getTime())
+            return userInfo.leaveCount = 0
+        
+        
         diff = Math.ceil(diff / (1000 * 3600 * 24));
-        userInfo.leaveCount = diff+1;
+        userInfo.leaveCount = diff;
         return
     }
     function isNotLeaveDate(){
