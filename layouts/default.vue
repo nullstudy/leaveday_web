@@ -22,17 +22,17 @@
 
 <style >  
   body {
-    height: 100%;
-    background-color : #D1D5DA;
+    /* height: 100%;
+    background-color : #D1D5DA; */
     
   }
-  .wrap {
+  /* .wrap {
     width:100%;
     height: 100%;
-  }
+  } */
   .container{
-    /* width:100%;
-    height: 100%; */
+    width:100%;
+    height: 100%;
     margin: 0 auto;
     background-color: white;     
   }

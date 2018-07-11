@@ -1,13 +1,22 @@
 <template>
+
     <div>
       <leave-insert v-if="token && !isLeave"  v-b-modal.modal1 :userInfo="userInfo" />
-      
-      <div class='main-content-banner'>
-        <main-banner :userInfo="userInfo" />
-      </div>
-      
-      <calendar v-if="userInfo" />
+      <!-- <div class='main-content-banner'> -->
+        <div>
+          <main-banner :userInfo="userInfo" />
+
+          <calendar v-if="userInfo" />    
+        </div>
+      <!-- </div> -->
+      <!-- <div class='main-calendar'> -->
+        
+      <!-- </div> -->
     </div>
+
+      
+
+
 </template>
 
 <script>
@@ -38,11 +47,6 @@ export default {
 </script>
 
 <style>
-.main-content-banner {
-  margin: 0 auto;
-  width: 80%;
-  height: 100%;
-  position: relative;
-  top: 40px;
-}
+@import 'bootstrap/dist/css/bootstrap.css';
+
 </style>
