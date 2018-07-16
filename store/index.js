@@ -5,7 +5,6 @@ export const state = () => ({
     authenticated: null,
     userInfo :false,
     isleave : false,
-    todoList : null,
     jobDiary : null,
     diaryDetail : {},
     page : null
@@ -23,9 +22,6 @@ export const getters = {
     },
     isLeave(state) {
         return state.isleave
-    },
-    todoList(state) {
-        return state.todoList
     },
     jobDiary(state) {
         return state.jobDiary

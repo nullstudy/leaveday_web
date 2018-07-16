@@ -44,7 +44,7 @@
         </div>
         
         <component  :is="currentDiary" :diaryInfo='diaryData'> </component>
-        
+            <full-calendar :events="fcEvents" ></full-calendar>
     </div>
 
 </template>
@@ -94,6 +94,13 @@ export default {
             today: moment(new Date),
             dateContext: moment(new Date),
             days: ['일', '월', '화', '수', '목', '금', '토'],
+            fcEvents : [
+                {
+                title : 'Sunny Out of Office',
+                start : '2018-07-15',
+                end : '2018-07-15'
+                }
+            ]
         }
     },
     computed: {

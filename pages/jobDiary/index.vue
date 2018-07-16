@@ -10,23 +10,23 @@
         </div>
 
         <table class ='table table-striped'>
-            <thead>
+            <thead class='diary-head'>
                 <tr>
                     <th>번호</th>
-                    <th>제목</th>
-                    <th>작성자</th>
                     <th>날짜</th>
+                    <th>작성자</th>
+                    <th>제목</th>
                     <th>상태</th>
                     <th>조회수</th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr v-for='(  item,  index ) in diary' :key='item._id'>
-                    <td>{{ index+1 + (currentPage-1)*10 }}</td>
-                    <td><a  href='#' style='color:black; text-decoration: none;' @click='detailView(item._id,item.title)'>{{ item.title }}</a></td>
-                    <td>{{ userInfo.name }}</td>
-                    <td>{{ item.date }}</td>
+                <tr v-for='(  item,  index ) in diary' :key='item._id' class='diary-tbody-tr'>
+                    <td id='diary-tbody-index'>{{ index+1 + (currentPage-1)*10 }}</td>
+                    <td id='diary-tbody-title' ><a  href='#' style='color:black; text-decoration:none;' @click='detailView(item._id,item.title)'>{{ item.title }}</a></td>
+                    <td id='diary-tbody-author'>{{ userInfo.name }}</td>
+                    <td id='diary-tbody-date'>{{ item.date }}</td>
                     <td style='text-align:center right:10'>{{ item.state.state }}</td>
                     <td style='text-align:center right:10'>{{ item.views }}</td>
                 </tr>
@@ -138,4 +138,32 @@
     .bo_li{
         margin-bottom: 1%; 
     }
+
+    @media (max-width: 768px) {
+        .diary-head {
+            display: none;
+        }
+        .diary-tbody-tr td {
+            display: inline;
+            font-size: 0.6rem;
+            border: 0px;
+        }
+        #diary-tbody-index{
+            display: none;
+        }
+        .diary-tbody-tr{
+            display:block;
+        }
+        #diary-tbody-title{
+            display:block;
+            font-size: 0.9rem;
+            font-weight: bold;
+            width: 300px;
+        }
+        #diary-tbody-author{
+            height:30px;
+        }
+        
+    }
+    /* ' */
 </style>

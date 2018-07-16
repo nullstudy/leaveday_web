@@ -12,7 +12,7 @@
       <div v-for="(item,index) in showTodo" :key='item.title'>
         <li v-if="selected == item.status" class="list-group-item" @click="detailAtive(index)" >
           <strong>{{ item.title }}</strong> 
-          {{ percent(item.detail) }}
+          {{ percent(item.detail) }} 
           <button type="button" class="close" aria-label="Close">
               <span aria-hidden="true">&times;</span>
           </button>
@@ -90,30 +90,39 @@ export default {
       this.$router.push('/todoList/create')
     },
     detailAtive(index) {
-      let activeIndex  = this.showTodo[index].active  
-      let id  = this.showTodo[index]._id
+      let activeIndex  = this.showTodo[index].active  ;
+      let id  = this.showTodo[index]._id;
       this.$store.commit('todo/SET_CHANGETODO', { active : activeIndex, id : id }); 
     },
-
     onClickTab(data) { //tab 선택
-      this.selectedTab = data.tab
+      this.selectedTab = data.tab;
     },
-
     onClickFinish(data) { //todo 완료
       this.$store.commit('todo/SET_CHANGTOTALTODO', {  status : true , index : data.index , _id : data._id });
-      this.$store.commit('todo/SET_SHOWTODO'); 
-      
+      let status = true;
+      let totalStatus;
+      if(this.$store.getters['todo/showTodoList'][data.index].detail.filter( item => item.status === false) == false ) {
+        var todo = confirm('Todo를 완료하시겠습니까? ');
+        if(!todo){
+          this.$store.commit('todo/SET_CHANGTOTALTODO', {  status : false , index : data.index , _id : data._id });
+          return
+        } else {
+          totalStatus = 3;
+          this.$store.commit('todo/SET_FINISHTODO', {  index : data.index , status : 3 })
+        }
+      }
       let updateData = {
+        totalStatus : totalStatus,
         detail_id : data._id,
         todo : data.todo,
         status : true
       }
       this.setHeader(this.token);
       this.putTodo(updateData);
+      
     },
     onClickReset(data) { //완료된 todo 리셋
       this.$store.commit('todo/SET_CHANGTOTALTODO', { status : false , index : data.index , _id : data._id});
-      this.$store.commit('todo/SET_SHOWTODO'); 
       let updateData = {
         detail_id : data._id,
         todo : data.todo,
@@ -134,11 +143,13 @@ export default {
       return  year + '.' + month + '.' + day;
     },
     percent(detail){
+      
       let count = 0;
       for(var item in detail){
         if(detail[item].status === true) count++
       }
       return  Math.floor((count / detail.length) * 100) +'%'
+
     }    
   }
   // ( {{ dateFormat(new Date(item.startDT)) }} ~ {{ dateFormat(new Date(item.endDT)) }})
@@ -247,6 +258,7 @@ form {
   margin: 2px;
 }
 
+
 @media (min-width: 792px) {
   .todo-select-div {
     width:80%
@@ -255,6 +267,12 @@ form {
 @media (max-width: 768px) {
   .todo-select-div {
     width:60%;
+  }
+}
+
+@media (min-width: 792px) {
+  .todo-select-div {
+    width:80%
   }
 }
 
