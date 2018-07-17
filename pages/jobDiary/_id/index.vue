@@ -12,7 +12,7 @@
                     <a>{{ userInfo.name }}</a>
                 </li>
                 <li>
-                    <a><span><b>{{ diary.state.state }}</b></span></a>
+                    <a><span><b>{{ String(diary.state.status) }}</b></span></a>
                 </li>				
                 <li>
                     <a>leaveCount<span><b> {{ diary.leaveCount }}</b></span></a>
@@ -49,7 +49,7 @@
     import { mapGetters, mapMutations, mapActions } from 'vuex';
     
     export default  {
-        async mounted() {
+        async created() {
            await axios.get( process.env.BACKEND_URL +'/jobDiary/detail/'+this.$route.params.id).then( 
                 res => {
                    return  this.$store.commit('diary/SET_DIARYDETAIL',{ diaryDetail : res.data.data[0] })

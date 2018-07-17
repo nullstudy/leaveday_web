@@ -2,7 +2,16 @@ import axios from 'axios';
 export const state = () => ({
     mainDiary : [],
     jobDiary : null,
-    diaryDetail : {},
+    diaryDetail : {
+        _id : null,
+        author : null,
+        content : null,
+        date : null,
+        leaveCount : null,
+        state : {} ,
+        title : null,
+        views : null
+    },
     page : null,
     realDiary : null
 })

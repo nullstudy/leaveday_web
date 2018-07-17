@@ -92,7 +92,9 @@
         },
         methods : {
             onClickIndex(pageNumber) {
-                this.pageData[this.currentPage-1].active =false
+
+                if(pageNumber+1 == this.currentPage) return 
+                this.pageData[this.currentPage-1].active =false 
                 if(this.$route.query.page !== undefined){
                     this.pageData[this.$route.query.page-1].active =false
                 }
@@ -155,14 +157,19 @@ body {
 .breadcrumb{
     margin-top: 2%;
 }
+.bo_fx a {
+    color: #000 !important;
+}
 a.btn_b01 {
+    
     display: inline-block;
     padding: 7px;
     border: 1px solid #d9ded9;
     background: #f2f5f9;
-    color: #000;
-    text-decoration: none;
     vertical-align: middle;
+}
+a {
+    text-decoration: none !important;
 }
 #bo_list_total{
     display: inline;
