@@ -22,7 +22,16 @@
             </thead>
 
             <tbody>
-                <tr v-for='(  item,  index ) in diary' :key='item._id' class='diary-tbody-tr'>
+                <tr class='diary-tbody-web diary-tbody-tr' v-for='(  item,  index ) in diary' :key='item._id'>
+                    <td id='diary-tbody-index'>{{ index+1 + (currentPage-1)*10 }}</td>
+                    <td id='diary-tbody-title' ><a  href='#' style='color:black; text-decoration:none;' @click='detailView(item._id,item.title)'>{{ item.title }}</a></td>
+                    <td id='diary-tbody-author'>{{ userInfo.name }}</td>
+                    <td id='diary-tbody-date'>{{ item.date }}</td>
+                    <td style='text-align:center right:10'>{{ item.state.state }}</td>
+                    <td style='text-align:center right:10'>{{ item.views }}</td>
+                </tr>
+                
+                <tr class='diary-tbody-real diary-tbody-tr' v-for='(  item,  index ) in realDiary' :key='item.index'>
                     <td id='diary-tbody-index'>{{ index+1 + (currentPage-1)*10 }}</td>
                     <td id='diary-tbody-title' ><a  href='#' style='color:black; text-decoration:none;' @click='detailView(item._id,item.title)'>{{ item.title }}</a></td>
                     <td id='diary-tbody-author'>{{ userInfo.name }}</td>
@@ -32,9 +41,8 @@
                 </tr>
             </tbody>
         </table>
-        
          
-        <job-page :page='page' :pageData='pageData'  v-model='pageData' v-on:@change="onClickIndex" />
+        <job-page class='diary-page' :page='page' :pageData='pageData'  v-model='pageData' v-on:@change="onClickIndex"  />
         
     </div>
 </template>
@@ -51,9 +59,10 @@
             axios.get( process.env.BACKEND_URL +'/jobDiary?page='+fpage).then( 
                 res => {
                     this.total = res.data.data[0].recordCount;
-                    this.$store.commit('SET_DIARY', { jobDiary : res.data.data });
-                    this.$store.commit('SET_PAGE', { page : Math.ceil(res.data.data[0].recordCount/10)});
-                    for(var i=0; i<this.$store.getters.page; i++){
+                    this.$store.commit('diary/SET_REALDIARY', { realDiary : res.data.data });
+                    this.$store.commit('diary/SET_DIARY', { jobDiary : res.data.data });
+                    this.$store.commit('diary/SET_PAGE', { page : Math.ceil(res.data.data[0].recordCount/10)});
+                    for(var i=0; i<this.$store.getters['diary/page']; i++){
                         if(fpage == i+1 ) {
                             this.pageData.push( {number : i+1 , active: true })
                         } else {
@@ -62,9 +71,13 @@
                     }
                 }
             ).catch(err => {
-                console.log(err)
+                console.log(err);
+                new Error('fail');
             })
         }, 
+        mounted() {
+             this.scroll(this.diaryData);
+        },
         components : {
             JobPage
         },
@@ -79,6 +92,7 @@
         },
         methods : {
             onClickIndex(pageNumber) {
+                this.pageData[this.currentPage-1].active =false
                 if(this.$route.query.page !== undefined){
                     this.pageData[this.$route.query.page-1].active =false
                 }
@@ -86,22 +100,46 @@
                 axios.defaults.headers.common.Authorization ='Bearer '+ this.token;
                 axios.get( process.env.BACKEND_URL +'/jobDiary',{ params: { page: pageNumber+1 }}).then( 
                     res => { 
-                        this.$store.commit('SET_DIARY',{ jobDiary : res.data.data });
+                        this.$store.commit('diary/SET_DIARY',{ jobDiary : res.data.data });
                         this.$router.push({ path: '/jobDiary?page='+(pageNumber+1) });
                     }
                 ).catch(err => {
                     console.log(err);
+                    new Error('fail')
                 })
             },
             detailView(id,title){
                 this.$router.push({ path: '/jobDiary/'+id, params: { _id: id }});
+            },
+            scroll () {
+                window.onscroll = () => {
+                    if (document.documentElement.scrollTop + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+                        this.pageData[this.currentPage-1].active = false;
+                        this.currentPage = this.currentPage +1;
+                        if(this.currentPage > this.page){
+                            this.currentPage = this.page
+                        }
+                        this.pageData[this.currentPage-1].active = true;
+                        axios.defaults.headers.common.Authorization ='Bearer '+ this.token;
+                        axios.get( process.env.BACKEND_URL +'/jobDiary',{ params: { page: this.currentPage }}).then( 
+                            res => {         
+                                this.$store.commit('diary/SET_DIARY',{ jobDiary : res.data.data });
+                                this.$store.commit('diary/UPDATE_REALDIARY',{ data : res.data.data });
+                            }
+                        ).catch(err => {
+                            console.log(err);
+                            new Error("fail");
+                        })
+                    }
+                };
             }
         },
         computed: {
             ...mapGetters({
                 token : 'token',
-                diary : 'jobDiary',
-                page : 'page',
+                realDiary : 'diary/realDiary',
+                diary : 'diary/jobDiary',
+                page : 'diary/page',
                 userInfo : 'userInfo'
             })
         }
@@ -110,60 +148,69 @@
 </script>
 
 <style>
-    @import 'bootstrap/dist/css/bootstrap.css';
-    /* @import 'bootstrap-vue/dist/bootstrap-vue.css'; */
-    body {
-        background-color: white;
-    }
-    
-    .breadcrumb{
-        margin-top: 2%;
-    }
+@import 'bootstrap/dist/css/bootstrap.css';
+body {
+    background-color: white;
+}
+.breadcrumb{
+    margin-top: 2%;
+}
+a.btn_b01 {
+    display: inline-block;
+    padding: 7px;
+    border: 1px solid #d9ded9;
+    background: #f2f5f9;
+    color: #000;
+    text-decoration: none;
+    vertical-align: middle;
+}
+#bo_list_total{
+    display: inline;
+}   
+.bo_fx{
+    box-sizing: inherit;
+}
+.bo_li{
+    margin-bottom: 1%; 
+}
 
-    a.btn_b01 {
-        display: inline-block;
-        padding: 7px;
-        border: 1px solid #d9ded9;
-        background: #f2f5f9;
-        color: #000;
-        text-decoration: none;
-        vertical-align: middle;
+
+
+@media (min-width: 768px) {
+    .diary-tbody-real {
+        display:none
     }
-    #bo_list_total{
+}
+@media (max-width: 768px) {
+    .diary-head {
+        display: none;
+    }
+    .diary-tbody-tr td {
         display: inline;
-    }   
-    .bo_fx{
-        box-sizing: inherit;
+        font-size: 0.6rem;
+        border: 0px;
     }
-    .bo_li{
-        margin-bottom: 1%; 
+    #diary-tbody-index{
+        display: none;
     }
-
-    @media (max-width: 768px) {
-        .diary-head {
-            display: none;
-        }
-        .diary-tbody-tr td {
-            display: inline;
-            font-size: 0.6rem;
-            border: 0px;
-        }
-        #diary-tbody-index{
-            display: none;
-        }
-        .diary-tbody-tr{
-            display:block;
-        }
-        #diary-tbody-title{
-            display:block;
-            font-size: 0.9rem;
-            font-weight: bold;
-            width: 300px;
-        }
-        #diary-tbody-author{
-            height:30px;
-        }
-        
+    .diary-tbody-tr{
+        display:block;
     }
+    #diary-tbody-title{
+        display:block;
+        font-size: 0.9rem;
+        font-weight: bold;
+        width: 300px;
+    }
+    #diary-tbody-author{
+        height:30px;
+    }
+    .diary-page{
+        display: none;
+    }
+    .diary-tbody-web {
+        display:none
+    }
+}
     /* ' */
 </style>

@@ -4,10 +4,7 @@ export const state = () => ({
     token : null,
     authenticated: null,
     userInfo :false,
-    isleave : false,
-    jobDiary : null,
-    diaryDetail : {},
-    page : null
+    isleave : false
 })
 
 export const getters = {
@@ -22,15 +19,6 @@ export const getters = {
     },
     isLeave(state) {
         return state.isleave
-    },
-    jobDiary(state) {
-        return state.jobDiary
-    },
-    diaryDetail(state) {
-        return  state.diaryDetail
-    },
-    page(state) {
-        return state.page
     }
 }
 
@@ -46,16 +34,6 @@ export const mutations = {
     },
     SET_ISLEAVE(state,payload) {
         state.isleave = payload.isleave
-    },
-    SET_DIARY(state,payload) {
-        state.jobDiary = payload.jobDiary
-    },
-    SET_DIARYDETAIL(state,payload) {
-        state.diaryDetail = payload.diaryDetail
-    },
-    SET_PAGE(state,payload) {
-        state.page = payload.page
-        state.todoList = payload.todoList 
     }
 }
 

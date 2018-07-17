@@ -52,7 +52,7 @@
         async mounted() {
            await axios.get( process.env.BACKEND_URL +'/jobDiary/detail/'+this.$route.params.id).then( 
                 res => {
-                   return  this.$store.commit('SET_DIARYDETAIL',{ diaryDetail : res.data.data[0] })
+                   return  this.$store.commit('diary/SET_DIARYDETAIL',{ diaryDetail : res.data.data[0] })
                 }
             ).catch(err => {
                 console.log(err)
@@ -60,7 +60,7 @@
         },
         computed: {
             ...mapGetters({
-                diary : 'diaryDetail',
+                diary : 'diary/diaryDetail',
                 token : 'token',
                 userInfo : 'userInfo',
                 
