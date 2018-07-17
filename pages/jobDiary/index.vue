@@ -3,10 +3,11 @@
         <div class="breadcrumb" style="" ><span class="left">
             <a href="/jobdiary" class='content-title' style="color:black; text-decoration: none;"><h2 style="color:black;" >MyDiary</h2></a></span>
         </div>
-
+        
         <div class="bo_fx">
             <div id="bo_list_total"><span>Total  {{ total }}건</span> {{ currentPage }} 페이지</div>
-            <li style="float:right; list-style:none;" class='bo_li'><a href="/jobDiary/create" class="btn_b01" >글 작성</a></li> 
+            <button @click="$router.push('/jobDiary/create')" class="real-button btn btn-outline-dark btn-lg" >글 작성</button>
+            <!-- <li style="float:right; list-style:none;" class='bo_li'><a href="/jobDiary/create" class="btn_b01" >글 작성</a></li>  -->
         </div>
 
         <table class ='table table-striped'>
@@ -43,7 +44,6 @@
         </table>
          
         <job-page class='diary-page' :page='page' :pageData='pageData'  v-model='pageData' v-on:@change="onClickIndex"  />
-        
     </div>
 </template>
 
@@ -119,8 +119,9 @@
                         this.pageData[this.currentPage-1].active = false;
                         this.currentPage = this.currentPage +1;
                         if(this.currentPage > this.page){
-                            this.currentPage = this.page
+                            return this.currentPage = this.page
                         }
+
                         this.pageData[this.currentPage-1].active = true;
                         axios.defaults.headers.common.Authorization ='Bearer '+ this.token;
                         axios.get( process.env.BACKEND_URL +'/jobDiary',{ params: { page: this.currentPage }}).then( 
@@ -161,7 +162,6 @@ body {
     color: #000 !important;
 }
 a.btn_b01 {
-    
     display: inline-block;
     padding: 7px;
     border: 1px solid #d9ded9;
@@ -177,11 +177,14 @@ a {
 .bo_fx{
     box-sizing: inherit;
 }
-.bo_li{
+.real-button{
     margin-bottom: 1%; 
+    float: right;
 }
-
-
+.btn {
+    width: 20%;
+    margin: 1%;
+}
 
 @media (min-width: 768px) {
     .diary-tbody-real {
@@ -218,6 +221,10 @@ a {
     .diary-tbody-web {
         display:none
     }
+    .real-button{
+        width: 100%;
+        display : block;
+    }
 }
-    /* ' */
+    
 </style>
