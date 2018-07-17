@@ -24,7 +24,7 @@
 
             <tbody>
                 <tr class='diary-tbody-web diary-tbody-tr' v-for='(  item,  index ) in diary' :key='item._id'>
-                    <td id='diary-tbody-index'>{{ index+1 + (currentPage-1)*10 }}</td>
+                    <td id='diary-tbody-index'>{{ index+1 + (currentPage-1)*20 }}</td>
                     <td id='diary-tbody-title' ><a  href='#' style='color:black; text-decoration:none;' @click='detailView(item._id,item.title)'>{{ item.title }}</a></td>
                     <td id='diary-tbody-author'>{{ userInfo.name }}</td>
                     <td id='diary-tbody-date'>{{ item.date }}</td>
@@ -61,7 +61,7 @@
                     this.total = res.data.data[0].recordCount;
                     this.$store.commit('diary/SET_REALDIARY', { realDiary : res.data.data });
                     this.$store.commit('diary/SET_DIARY', { jobDiary : res.data.data });
-                    this.$store.commit('diary/SET_PAGE', { page : Math.ceil(res.data.data[0].recordCount/10)});
+                    this.$store.commit('diary/SET_PAGE', { page : Math.ceil(res.data.data[0].recordCount/20)});
                     for(var i=0; i<this.$store.getters['diary/page']; i++){
                         if(fpage == i+1 ) {
                             this.pageData.push( {number : i+1 , active: true })

@@ -5,7 +5,6 @@
       
       <div class='main-content-profile'>
         <main-banner :userInfo="userInfo" />
-      
       </div>
       <div class='main-content-calendar'>
           <calendar v-if="userInfo" />    
@@ -23,11 +22,6 @@ import LeaveInsert from "../components/LeaveInsert.vue"
 import MainBanner from '../components/MainBanner'
 
 export default {   
-    data(){
-      return {
-      
-      }
-    },
     computed: {
       ...mapGetters({
         token : 'token',
@@ -43,12 +37,4 @@ export default {
 
 <style>
 @import 'bootstrap/dist/css/bootstrap.css';
-/* .main-content-profile{
-  margin: 0 auto;
-  width:70%;
-}
-.main-content-calendar{
-  margin: 0 auto;
-  width:60%;
-} */
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class='main-banner'>
       <div class="masthead" :style="`background:${bkcolor}`">
         <svg class="bk" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1367.57 190.59" preserveAspectRato="none" role="presentation">
           <path d="M1-5.7c26.29,0,52.59.07,78.88,0a13.65,13.65,0,0,1,8,2.25,85.25,85.25,0,0,1,19.56,17.1c9.32,11.46,6.88,35.64-9.63,43.28-13.87,6.43-28.32,9.78-43.33,11.41C36.52,70.29,18.7,69.25,1,66.53Z" transform="translate(-0.95 5.75)" style="fill: #fe3a25"/>
@@ -15,14 +15,17 @@
           <path d="M895.1,155.77c-4.75-4.23-9.12-8.83-12.22-14.39-2.7-4.84-1.2-7.9,4.17-8.9a50.18,50.18,0,0,1,6.62-.35c9.64-.45,17.79-8.48,17.81-17.56,0-5.54-1.87-8.91-7.86-13.23-9.22-6.67-18.66-13.06-27.8-19.85-24.6-18.28-51.37-33.58-74.17-54.36-6.29-5.75-13.64-10.31-22.19-12.34-10.94-2.6-18.56,5.28-15.64,16.07,1.78,6.56,5.35,12.14,9.28,17.5,11.75,16,26.42,29.4,40.38,43.4,9.9,9.94,8.64,15.22-4.91,19.35-6.94,2.11-14,3.72-21,5.79-3.14.94-6.8,2-7.17,6-.35,3.81,2.3,6.4,5.12,8.56a26.13,26.13,0,0,0,4.45,2.7c5.57,2.74,11.55,4.21,17.57,5.57,15.15,3.43,30,7.21,42.42,17.62,7.24,6.09,14.33,12.34,21.37,18.65H920C911.49,169.55,903.11,162.9,895.1,155.77Z" transform="translate(-0.95 5.75)" style="fill: #75d8d0"/>
         </svg>
         <h1>{{ title }}</h1>
-        <div class='mian_profile' v-if="this.userInfo">
-            <img  id='profile_image' style="cursor:pointer" v-bind:src="userInfo.image" alt="프로필 사진">
-            <p class='main_profile_el' > 이름 : {{ userInfo.name }}</p>
-        </div>  
-        <div class='c_progress' v-if="this.userInfo" >
-            <b-progress  class='progress' :value="leavePercent()" :max="max" show-progress variant="success"></b-progress>
-            <span>입사일<br>{{ dateFormat(this.startDT) }}</span>
-            <span>퇴사일<br>{{ dateFormat(this.endDT) }}</span>
+        <div>
+            <div class='mian_profile' v-if="this.userInfo">
+                <img  id='profile_image' style="cursor:pointer" v-bind:src="userInfo.image" alt="프로필 사진">
+                <p class='main_profile_el' > 이름 : {{ userInfo.name }}</p>
+            </div>  
+
+            <div class='c_progress' v-if="this.userInfo" >
+                <b-progress  class='progress' :value="leavePercent()" :max="max" show-progress variant="success"></b-progress>
+                <span>입사일<br>{{ dateFormat(this.startDT) }}</span>
+                <span>퇴사일<br>{{ dateFormat(this.endDT) }}</span>
+            </div>
         </div>
       </div>
     </div>
@@ -80,6 +83,28 @@ export default {
 </script>
 
 <style>
+@media (max-width: 768px) {
+    h1{
+        text-align: center;
+    }
+    .main-banner{
+        width: 100%;
+        height: 180px;
+    }
+    .mian_profile{
+        float:none;
+        left:100px;
+    }
+    .c_progress{
+        display: block;
+        float: none;
+        position: relative;
+        right: 50px;
+        /* text-align: center; */
+    }
+}
+
+
 h1 {
   color: white;
   position: relative;
