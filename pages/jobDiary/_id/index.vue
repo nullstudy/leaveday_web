@@ -55,6 +55,7 @@
                    return  this.$store.commit('diary/SET_DIARYDETAIL',{ diaryDetail : res.data.data[0] })
                 }
             ).catch(err => {
+                new error('fail')
                 console.log(err)
             })
         },

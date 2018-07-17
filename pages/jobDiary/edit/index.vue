@@ -60,11 +60,11 @@ import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
     data() {
-        let title = this.$store.getters.diaryDetail.title
-        let content = this.$store.getters.diaryDetail.content
-        let state = this.$store.getters.diaryDetail.state.number
-        let leaveCount = this.$store.getters.diaryDetail.leaveCount
-        let _id = this.$store.getters.diaryDetail._id;
+        let title = this.$store.getters['diary/diaryDetail'].title
+        let content = this.$store.getters['diary/diaryDetail'].content
+        let state = this.$store.getters['diary/diaryDetail'].state.number
+        let leaveCount = this.$store.getters['diary/diaryDetail'].leaveCount
+        let _id = this.$store.getters['diary/diaryDetail']._id;
         return {
             options: [
                 { value: null, text: '선택해주십시오' },
@@ -99,6 +99,7 @@ export default {
             .then( (res) => {
                 this.$router.push('/jobDiary/'+this.id);
             }).catch(error => {
+                new Error('fail')
                 console.log('error',error);
             });
         }
