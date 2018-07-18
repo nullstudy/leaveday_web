@@ -46,7 +46,6 @@ export default {
         bkcolor: {
             type: String,
             default: 'black',
-            // default: '#3b60ed'
         },
         title: {
             type: String,
@@ -100,7 +99,6 @@ export default {
         float: none;
         position: relative;
         right: 50px;
-        /* text-align: center; */
     }
 }
 

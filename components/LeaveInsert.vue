@@ -11,26 +11,26 @@
             :body-text-variant="bodyTextVariant"
             >
             
-            <b-container >
+            <div class="leave-create mb-1" v-if="!this.isleave"> 
+                <label>입사일<datepicker v-model="startDT" class='picker'></datepicker></label>
+            </div>
 
-                <b-row class="mb-1" v-if="!this.isleave"> 
-                        <b-col cols="6"><label>입사일<datepicker v-model="startDT" class='picker'></datepicker></label></b-col>
-                        <b-col cols="6"><label>퇴사일<datepicker v-model="endDT" class='picker'></datepicker></label></b-col>        
-                </b-row>
+            <div class="leave-end mb-1">
+                <label>퇴사일<datepicker v-model="endDT" class='picker'></datepicker></label>
+            </div>
 
-                <b-row class="mb-1" v-if="this.endDT">    
-                    <!-- <div class='leave-info'> -->
-                        <b-col cols="6"><label> 현재</label>&emsp;&emsp;{{ dateFormat(new Date) }}</b-col>
-                        <b-col cols="6"><p><label>남은 일수</label> {{ output }} 일</p></b-col>
-                    <!-- </div> -->
-                </b-row>
+            <div class="mb-1" v-if="this.endDT">    
+                현재<label>&emsp;{{ dateFormat(new Date) }}</label>&emsp;
+                남은 일수<label>&emsp;{{ output }} 일 </label>
+            </div>
 
-                <b-row class="mb-1" v-if="!this.isleave">
-                    <b-col><b-btn size="sm" variant="outline-danger" block @click="leaveDayInsert">입력</b-btn></b-col>
-                    <b-col><b-btn size="sm" variant="outline-danger" block @click="hideModal">닫기</b-btn></b-col>
-                </b-row>
+            <br>
+
+            <div class="leave-foot mb-1" v-if="!this.isleave">
+                <b-btn class='leave-btn' size="sm" variant="outline-danger" block @click="leaveDayInsert">입력</b-btn>
+                <b-btn class='leave-btn' id='leave-cancel-btn' size="sm" variant="outline-danger" block @click="hideModal">닫기</b-btn>
+            </div>
                 
-            </b-container>
         </b-modal>
     </div>
 </template>
@@ -129,9 +129,27 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 @import 'vue-material/dist/theme/default.css';
 /* @import 'vue-material/dist/vue-material.min.css'; */
+.leave-create,{
+    margin-top:7px;
+}
+.leave-end {
+    margin-bottom:5px;
+}
+.leave-create label,.leave-end label {
+    width:250px;
+}
+.vdp-datepicker picker {
+    display: inline;
+}
+.picker{
+    float: right;
+}
+.modal-body{
+    height: 500px;
+}
 .mb-1{
     height: 50px;
 }
@@ -145,14 +163,20 @@ div input{
 .leave-info{
     display: inline;
 }
-.vdp-datepicker * {
-    /* width:200px; */
-    /* height: 100%; */
-}
+
 .mb-1 input{
     position: relative;
     left: 70px;
     bottom: 26px;
+}
+.leave-btn{
+    display: inline;
+    width:49%;
+    margin-right:1%;
+}
+#leave-cancel-btn {
+    position: relative;
+    bottom: 4px;
 }
 </style>
 
