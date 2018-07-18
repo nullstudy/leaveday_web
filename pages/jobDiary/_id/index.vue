@@ -3,16 +3,16 @@
         <div class="section_wrap section_bottom_0">
             <div class="section_bottom">
                 <div class="section-diary-title">
-                    <h2>{{ diary.title }}</h2>
+                    <h2 class='diary-title'>{{ diary.title }}</h2>
                 </div>
             </div>
 
-            <ul class="wt_box gray_color">
+            <ul class="wt_box-web wt_box gray_color">
                 <li>
                     <a>{{ userInfo.name }}</a>
                 </li>
                 <li>
-                    <a><span><b>{{ diary.state.state }}</b></span></a>
+                    <a><span><b>{{ diary.state.status }}</b></span></a>
                 </li>				
                 <li>
                     <a>leaveCount<span><b> {{ diary.leaveCount }}</b></span></a>
@@ -27,6 +27,23 @@
                     <a><span>{{ diary.date }}</span></a>
                 </li>
             </ul>
+
+            <ul class="wt_box-real">
+                <li>
+                    <a>{{ userInfo.name }}</a>
+                </li>
+                <li>
+                    <a><span><b>{{ String(diary.state.status) }}</b></span></a>
+                </li>								
+                <li>
+                    <a >조회 수 <span><b>{{ diary.views }}</b></span></a>
+                </li>
+                <li>
+                    <a class="real_box_date"><span>{{ diary.date }}</span></a>
+                </li>
+            </ul>
+
+
         </div>
 
         <div class="section_wrap section_border_0">                
@@ -49,18 +66,19 @@
     import { mapGetters, mapMutations, mapActions } from 'vuex';
     
     export default  {
-        async mounted() {
+        async created() {
            await axios.get( process.env.BACKEND_URL +'/jobDiary/detail/'+this.$route.params.id).then( 
                 res => {
-                   return  this.$store.commit('SET_DIARYDETAIL',{ diaryDetail : res.data.data[0] })
+                   return  this.$store.commit('diary/SET_DIARYDETAIL',{ diaryDetail : res.data.data[0] })
                 }
             ).catch(err => {
+                new error('fail')
                 console.log(err)
             })
         },
         computed: {
             ...mapGetters({
-                diary : 'diaryDetail',
+                diary : 'diary/diaryDetail',
                 token : 'token',
                 userInfo : 'userInfo',
                 
@@ -83,9 +101,12 @@ body{
 .section-diary-title{
     padding: 2%;
 }
+.diary-title{
+    font-size: 1.5rem;
+}
 .wrap-diary-detail, .wrap-diary-detail a {    
-    text-decoration: none;
-    color: #4e4e4e;
+    text-decoration: none !important;
+    color: #4e4e4e !important;
 }
 .wt_box {
     position: relative;
@@ -119,7 +140,6 @@ body{
     background: #fcfcfc;
 }
 
-/* 내용  */
 .diary-content{
     border: 1px solid #ddd;
     position: relative;
@@ -138,5 +158,48 @@ div {
 .diary-footer{
     border-top: 0;
     border: 1px solid #E7E7E7
+}
+
+@media (max-width: 768px) {
+    .wt_box-web {
+        display:none !important;
+    }
+    .wt_box-real {
+        display:show;
+        position: relative;
+        border-right: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        
+    }
+    .wt_box-real {
+        display: block;
+    }
+    
+    .wt_box-real li a {
+        display: inline-block;
+        padding: 10px 15px;
+        font-size:0.7rem;
+        border-right: 1px solid #ddd;
+    }
+
+    .wt_box-real li {
+        clear: both;
+        display: inline;
+        float: none;
+        border: 0;
+    }        
+    .real_box_date{
+        width:124px;
+        text-align: center;
+        border-right: 0 !important;
+    }
+}
+@media (min-width: 768px) {
+    .wt_box-real {
+        display:none;
+    }
 }
 </style>

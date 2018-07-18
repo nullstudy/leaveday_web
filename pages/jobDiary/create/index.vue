@@ -3,11 +3,11 @@
         <div class="breadcrumb" style="" ><span class="left">
             <a href="/jobdiary" class='content-title' style="color:black; text-decoration: none;"><h2 style="color:black;" >Job Diary 작성</h2></a></span>
         </div>
-
+        
         <hr>
 
         <div class='class-div'>  
-            <h5> 상태</h5> 
+            <h5>상태</h5> 
 
             <b-form-group> 
                 <b-form-radio-group id="radios1" v-model="formData.state" :options="radioOptions" name="radioOpenions" required>   
@@ -27,11 +27,11 @@
         <div class='class-div'>
             <h5 class='classDay'>내용</h5>
             <b-form-textarea id="textarea1"
-                            v-model="formData.content"
-                            placeholder="Enter something"
-                            :rows="5"
-                            :max-rows="6"
-                            required>
+                v-model="formData.content"
+                placeholder="Enter something"
+                :rows="5"
+                :max-rows="6"
+                required>
             </b-form-textarea>
         </div>
 
@@ -47,14 +47,14 @@
         <div class='submit-btn'>
             <button type="submit" class="btn btn-outline-dark btn-lg" >확인</button>
             <button type="button" class="btn btn-outline-dark btn-lg"  @click="$router.go(-1)">취소</button>
-        </div>
-        
-</form>
+        </div>    
+    </form>
 </template>
 
 <script>
 import axios from 'axios';
 import BootstrapVue from 'bootstrap-vue';
+import { setCookie , getUserFromCookie } from '~/util/auth'
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 export default {
     data() {
@@ -86,11 +86,15 @@ export default {
                 title : String(this.formData.title),
                 content : String(this.formData.content),
                 state : Number(this.formData.state),
-                leaveCount : Number(this.formData.leaveCount)
+                leaveCount : Number(this.formData.leaveCount),
+                date : new Date()
             }
             let { token } = axios.defaults.headers.common.Authorization ='Bearer '+ this.token
+
+
             axios.post( process.env.BACKEND_URL + '/jobDiary/create', diaryData )
             .then( (res) => {
+                setCookie(res.data.data)
                 this.$router.push('/jobDiary');
             }).catch(error => {
                 console.log('error',error);

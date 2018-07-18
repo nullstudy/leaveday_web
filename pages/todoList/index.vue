@@ -1,26 +1,39 @@
 <template>
     <div class='todo-wrap'>
-      <div>
-        <b-form-select v-model="selected" :options="options" class="mb-3" />
-      </div>
-    
+      <section class="intro">
+        <div class='todo-title-select'>
+          <h1>TodoList
+            <div class='todo-select-div'><b-form-select class='todo-select'  v-model="selected" :options="options"/></div></h1>
+        </div>
+      </section>
+
+      <hr>
+
       <div v-for="(item,index) in showTodo" :key='item.title'>
-        <li v-if="selected == item.status" class="list-group-item" @click="detailAtive(index)" >{{ item.title }}
+        <li v-if="selected == item.status" class="list-group-item" @click="detailAtive(index)" >
+          <strong>{{ item.title }}</strong> 
+          {{ percent(item.detail) }} 
           <button type="button" class="close" aria-label="Close">
-          <!-- <button type="button" class="close" aria-label="Close" @click="deleteDetail(index)"> -->
               <span aria-hidden="true">&times;</span>
           </button>
         </li>
+        
+        <br>
 
         <div class='content-tab' v-if="showTodo[index].active">
-          <tab  :tabs="tabs" :selected-tab="selectedTab" :showIndex="index" v-on:@change="onClickTab"></tab>   
-          <list :selected-tab="selectedTab" :data="showTodo[index].detail" :showIndex="index" v-on:@finish="onClickFinish" v-on:@reset="onClickReset">
-          <!-- <list :selected-tab="selectedTab" :data="showTodo[index].detail" :showIndex="index" v-on:@finish="onClickFinish" v-on:@reset="onClickReset"> -->
-          </list>  
+          <tab  :tabs="tabs" :selected-tab="selectedTab" :showIndex="index" v-on:@change="onClickTab"></tab>         
+          <list :selected-tab="selectedTab" :data="showTodo[index].detail" :showIndex="index" v-on:@finish="onClickFinish" v-on:@reset="onClickReset"></list> 
         </div>
-  
+        
       </div>
-      <hr>
+
+        <!-- <div class="md-list-item-text">
+          <span>Ali Connors</span>
+          <span>Brunch this weekend?</span>
+          <p>I'll be in your neighborhood doing errands this week. Do you want to meet?</p>
+        </div> -->
+
+
     </div>
 </template>
 
@@ -77,57 +90,39 @@ export default {
       this.$router.push('/todoList/create')
     },
     detailAtive(index) {
-      let activeIndex  = this.showTodo[index].active  
-      let id  = this.showTodo[index]._id
+      let activeIndex  = this.showTodo[index].active  ;
+      let id  = this.showTodo[index]._id;
       this.$store.commit('todo/SET_CHANGETODO', { active : activeIndex, id : id }); 
-      // this.search(index);
-    },
-
-    search(data) { //list 검색
-      this.list(data);
-      // this.list(this.selectedTab,i);
-      // this.value = showTodo[i].detail
-      // this.value = this.list(this.selectedTab,i);
-    },
-    list(data) {
-      if(data.tab === 'todo') 
-        return this.showTodo[data.index].detail.filter( item => item.status === false)
-        
-      if(data.tab === 'finish') 
-        return this.showTodo[data.index].detail.filter( item => item.status === true)
     },
     onClickTab(data) { //tab 선택
-      this.selectedTab = data.tab
-      this.search(data)
+      this.selectedTab = data.tab;
     },
-
-    onClickFinish(item) { //todo 완료
-      this.finish(item)
-    },
-    onClickReset(item) { //완료된 todo 리셋
-      this.reset(item)
-    }, 
-    finish(data) {
-      // this.search(data.index);this.search(data)
+    onClickFinish(data) { //todo 완료
       this.$store.commit('todo/SET_CHANGTOTALTODO', {  status : true , index : data.index , _id : data._id });
-      this.$store.commit('todo/SET_SHOWTODO'); 
-      // console.log(this.showTodo)
-      // this.search(data)
-      // this.search(data.index) 
+      let status = true;
+      let totalStatus;
+      if(this.$store.getters['todo/showTodoList'][data.index].detail.filter( item => item.status === false) == false ) {
+        var todo = confirm('Todo를 완료하시겠습니까? ');
+        if(!todo){
+          this.$store.commit('todo/SET_CHANGTOTALTODO', {  status : false , index : data.index , _id : data._id });
+          return
+        } else {
+          totalStatus = 3;
+          this.$store.commit('todo/SET_FINISHTODO', {  index : data.index , status : 3 })
+        }
+      }
       let updateData = {
+        totalStatus : totalStatus,
         detail_id : data._id,
         todo : data.todo,
         status : true
       }
       this.setHeader(this.token);
       this.putTodo(updateData);
+      
     },
-   
-    reset(data) {
-      // this.search(data.index);
+    onClickReset(data) { //완료된 todo 리셋
       this.$store.commit('todo/SET_CHANGTOTALTODO', { status : false , index : data.index , _id : data._id});
-      // this.search(data.index)  
-      // this.$store.commit('todo/SET_SHOWTODO'); 
       let updateData = {
         detail_id : data._id,
         todo : data.todo,
@@ -135,33 +130,84 @@ export default {
       }
       this.setHeader(this.token);
       this.putTodo(updateData);
-    },
+    }, 
     remove(todo,i) {
       // this.todoList[i].detail = this.todoList[i].filter(item => item.todo !== todo)
+    },
+    dateFormat(date){
+      var month = date.getMonth()+1;
+      month = month >= 10 ? month : '0' + month;  // month 두자리로 저장
+      var day = date.getDate();
+      day = day >= 10 ? day : '0' + day;  //day 두자리로 저장
+      var year = date.getFullYear();
+      return  year + '.' + month + '.' + day;
+    },
+    percent(detail){
+      
+      let count = 0;
+      for(var item in detail){
+        if(detail[item].status === true) count++
+      }
+      return  Math.floor((count / detail.length) * 100) +'%'
+
     }    
   }
+  // ( {{ dateFormat(new Date(item.startDT)) }} ~ {{ dateFormat(new Date(item.endDT)) }})
 }
 </script>
 
 <style>
-  @import 'bootstrap/dist/css/bootstrap.css';
-  @import 'bootstrap-vue/dist/bootstrap-vue.css';
+  /* @import 'bootstrap/dist/css/bootstrap.css'; */
+  /* @import 'bootstrap-vue/dist/bootstrap-vue.css'; */
+.todo-select-div{
+  display: inline;
+  float: right;
+  widtH: 85%;
+  position: relative;
+  bottom: 2px;  
+}
+
+.intro {
+  height: 300px;
+  position: relative;
+  padding: 30px;
+  box-sizing: border-box;
+  background-image: url("~assets/images/main-page-background.jpg");
+  background-position: center;
+  background-size: cover;
+}
+
+.intro h1 {
+  float: right;
+  position: absolute;
+  top: 10%;
+  left: 5%;
+  width: 90%;
+  font-size: 1.5rem;
+  color: black;
+  background-color: rgb(211, 211, 211);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3px black;
+  box-sizing: border-box;
+  border: 1px solid black;
+}
+
 .todo-wrap{
+  /* display: flex; */
   position: relative;
   margin: 0 auto;
-  width: 80%;
+  width: 100%;
   top:100px;
 }
 
 ul {
   list-style: none;
 }
-img {
-  width: 100%;
-}
+
 .content-tab{
     position: relative;
-    
+    right: 20px;
 }
 header {
   border-bottom: 1px #ccc solid;
@@ -182,33 +228,6 @@ input[type=text] {
   border: 1px solid #ccc;
 }
 
-.list li {
-  box-sizing: border-box;
-  display: block;
-  padding: 15px;
-  border-bottom: 1px solid #ccc;
-  position: relative;
-}
-.list li:last-child {
-  border-bottom: none;
-}
-.list li .number{
-  margin-right: 15px;
-  color: #ccc;
-}
-.list li .date{
-  position: absolute;
-  right: 50px;
-  top: 15px;
-  margin-right: 15px;
-  color: #ccc;
-}
-.list li .btn-remove{
-  position: absolute;
-  right: 0px;
-  top: 15px;
-  margin-right: 15px;
-}
 form {
   position: relative;
 }
@@ -233,12 +252,28 @@ form {
   display: flex;
   margin-bottom: 15px;
 }
-#search-result img {
-  width: 30%;
-  height: 30%;
-}
+
 .todoBtn {
   float: right;
   margin: 2px;
 }
+
+
+@media (min-width: 792px) {
+  .todo-select-div {
+    width:80%
+  }
+}
+@media (max-width: 768px) {
+  .todo-select-div {
+    width:60%;
+  }
+}
+
+@media (min-width: 792px) {
+  .todo-select-div {
+    width:80%
+  }
+}
+
 </style>

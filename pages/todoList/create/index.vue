@@ -132,16 +132,14 @@ export default {
 </script>
 
 <style scoped>
-    /* @import 'bootstrap/dist/css/bootstrap.css'; */
-    /* @import 'bootstrap-vue/dist/bootstrap-vue.css'; */
     @import 'vue-material/dist/theme/default.css';
     @import 'vue-material/dist/vue-material.min.css';
     
     
     .wrap-todo-create {
+        width:70%;
         position: relative;
         top: 48px;
-        /* background: gray;    */
     }
     .container-todo {
         width:80%;

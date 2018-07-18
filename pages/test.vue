@@ -11,35 +11,40 @@
         </div>
     
         <div class="dates">        
-            <li class='first-dates-date' v-for='item in  rate'>
+            <li class='dates-date' v-for='item in  rate'>
                 <span class='dates-li' style='color : LightGray'>{{ beforeLastDate - ( rate-item )}}</span>
             </li>
+ 
             <li v-if="(new Date()).getDate() != date" class='dates-date' v-for="date in daysInMonth" :key='date'   @click="createDiary(year,month,date)"
                  :class="{'current-day': date == initialDate &amp;&amp; month == initialMonth && year == initialYear}">
-                <span class='dates-li'>{{ date }}</span>
                 <span class='diary-title' @click='diaryActive(year,month,date)'> {{ showDiary(year,month,date) }}</span>
+                <span class='dates-li'>{{ date }}</span>
             </li>
             <li   class='dates-date' v-else-if=" (new Date()).getDate() == date && (new Date()).getMonth() == currentMonth" style="background : yellow"
                 @click="createDiary(year,month,date)" md-menu-trigger>
+                
+                <span class='diary-title' md-menu-trigger  @click='diaryActive(year,month,date)' > {{ showDiary(year,month,date) }}</span>
+                
                 <component  
                     :is="currentView" :item="park"  
                     v-if="park.year == year && park.month == month && park.day == date && park.full && park.active"
                 ></component>
+                
                 <span class='dates-li'>{{ date }}</span>
-                <span class='diary-title' md-menu-trigger  @click='diaryActive(year,month,date)' > {{ showDiary(year,month,date) }}</span>
             </li>
             <li class='dates-date' v-else @click="createDiary(year,month,date)">
-                <span class='dates-li'>{{ date }}</span>
                 <span class='diary-title' @click='diaryActive(year,month,date)'> {{ showDiary(year,month,date) }}</span>
+                <span class='dates-li'>{{ date }}</span>
             </li>
-            
-            <li class='last-dates-date' v-for='item in  6-lastDate' style='color : LightGray'>
-                <span class='dates-li'>{{ 7-lastDate-item }}</span>
+
+
+            <li class='dates-date' v-for='item in  6-lastDate' style='color : LightGray'>
+                <span class='dates-li'>{{ item }}</span>
             </li>
-        
         </div>
         
         <component  :is="currentDiary" :diaryInfo='diaryData'> </component>
+            <full-calendar :events="fcEvents" ></full-calendar>
     </div>
 
 </template>
@@ -89,6 +94,13 @@ export default {
             today: moment(new Date),
             dateContext: moment(new Date),
             days: ['일', '월', '화', '수', '목', '금', '토'],
+            fcEvents : [
+                {
+                title : 'Sunny Out of Office',
+                start : '2018-07-15',
+                end : '2018-07-15'
+                }
+            ]
         }
     },
     computed: {
@@ -214,14 +226,9 @@ export default {
 }    
 </script>
 
-<style scoped>
+<style>
 @import 'bootstrap/dist/css/bootstrap.css';
 
-.calendar{
-    position: relative;
-    top:30px;
-    flex: 1;
-}
 .calendar-header{
     margin: 20px;
 }
@@ -258,7 +265,6 @@ h4 {
 .dates {
     width:100%; 
     background-color: write;
-    /* flex:inherit; */
 }
 
 .dates li {
@@ -269,15 +275,10 @@ h4 {
     font-weight: bold;
     color:black;
     border: 1px solid #e0e0e0;;
-    border-right:1px ;
-}
-.dates-date{ /* ggggggggggggggggggg */
-    /* display: inline; */
-    display:inline-block;
-    width: 100%;
+    border-right:0px 
 }
 .dates-date:nth-child(7n) {
-    border-right:1px solid #e0e0e0;
+    border-right:1px solid #e0e0e0;;
     color : rebeccapurple;
 }
 .dates-date:nth-child(7n+1) {
@@ -287,48 +288,15 @@ h4 {
 .date-date:nth-child(9){
     background-color: palegoldenrod;
 }
-.first-dates-date{
-    float: left;
-    border: 0px !important;
-    border-left: 1px solid #e0e0e0 !important;
-}
-.last-dates-date{
-    float: right;
-    border: 0px !important;
-    
-    border-right: 1px solid #e0e0e0 !important;
-    border-bottom: 1px solid #e0e0e0 !important;
-}
-.last-dates-date:last-child {
-    border-left: 1px solid #e0e0e0 !important;
-    
-}
 
 .dates-li{
     margin-right: 3%;
 }
 
 .diary-title {
-    display: inline-block;
-    width: 100%;
     position: relative;
-    top: 5%;
-    font-size: 0.5rem;
-    text-align: center;
+    top: 40px;
 }
+/* Highlight the "current" day */
 
-span {
-    position: relative;
-}
-
-@media (max-width: 768px) {
-    .diary-title {
-        font-size:10px;
-    }
-    .dates li {
-        width: 14.28%;
-        height: 65px;
-        text-align: right;
-    }
-}
 </style>

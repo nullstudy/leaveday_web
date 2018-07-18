@@ -1,9 +1,9 @@
 <template>
   <div class='wrap'>
-    <toolbar :isAuthenticated="isAuthenticated"/>
-    <div class='container'>
+    <toolbar :isAuthenticated="isAuthenticated"/> 
+    <div class="container">
       <nuxt/>
-    </div>
+    </div>  
   </div>
 </template>
 
@@ -31,7 +31,7 @@
     height: 100%;
   }
   .container{
-    width:80%;
+    /* width:120%; */
     height: 100%;
     margin: 0 auto;
     background-color: white;     

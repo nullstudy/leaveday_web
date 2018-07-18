@@ -1,11 +1,16 @@
 <template>
+
     <div>
       <leave-insert v-if="token && !isLeave"  v-b-modal.modal1 :userInfo="userInfo" />
-      <div class='main-content-banner'>
+      
+      <div class='main-content-profile'>
         <main-banner :userInfo="userInfo" />
       </div>
-      <calendar v-if="userInfo" />
+      <div class='main-content-calendar'>
+          <calendar v-if="userInfo" />    
+      </div>
     </div>
+
 </template>
 
 <script>
@@ -17,11 +22,6 @@ import LeaveInsert from "../components/LeaveInsert.vue"
 import MainBanner from '../components/MainBanner'
 
 export default {   
-    data(){
-      return {
-      
-      }
-    },
     computed: {
       ...mapGetters({
         token : 'token',
@@ -36,11 +36,5 @@ export default {
 </script>
 
 <style>
-.main-content-banner {
-  margin: 0 auto;
-  width: 80%;
-  height: 100%;
-  position: relative;
-  top: 40px;
-}
+@import 'bootstrap/dist/css/bootstrap.css';
 </style>
