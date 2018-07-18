@@ -1,9 +1,9 @@
 <template>
     <form v-on:submit.prevent="diaryCreate" method="POST" class='wrap-form' role="form" enctype="multipart/form-data" >
         <div class="breadcrumb" style="" ><span class="left">
-            <a href="/jobdiary" class='content-title' style="color:black; text-decoration: none;"><h2 style="color:black;" >Job Diary 작성</h2></a></span>
+            <a href="/jobdiary" class='content-title' style="color:black; text-decoration: none;"><h2 style="color:black;" >Job Diary 수정</h2></a></span>
         </div>
-        
+
         <hr>
 
         <div class='class-div'>  
@@ -27,11 +27,11 @@
         <div class='class-div'>
             <h5 class='classDay'>내용</h5>
             <b-form-textarea id="textarea1"
-                v-model="formData.content"
-                placeholder="Enter something"
-                :rows="5"
-                :max-rows="6"
-                required>
+                            v-model="formData.content"
+                            placeholder="Enter something"
+                            :rows="5"
+                            :max-rows="6"
+                            required>
             </b-form-textarea>
         </div>
 
@@ -47,20 +47,25 @@
         <div class='submit-btn'>
             <button type="submit" class="btn btn-outline-dark btn-lg" >확인</button>
             <button type="button" class="btn btn-outline-dark btn-lg"  @click="$router.go(-1)">취소</button>
-        </div>    
-    </form>
+        </div>
+        
+</form>
 </template>
 
 <script>
 import axios from 'axios';
 import BootstrapVue from 'bootstrap-vue';
-import { setCookie , getUserFromCookie } from '~/util/auth'
 import { mapGetters, mapMutations, mapActions } from 'vuex';
+
+
 export default {
     data() {
-        console.log('슬렉연동테스트!')
+        let title = this.$store.getters['diary/diaryDetail'].title
+        let content = this.$store.getters['diary/diaryDetail'].content
+        let state = this.$store.getters['diary/diaryDetail'].state.number
+        let leaveCount = this.$store.getters['diary/diaryDetail'].leaveCount
+        let _id = this.$store.getters['diary/diaryDetail']._id;
         return {
-            selected: null,
             options: [
                 { value: null, text: '선택해주십시오' },
                 0,1,2,3,4,5,6,7,8,9,10
@@ -73,11 +78,12 @@ export default {
                 { text: '빡침', value: 5 }
             ],
             formData : {
-                title : null,
-                content : null,
-                state : null,
-                leaveCount : null
-            }
+                title : title,
+                content : content,
+                state : state,
+                leaveCount : leaveCount
+            },
+            id : _id
         }
     },
     methods: {
@@ -86,27 +92,23 @@ export default {
                 title : String(this.formData.title),
                 content : String(this.formData.content),
                 state : Number(this.formData.state),
-                leaveCount : Number(this.formData.leaveCount),
-                date : new Date()
+                leaveCount : Number(this.formData.leaveCount)
             }
-            let { token } = axios.defaults.headers.common.Authorization ='Bearer '+ this.token
 
-
-            axios.post( process.env.BACKEND_URL + '/jobDiary/create', diaryData )
+            axios.put( process.env.BACKEND_URL + '/jobDiary/edit/'+this.id, diaryData )
             .then( (res) => {
-                setCookie(res.data.data)
-                this.$router.push('/jobDiary');
+                this.$router.push('/jobDiary/'+this.id);
             }).catch(error => {
+                new Error('fail')
                 console.log('error',error);
             });
         }
     },
     computed: {
       ...mapGetters({
-        token : 'token'
+        token : 'token',
       })
     }
-    
 }
 </script>
     

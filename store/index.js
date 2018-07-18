@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 export const state = () => ({
     token : null,
     authenticated: null,
@@ -33,9 +34,6 @@ export const mutations = {
     },
     SET_ISLEAVE(state,payload) {
         state.isleave = payload.isleave
-    },
-    SET_TODO(state,payload) {
-        state.todoList = payload.todoList 
     }
 }
 

@@ -1,5 +1,6 @@
 <template>
     <div class='wrap'>
+        
         <b-modal id="modal1" 
             hide-footer
             title="LeaveDay 등록"
@@ -7,37 +8,29 @@
             :header-bg-variant="headerBgVariant"
             :header-text-variant="headerTextVariant"
             :body-bg-variant="bodyBgVariant"
-            :body-text-variant="bodyTextVariant">
-            <b-container fluid>
-                <b-row class="mb-1" v-if="!this.isleave">    
-                    입사일<b-col cols="5"><datepicker   v-model="startDT" class='picker'></datepicker></b-col>
-                    퇴사일<b-col cols="4"><datepicker   v-model="endDT" class='picker'></datepicker></b-col>
-                </b-row>
-                <b-row class="mb-1" v-if="this.endDT">    
-                    현재 <b-col cols="5"><p> {{ dateFormat(new Date) }} </p></b-col>
-                    남은 일수 <b-col cols="4"><p> {{ output }} 일</p></b-col>
-                </b-row>
+            :body-text-variant="bodyTextVariant"
+            >
+            
+            <div class="leave-create mb-1" v-if="!this.isleave"> 
+                <label>입사일<datepicker v-model="startDT" class='picker'></datepicker></label>
+            </div>
 
-                <!-- <b-row class="mb-1" v-if="this.isleave" >    
-                    입사 일 : <b-col cols="5">{{ this.startDT }} </b-col>
-                </b-row>
-                <b-row class="mb-1" v-if="this.isleave" >    
-                    시작 일 : <b-col cols="5">{{ createDT }} </b-col>
-                </b-row>
-                <b-row class="mb-1" v-if="this.isleave">    
-                    퇴사 일 : <b-col cols="5">{{ endDT }} </b-col>
-                </b-row>
-                <b-row class="mb-1" v-if="this.isleave">    
-                    남은 일 : <b-col cols="5">{{ leaveCount }} </b-col>
-                </b-row> -->
-                <b-row class="mb-1" v-if="!this.isleave">
-                    <b-col><b-btn size="sm" variant="outline-danger" block @click="leaveDayInsert">입력</b-btn></b-col>
-                    <b-col><b-btn size="sm" variant="outline-danger" block @click="hideModal">닫기</b-btn></b-col>
-                </b-row>
-                <!-- <b-row class="mb-1" v-if="this.isleave">
-                    <b-col><b-btn variant="outline-danger" block @click="hideModal">닫기</b-btn></b-col>
-                </b-row> -->
-            </b-container>
+            <div class="leave-end mb-1">
+                <label>퇴사일<datepicker v-model="endDT" class='picker'></datepicker></label>
+            </div>
+
+            <div class="mb-1" v-if="this.endDT">    
+                현재<label>&emsp;{{ dateFormat(new Date) }}</label>&emsp;
+                남은 일수<label>&emsp;{{ output }} 일 </label>
+            </div>
+
+            <br>
+
+            <div class="leave-foot mb-1" v-if="!this.isleave">
+                <b-btn class='leave-btn' size="sm" variant="outline-danger" block @click="leaveDayInsert">입력</b-btn>
+                <b-btn class='leave-btn' id='leave-cancel-btn' size="sm" variant="outline-danger" block @click="hideModal">닫기</b-btn>
+            </div>
+                
         </b-modal>
     </div>
 </template>
@@ -50,21 +43,14 @@ import { setCookie , getUserFromCookie } from '~/util/auth'
 
 
 export default {     
+
     props: { 
         userInfo : { 
-            type : Object,
-            // require : true
-            // ,
-            // default : function() {
-            //     return {
-                    
-            //     }
-            // } 
+            type: Object,
+            require: true
         }
     },
     data() {
-        console.log('userInfo',this.userInfo)
-        let createDT; let startDT; let endDT; let leaveCount;
         return {
             createDT : new Date(), 
             startDT : new Date(),
@@ -100,7 +86,7 @@ export default {
             }
 
             diff = Math.ceil(diff / (1000 * 3600 * 24));
-            this.leaveCount = diff+1;
+            this.leaveCount = diff;
         }
     },
     methods : {
@@ -123,7 +109,6 @@ export default {
             axios.defaults.headers.common.Authorization ='Bearer '+ this.token;
             await axios.put(process.env.BACKEND_URL + '/leaveInsert', leaveData )
             .then(response => {
-                
                 setCookie(response.data.data)
             }).catch(err => {
                 return console.error(err);
@@ -142,13 +127,56 @@ export default {
         }
     }
 }
-
-
 </script>
 
-<style>
+<style scoped>
+@import 'vue-material/dist/theme/default.css';
+/* @import 'vue-material/dist/vue-material.min.css'; */
+.leave-create,{
+    margin-top:7px;
+}
+.leave-end {
+    margin-bottom:5px;
+}
+.leave-create label,.leave-end label {
+    width:250px;
+}
+.vdp-datepicker picker {
+    display: inline;
+}
+.picker{
+    float: right;
+}
+.modal-body{
+    height: 500px;
+}
 .mb-1{
-    /* border: 1px solid black; */
     height: 50px;
 }
+.modal1{
+    width:100%;
+    height:100%;
+}
+div input{
+    width: 80%;
+}
+.leave-info{
+    display: inline;
+}
+
+.mb-1 input{
+    position: relative;
+    left: 70px;
+    bottom: 26px;
+}
+.leave-btn{
+    display: inline;
+    width:49%;
+    margin-right:1%;
+}
+#leave-cancel-btn {
+    position: relative;
+    bottom: 4px;
+}
 </style>
+

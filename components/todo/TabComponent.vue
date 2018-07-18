@@ -1,7 +1,7 @@
 <template>
   <ul class="tabs">
     <li v-for="tab in tabs" :key='tab' v-bind:class="{active: tab === selectedTab}"
-      v-on:click="onClickTabs(tab,i)">
+      v-on:click="onClickTabs(tab,showIndex)">
       {{tab}} 
     </li>
   </ul>
@@ -9,12 +9,12 @@
  
 <script>
 export default {
-  props: ['tabs', 'selectedTab','i'], 
+  props: ['tabs', 'selectedTab','showIndex'], 
   methods: {
-    onClickTabs(tab,i) {
+    onClickTabs(tab,showIndex) {
       var data  = {
         tab : tab,
-        index : i
+        index : showIndex
       }
       this.$emit('@change', data);
     }
@@ -29,7 +29,6 @@ ul.tabs {
 }
 
 .tabs li {
-  
   display: inline-block;
   width: 50%;
   padding: 15px;
