@@ -14,8 +14,8 @@ module.exports = {
     ]
   },
   env: {
-    BACKEND_URL: 'https://www.leaveday.cf'
-    // BACKEND_URL: 'http://localhost:3001'
+    // BACKEND_URL: 'https://www.leaveday.cf'
+    BACKEND_URL: 'http://localhost:3001'
   },
   
   plugins: [

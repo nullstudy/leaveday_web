@@ -7,7 +7,7 @@
         <main-banner :userInfo="userInfo" />
       </div>
       <div class='main-content-calendar'>
-          <calendar v-if="userInfo" />    
+          <calendar />    
       </div>
     </div>
 
