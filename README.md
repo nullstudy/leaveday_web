@@ -11,6 +11,12 @@
   * 0.1.0 버전으로 앞으로 기능 및 디자인을 발전시켜 나아갈 것입니다.
 ## 기능
 
+- 로그인 ( 소셜 - 카카오,구글 ) 
+  > ![Alt text](https://github.com/nullstudy/leaveday_web/blob/master/assets/read/login-page.PNG)
+
+- 최종 Todo 날짜지정 (로그인 시)
+  > ![Alt text](https://github.com/nullstudy/leaveday_web/blob/master/assets/read/leaveday-insert.PNG)
+  
 - main
   * 프로필 및 Mylog 프로그래스정보
   > ![Alt text](https://github.com/nullstudy/leaveday_web/blob/master/assets/read/main-page.PNG)
@@ -21,10 +27,6 @@
     *  다이어리 수정
     > ![Alt text](https://github.com/nullstudy/leaveday_web/blob/master/assets/read/main-calendar.PNG)
 
-- 로그인 ( 소셜 - 카카오,구글 ) 
-  > ![Alt text](https://github.com/nullstudy/leaveday_web/blob/master/assets/read/login-page.PNG)
-- 최종 Todo 날짜지정 (로그인 시)
-  > ![Alt text](https://github.com/nullstudy/leaveday_web/blob/master/assets/read/leaveday-insert.PNG)
 - TodoList  
     > ![Alt text](https://github.com/nullstudy/leaveday_web/blob/master/assets/read/todoList-page.PNG)
   * TodoList 생성
@@ -38,8 +40,6 @@
     > ![Alt text](https://github.com/nullstudy/leaveday_web/blob/master/assets/read/diary-edit.PNG)
   *  다이어리 상세보기
     > ![Alt text](https://github.com/nullstudy/leaveday_web/blob/master/assets/read/diary-detail.PNG)
-
-
 
 
 
