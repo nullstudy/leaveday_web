@@ -15,6 +15,7 @@ export const getUserFromCookie = (req,store) => {
     if (!jwtCookie) return null;
     
     let info = jwtDecode(jwtCookie)
+    console.log('jwt 해석',info)
     var userInfo = {};
     userInfo._id = info.ObjectId._id;
     userInfo.name = info.ObjectId.name;
@@ -44,12 +45,14 @@ export const getUserFromCookie = (req,store) => {
         return
     }
     function isNotLeaveDate(){
+        console.log('leave없어')
         store.commit('SET_ISLEAVE', { isleave : false });
         userInfo.startDT = false;
         userInfo.endDT = false;
         userInfo.leaveCount = false;
         return
     }
+    console.log('userInfo',userInfo)
     store.commit('SET_USER', { userInfo : userInfo })
     var cookieData = [jwtCookie.split('=')[1]]
     return cookieData
