@@ -17,11 +17,16 @@
 import { setToken } from '~/util/auth'
 import axios from 'axios';
 import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { setCookie , getUserFromCookie } from '~/util/auth'
 import Calendar from '../components/Calendar'
 import LeaveInsert from "../components/LeaveInsert.vue"
 import MainBanner from '../components/MainBanner'
 
 export default {   
+    mounted(req) {
+      // console.log(req)
+      // setCookie(res.data.data)
+    },
     computed: {
       ...mapGetters({
         token : 'token',

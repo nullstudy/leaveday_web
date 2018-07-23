@@ -8,6 +8,7 @@ export const unsetToken = () => {
 }
 
 export const getUserFromCookie = (req,store) => {
+    console.log('getUserFromCooke',req.headers.cookie)
     if (!req.headers.cookie) return
     
     const jwtCookie = req.headers.cookie.split(';').find(c => c.trim().startsWith('userToken='))
@@ -20,11 +21,10 @@ export const getUserFromCookie = (req,store) => {
     userInfo.email = info.ObjectId.email;    
     userInfo.image = info.ObjectId.image;
     userInfo.leaveCount = info.ObjectId.leaveCount;
-
+    
     !!userInfo.leaveCount ?  isLeaveDate() : isNotLeaveDate()
 
     function isLeaveDate(){
-        
         store.commit('SET_ISLEAVE', { isleave : true });
         userInfo.startDT = info.ObjectId.startDT;
         userInfo.endDT = info.ObjectId.endDT;
