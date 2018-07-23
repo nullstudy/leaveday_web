@@ -3,9 +3,11 @@ import axios from 'axios'
 // if (!store.state.authenticated) {
 //     return redirect('/login')
 //   }
-export default async function({ isServer, store, route, redirect, req }) {
+export default async function({  store, route, redirect, req }) {
     // console.log(isServer);
-    if (isServer && !req) return;    
-    const token = isServer ? getUserFromCookie(req,store) : getUserFromLocalStorage()
+    if (process.server && !req) return;    
+
+    const token = process.server ? getUserFromCookie(req,store) : getUserFromLocalStorage()
+    console.log('token',token)
     token ? store.commit('SET_TOKEN', { token : token[0] }) : null
 }

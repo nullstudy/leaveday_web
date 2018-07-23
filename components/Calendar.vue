@@ -271,7 +271,7 @@ h4 {
     border: 1px solid #e0e0e0;;
     border-right:1px ;
 }
-.dates-date{ /* ggggggggggggggggggg */
+.dates-date{ 
     /* display: inline; */
     display:inline-block;
     width: 100%;

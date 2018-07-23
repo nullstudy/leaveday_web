@@ -17,7 +17,7 @@ export default {
             GOOGLE_AUTHURL: process.env.BACKEND_URL+'/auth/google',
             KAKAO_AUTHURL: process.env.BACKEND_URL+'/auth/kakao'
         }
-    } 
+    }
 }
 </script>
 
