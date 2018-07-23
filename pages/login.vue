@@ -19,8 +19,8 @@ export default {
         }
     },
     methods : {
-      login() {
-        axios.get(process.env.BACKEND_URL + '/auth/google')
+      async login() {
+        await axios.post(process.env.BACKEND_URL + '/auth/google')
           .then(response => {     
               console.log('로그인결과',response)
           }).catch(err => {
