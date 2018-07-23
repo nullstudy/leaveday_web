@@ -9,7 +9,7 @@ export const unsetToken = () => {
 
 export const getUserFromCookie = (req,store) => {
     if (!req.headers.cookie) return
-    
+    console.log('gggg')
     const jwtCookie = req.headers.cookie.split(';').find(c => c.trim().startsWith('userToken='))
     if (!jwtCookie) return null;
     
