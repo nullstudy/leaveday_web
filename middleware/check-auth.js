@@ -8,5 +8,6 @@ export default async function({  store, route, redirect, req }) {
     if (process.server && !req) return;    
 
     const token = process.server ? getUserFromCookie(req,store) : getUserFromLocalStorage()
+    console.log('token',token)
     token ? store.commit('SET_TOKEN', { token : token[0] }) : null
 }
