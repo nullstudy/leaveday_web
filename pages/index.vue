@@ -1,7 +1,7 @@
 <template>
 
     <div>
-      <leave-insert v-if="token && !isLeave"  v-b-modal.modal1 :userInfo="userInfo" />
+      <!-- <leave-insert v-if="token && !isLeave"  v-b-modal.modal1 :userInfo="userInfo" /> -->
       
       <div class='main-content-profile'>
         <main-banner :userInfo="userInfo" />
