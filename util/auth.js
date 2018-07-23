@@ -24,7 +24,7 @@ export const getUserFromCookie = (req,store) => {
     !!userInfo.leaveCount ?  isLeaveDate() : isNotLeaveDate()
 
     function isLeaveDate(){
-        
+        console.log('de')
         store.commit('SET_ISLEAVE', { isleave : true });
         userInfo.startDT = info.ObjectId.startDT;
         userInfo.endDT = info.ObjectId.endDT;
