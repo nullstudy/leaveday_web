@@ -17,16 +17,6 @@ export default {
             GOOGLE_AUTHURL: process.env.BACKEND_URL+'/auth/google',
             KAKAO_AUTHURL: process.env.BACKEND_URL+'/auth/kakao'
         }
-    },
-    methods : {
-       async login() {
-        await axios.get(process.env.BACKEND_URL + '/auth/google')
-          .then(response => {     
-              console.log('로그인결과',response)
-          }).catch(err => {
-              console.error(err);
-          })
-      }
     }
 }
 </script>

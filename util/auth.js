@@ -60,6 +60,7 @@ export const getUserFromCookie = (req,store) => {
 }
 
 export const setCookie = (token) => {
+    
     Cookie.set('userToken', token);
     return 
 }
