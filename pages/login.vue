@@ -1,7 +1,7 @@
 <template>
     <section class="container">
       <div class='loginButton'>
-        <b-button  id='google' variant="primary" :href="GOOGLE_AUTHURL" style='color : white'>google Login</b-button>
+        <b-button  id='google' variant="primary" @click="login" style='color : white'>google Login</b-button>
       </div>
       <div class='loginButton' >
         <b-button id='kakao' variant="primary" :href="KAKAO_AUTHURL" style='color : white'>kakao Login</b-button>  
@@ -17,7 +17,17 @@ export default {
             GOOGLE_AUTHURL: process.env.BACKEND_URL+'/auth/google',
             KAKAO_AUTHURL: process.env.BACKEND_URL+'/auth/kakao'
         }
-    } 
+    },
+    methods : {
+      login() {
+        axios.get(process.env.BACKEND_URL + '/auth/google')
+          .then(response => {     
+              console.log('로그인결과',response)
+          }).catch(err => {
+              console.error(err);
+          })
+      }
+    }
 }
 </script>
 
